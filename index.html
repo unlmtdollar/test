@@ -4,206 +4,176 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NUUR Presale Admin Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.6.0/ethers.umd.min.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {margin:0;padding:0;box-sizing:border-box;}
     body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height:100vh;
+      padding:20px;
     }
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      overflow: hidden;
+      max-width:1200px;margin:0 auto;background:white;
+      border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.2);
+      overflow:hidden;
     }
     header {
-      background: #2c3e50;
-      color: white;
-      padding: 20px;
-      text-align: center;
+      background:#2c3e50;color:white;padding:20px;text-align:center;
     }
     .wallet-section {
-      background: #ecf0f1;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
+      background:#ecf0f1;padding:20px;display:flex;
+      justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
     }
-    .wallet-info { display: flex; align-items: center; gap: 10px; }
+    .wallet-info {display:flex;align-items:center;gap:10px;}
     .connect-btn {
-      background: #27ae60; color: white; border: none;
-      padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;
+      background:#27ae60;color:white;border:none;padding:10px 20px;
+      border-radius:5px;cursor:pointer;font-weight:bold;
     }
-    .connect-btn:hover { background: #219a52; }
+    .connect-btn:hover {background:#219a52;}
     .main-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px; padding: 20px;
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;
     }
-    @media (max-width:768px) {
-      .main-content { grid-template-columns: 1fr; }
-    }
+    @media(max-width:768px){.main-content{grid-template-columns:1fr;}}
     .card {
-      background: #f8f9fa;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      background:#f8f9fa;border-radius:10px;padding:20px;
+      box-shadow:0 4px 6px rgba(0,0,0,0.1);
     }
     .card h3 {
-      color: #2c3e50;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 5px;
+      color:#2c3e50;margin-bottom:15px;border-bottom:2px solid #3498db;
+      padding-bottom:5px;
     }
     .info-row {
-      display: flex; justify-content: space-between;
-      margin: 10px 0; padding: 8px;
-      background: white; border-radius: 5px;
+      display:flex;justify-content:space-between;
+      margin:10px 0;padding:8px;background:white;border-radius:5px;
     }
-    .info-label { font-weight: bold; color: #7f8c8d; }
-    .info-value { color: #2c3e50; font-weight: bold; }
-    .action-form { display: flex; flex-direction: column; gap: 10px; }
-    .input-group { display: flex; flex-direction: column; gap: 5px; }
-    .input-group label { font-weight: bold; color: #2c3e50; }
+    .info-label {font-weight:bold;color:#7f8c8d;}
+    .info-value {color:#2c3e50;font-weight:bold;}
+    .action-form {display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+    .input-group {display:flex;flex-direction:column;gap:5px;}
+    .input-group label {font-weight:bold;color:#2c3e50;}
     input, select, button {
-      padding: 12px; border: 2px solid #bdc3c7;
-      border-radius: 5px; font-size: 14px;
+      padding:12px;border:2px solid #bdc3c7;border-radius:5px;font-size:14px;
     }
-    input:focus, select:focus { outline: none; border-color: #3498db; }
+    input:focus, select:focus {outline:none;border-color:#3498db;}
     .action-btn {
-      background: #3498db; color: white; border: none;
-      padding: 12px; border-radius: 5px; cursor: pointer;
-      font-weight: bold; transition: background 0.3s;
+      background:#3498db;color:white;border:none;padding:12px;
+      border-radius:5px;cursor:pointer;font-weight:bold;
     }
-    .action-btn:hover { background: #2980b9; }
-    .danger-btn { background: #e74c3c; }
-    .danger-btn:hover { background: #c0392b; }
-    .success-btn { background: #27ae60; }
-    .success-btn:hover { background: #219a52; }
+    .action-btn:hover {background:#2980b9;}
+    .danger-btn {background:#e74c3c;}
+    .danger-btn:hover {background:#c0392b;}
+    .success-btn {background:#27ae60;}
+    .success-btn:hover {background:#219a52;}
     .status {
-      padding: 10px; margin: 10px 0;
-      border-radius: 5px; text-align: center; font-weight: bold;
+      padding:10px;margin:10px;border-radius:5px;text-align:center;font-weight:bold;
+      display:none;
     }
-    .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-    .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    .status.info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
-    .loading {
-      display: inline-block; width: 20px; height: 20px;
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #3498db;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+    .status.success {background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
+    .status.error {background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
+    .status.info {background:#d1ecf1;color:#0c5460;border:1px solid #bee5eb;}
+    footer {
+      text-align:center;padding:20px;background:#2c3e50;color:white;
     }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    footer { text-align: center; padding: 20px; background: #2c3e50; color: white; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>NUUR Presale Admin Dashboard</h1>
-      <p>Manage your presale contract with ease</p>
-    </header>
+<div class="container">
+  <header>
+    <h1>NUUR Presale Admin Dashboard</h1>
+    <p>Manage your presale contract with ease</p>
+  </header>
 
-    <div class="wallet-section">
-      <div class="wallet-info">
-        <span>Wallet Status: </span>
-        <span id="walletStatus">Not Connected</span>
-      </div>
-      <div class="wallet-info">
-        <span>Connected Address: </span>
-        <span id="connectedAddress">-</span>
-      </div>
-      <button class="connect-btn" onclick="connectWallet()">Connect Wallet</button>
+  <div class="wallet-section">
+    <div class="wallet-info">
+      <span>Wallet Status:</span>
+      <span id="walletStatus">Not Connected</span>
     </div>
-
-    <div id="statusMessage" class="status" style="display:none;"></div>
-
-    <div class="main-content">
-      <!-- Contract Info Section -->
-      <div class="card">
-        <h3>Contract Information</h3>
-        <div class="info-row"><span class="info-label">Contract Address:</span><span class="info-value" id="contractAddress">-</span></div>
-        <div class="info-row"><span class="info-label">Presale Status:</span><span class="info-value" id="presaleStatus">-</span></div>
-        <div class="info-row"><span class="info-label">Current Phase:</span><span class="info-value" id="currentPhase">-</span></div>
-        <div class="info-row"><span class="info-label">Current Rate:</span><span class="info-value" id="currentRate">-</span></div>
-        <div class="info-row"><span class="info-label">Total Tokens Sold:</span><span class="info-value" id="totalTokensSold">-</span></div>
-        <div class="info-row"><span class="info-label">Total SDA Received:</span><span class="info-value" id="totalSDAReceived">-</span></div>
-        <button class="action-btn" onclick="refreshContractInfo()">Refresh Info</button>
-      </div>
-
-      <!-- Balance Section -->
-      <div class="card">
-        <h3>Balances</h3>
-        <div class="info-row"><span class="info-label">Contract SDA Balance:</span><span class="info-value" id="sdaBalance">-</span></div>
-        <div class="info-row"><span class="info-label">Contract NUUR Balance:</span><span class="info-value" id="nuurBalance">-</span></div>
-        <div class="info-row"><span class="info-label">Dev Wallet:</span><span class="info-value" id="devWallet">-</span></div>
-        <div class="action-form">
-          <div class="input-group">
-            <label>Withdraw SDA Amount:</label>
-            <input type="number" id="withdrawAmount" placeholder="Enter amount to withdraw" step="0.0001">
-          </div>
-          <button class="action-btn danger-btn" onclick="withdrawSDA()">Withdraw SDA</button>
-          <button class="action-btn danger-btn" onclick="withdrawAllSDA()">Withdraw ALL SDA</button>
-        </div>
-      </div>
-
-      <!-- Presale Management -->
-      <div class="card">
-        <h3>Presale Management</h3>
-        <div class="action-form">
-          <div class="input-group">
-            <label>Presale Status:</label>
-            <select id="presaleStatusSelect">
-              <option value="true">Active</option>
-              <option value="false">Inactive</option>
-            </select>
-          </div>
-          <button class="action-btn" onclick="setPresaleStatus()">Update Status</button>
-        </div>
-        <div class="action-form" style="margin-top:20px;">
-          <div class="input-group">
-            <label>New Dev Wallet:</label>
-            <input type="text" id="newDevWallet" placeholder="0x...">
-          </div>
-          <button class="action-btn" onclick="updateDevWallet()">Update Dev Wallet</button>
-        </div>
-      </div>
-
-      <!-- Phase Management -->
-      <div class="card">
-        <h3>Phase Management</h3>
-        <div class="action-form">
-          <div class="input-group">
-            <label>New Phase ID:</label>
-            <input type="number" id="newPhaseId" placeholder="3">
-          </div>
-          <div class="input-group">
-            <label>Phase Name:</label>
-            <input type="text" id="newPhaseName" placeholder="Phase 3">
-          </div>
-          <div class="input-group">
-            <label>Rate (NUUR per SDA):</label>
-            <input type="number" id="newRate" placeholder="150">
-          </div>
-          <button class="action-btn success-btn" onclick="updatePhase()">Update Phase</button>
-        </div>
-      </div>
+    <div class="wallet-info">
+      <span>Connected Address:</span>
+      <span id="connectedAddress">-</span>
     </div>
-
-    <footer>
-      <p>NUUR Presale Admin Interface - Use with caution</p>
-    </footer>
+    <button class="connect-btn" onclick="connectWallet()">Connect Wallet</button>
   </div>
 
-  <!-- ✅ Ethers.js v6 -->
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.6.0/dist/ethers.umd.min.js"></script>
-  <script src="app.js"></script>
+  <div id="statusMessage" class="status"></div>
+
+  <div class="main-content">
+    <!-- Contract Info -->
+    <div class="card">
+      <h3>Contract Information</h3>
+      <div class="info-row"><span class="info-label">Contract Address:</span><span class="info-value" id="contractAddress">-</span></div>
+      <div class="info-row"><span class="info-label">Presale Status:</span><span class="info-value" id="presaleStatus">-</span></div>
+      <div class="info-row"><span class="info-label">Current Phase:</span><span class="info-value" id="currentPhase">-</span></div>
+      <div class="info-row"><span class="info-label">Current Rate:</span><span class="info-value" id="currentRate">-</span></div>
+      <div class="info-row"><span class="info-label">Total Tokens Sold:</span><span class="info-value" id="totalTokensSold">-</span></div>
+      <div class="info-row"><span class="info-label">Total SDA Received:</span><span class="info-value" id="totalSDAReceived">-</span></div>
+      <button class="action-btn" onclick="refreshContractInfo()">Refresh Info</button>
+    </div>
+
+    <!-- Balances -->
+    <div class="card">
+      <h3>Balances</h3>
+      <div class="info-row"><span class="info-label">Contract SDA Balance:</span><span class="info-value" id="sdaBalance">-</span></div>
+      <div class="info-row"><span class="info-label">Contract NUUR Balance:</span><span class="info-value" id="nuurBalance">-</span></div>
+      <div class="info-row"><span class="info-label">Dev Wallet:</span><span class="info-value" id="devWallet">-</span></div>
+
+      <div class="action-form">
+        <div class="input-group">
+          <label>Withdraw SDA Amount:</label>
+          <input type="number" id="withdrawAmount" placeholder="Enter amount (SDA)" step="0.0001">
+        </div>
+        <button class="action-btn danger-btn" onclick="withdrawSDA()">Withdraw SDA</button>
+        <button class="action-btn danger-btn" onclick="withdrawAllSDA()">Withdraw ALL SDA</button>
+      </div>
+
+      <div class="action-form" style="margin-top:15px;">
+        <div class="input-group">
+          <label>Withdraw NUUR Amount:</label>
+          <input type="number" id="withdrawNuurAmount" placeholder="Enter amount (NUUR)" step="0.0001">
+        </div>
+        <button class="action-btn danger-btn" onclick="withdrawNUUR()">Withdraw NUUR</button>
+      </div>
+    </div>
+
+    <!-- Presale Management -->
+    <div class="card">
+      <h3>Presale Management</h3>
+      <div class="action-form">
+        <div class="input-group">
+          <label>Presale Status:</label>
+          <select id="presaleStatusSelect">
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+        </div>
+        <button class="action-btn" onclick="setPresaleStatus()">Update Status</button>
+      </div>
+
+      <div class="action-form" style="margin-top:20px;">
+        <div class="input-group">
+          <label>New Dev Wallet:</label>
+          <input type="text" id="newDevWallet" placeholder="0x...">
+        </div>
+        <button class="action-btn" onclick="updateDevWallet()">Update Dev Wallet</button>
+      </div>
+    </div>
+
+    <!-- Phase Management -->
+    <div class="card">
+      <h3>Phase Management</h3>
+      <div class="action-form">
+        <div class="input-group"><label>New Phase ID:</label><input type="number" id="newPhaseId" placeholder="3"></div>
+        <div class="input-group"><label>Phase Name:</label><input type="text" id="newPhaseName" placeholder="Phase 3"></div>
+        <div class="input-group"><label>Rate (NUUR per SDA):</label><input type="number" id="newRate" placeholder="150"></div>
+        <button class="action-btn success-btn" onclick="updatePhase()">Update Phase</button>
+      </div>
+    </div>
+  </div>
+
+  <footer><p>NUUR Presale Admin Interface - Developed by Huska</p></footer>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
