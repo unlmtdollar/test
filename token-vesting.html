@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUUR Coin - Token Claim Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --accent: #ff6b6b;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --text: #1a1c2c;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #dee2e6;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-theme {
+            --text: #f8f9fa;
+            --bg: #1a1c2c;
+            --card-bg: #2a2c3c;
+            --border: #444;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px var(--shadow);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .card {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title i {
+            margin-right: 10px;
+        }
+        
+        .wallet-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .wallet-address {
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-disconnect {
+            background: var(--accent);
+        }
+        
+        .btn-claim {
+            background: var(--success);
+            padding: 12px 25px;
+            font-size: 14px;
+        }
+        
+        .btn-bonus {
+            background: var(--warning);
+            color: #000;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-box {
+            background: var(--bg);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 8px 0;
+        }
+        
+        .stat-label {
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 12px;
+        }
+        
+        .bonus-box {
+            background: linear-gradient(135deg, var(--warning) 0%, #ffd54f 100%);
+            color: #000;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            grid-column: span 2;
+            margin-bottom: 15px;
+        }
+        
+        .bonus-value {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--bg);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 5px;
+            width: 35%;
+        }
+        
+        .claim-section {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .time-unit {
+            background: var(--bg);
+            padding: 10px;
+            border-radius: 8px;
+            min-width: 60px;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+        
+        .time-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .time-label {
+            font-size: 10px;
+            color: var(--text);
+            opacity: 0.7;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 15px;
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 12px;
+            background: var(--bg);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: var(--success);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification.error {
+            background: var(--accent);
+        }
+        
+        .notification.warning {
+            background: var(--warning);
+            color: #000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .tier-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .tier-1 { background: gold; color: black; }
+        .tier-2 { background: silver; color: black; }
+        .tier-3 { background: #cd7f32; color: black; }
+        .tier-4 { background: #6c757d; color: white; }
+        
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .bonus-box {
+                grid-column: span 1;
+            }
+            
+            .timer {
+                flex-wrap: wrap;
+            }
+            
+            .wallet-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="logo">
+                <i class="fas fa-coins"></i>
+                NUUR Coin
+            </div>
+            <div class="subtitle">Token Claim Portal</div>
+        </header>
+        
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-wallet"></i>
+                Wallet Connection
+            </div>
+            <div class="wallet-info">
+                <div>
+                    <div class="wallet-address" id="walletAddress">Not connected</div>
+                </div>
+                <button class="btn" id="connectButton">
+                    <i class="fas fa-plug"></i>
+                    Connect Wallet
+                </button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-chart-pie"></i>
+                Token Overview
+                <span class="tier-badge" id="tierBadge">Tier 4</span>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Total Purchased</div>
+                    <div class="stat-value" id="totalTokens">0 NUUR</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Locked Amount</div>
+                    <div class="stat-value" id="lockedTokens">0 NUUR</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Available to Claim</div>
+                    <div class="stat-value" id="claimableTokens">0 NUUR</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Vesting Rate</div>
+                    <div class="stat-value" id="vestingRate">2% / month</div>
+                </div>
+                
+                <div class="bonus-box">
+                    <div class="stat-label">🎁 Bonus Tokens</div>
+                    <div class="bonus-value" id="bonusTokens">0 NUUR</div>
+                    <div class="stat-label" id="bonusStatus">Available to claim</div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span>Vesting Progress</span>
+                    <span id="vestingProgress">35%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="claim-section">
+            <div class="card-title">
+                <i class="fas fa-gift"></i>
+                Claim Your Tokens
+            </div>
+            <p style="margin-bottom: 15px; font-size: 14px;">Tokens will be available to claim after the vesting period</p>
+            
+            <div class="timer">
+                <div class="time-unit">
+                    <div class="time-value" id="days">00</div>
+                    <div class="time-label">Days</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value" id="hours">00</div>
+                    <div class="time-label">Hours</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value" id="minutes">00</div>
+                    <div class="time-label">Minutes</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value" id="seconds">00</div>
+                    <div class="time-label">Seconds</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-claim" id="claimButton" disabled>
+                <i class="fas fa-download"></i>
+                Claim Tokens
+            </button>
+            
+            <button class="btn btn-bonus" id="bonusButton" disabled style="margin-top: 10px;">
+                <i class="fas fa-gift"></i>
+                Claim Bonus Only
+            </button>
+        </div>
+        
+        <footer>
+            <p>NUUR Coin Token Claim Portal • Sidra Chain</p>
+        </footer>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Transaction successful!</span>
+    </div>
+
+    <script>
+        // Contract ABI (Replace with your actual contract ABI)
+        const contractABI = [{"inputs":[{"internalType":"address","name":"_token","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"bonus","type":"uint256"}],"name":"ManualVest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"bonus","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"bonus","type":"uint256"}],"name":"TokensVested","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"addTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"claimableAmount","type":"uint256"},{"internalType":"uint256","name":"claimableBonus","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claimTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"}],"name":"getVestingInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"vestingDuration","type":"uint256"},{"internalType":"uint256","name":"vestingPercentage","type":"uint256"},{"internalType":"uint256","name":"claimableAmount","type":"uint256"},{"internalType":"uint256","name":"bonusAmount","type":"uint256"},{"internalType":"uint256","name":"bonusClaimed","type":"uint256"},{"internalType":"uint256","name":"claimableBonus","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"percentage","type":"uint256"}],"name":"manualVest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"registerVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_presaleContract","type":"address"}],"name":"setPresaleContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"tierPercentage","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tier","type":"uint256"},{"internalType":"uint256","name":"percentage","type":"uint256"}],"name":"updateTierPercentage","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vestingSchedule","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"vestingDuration","type":"uint256"},{"internalType":"uint256","name":"vestingPercentage","type":"uint256"},{"internalType":"uint256","name":"bonusAmount","type":"uint256"},{"internalType":"uint256","name":"bonusClaimed","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawTokens","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+        
+        // Contract address (Replace with your actual contract address)
+        const contractAddress = "0x52c3501D471867700c03A62930AC61a12efeCD81";
+        
+        // DOM elements
+        const connectButton = document.getElementById('connectButton');
+        const claimButton = document.getElementById('claimButton');
+        const bonusButton = document.getElementById('bonusButton');
+        const walletAddress = document.getElementById('walletAddress');
+        const totalTokens = document.getElementById('totalTokens');
+        const lockedTokens = document.getElementById('lockedTokens');
+        const claimableTokens = document.getElementById('claimableTokens');
+        const vestingRate = document.getElementById('vestingRate');
+        const bonusTokens = document.getElementById('bonusTokens');
+        const bonusStatus = document.getElementById('bonusStatus');
+        const vestingProgress = document.getElementById('vestingProgress');
+        const progressFill = document.getElementById('progressFill');
+        const tierBadge = document.getElementById('tierBadge');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // State variables
+        let userAddress = null;
+        let web3;
+        let contract;
+        let isDarkTheme = false;
+        let userTier = 4;
+        
+        // Connect to MetaMask
+        async function connectMetaMask() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Request account access
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    userAddress = accounts[0];
+                    
+                    // Create Web3 instance
+                    web3 = new Web3(window.ethereum);
+                    
+                    // Initialize contract
+                    contract = new web3.eth.Contract(contractABI, contractAddress);
+                    
+                    // Update UI
+                    walletAddress.textContent = `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
+                    connectButton.innerHTML = '<i class="fas fa-check"></i> Connected';
+                    connectButton.classList.add('btn-disconnect');
+                    
+                    // Load user data
+                    await loadUserData();
+                    
+                    // Start countdown timer
+                    startCountdown();
+                    
+                    // Show success notification
+                    showNotification('Wallet connected successfully!');
+                    
+                } catch (error) {
+                    console.error('User denied account access', error);
+                    showNotification('User denied account access', 'error');
+                }
+            } else {
+                showNotification('Please install MetaMask!', 'error');
+            }
+        }
+        
+        // Load user data from contract
+        async function loadUserData() {
+            if (!contract || !userAddress) return;
+            
+            try {
+                // Call contract method to get user info
+                const userInfo = await contract.methods.getUserInfo(userAddress).call();
+                
+                // Update UI with user data
+                const total = web3.utils.fromWei(userInfo.totalAmount, 'ether');
+                const claimed = web3.utils.fromWei(userInfo.claimedAmount, 'ether');
+                const claimable = web3.utils.fromWei(userInfo.claimableAmount, 'ether');
+                const bonus = web3.utils.fromWei(userInfo.bonusAmount, 'ether');
+                const bonusClaimed = web3.utils.fromWei(userInfo.bonusClaimed, 'ether');
+                const claimableBonus = web3.utils.fromWei(userInfo.claimableBonus, 'ether');
+                const vestingPercent = userInfo.vestingPercentage;
+                
+                totalTokens.textContent = `${parseFloat(total).toLocaleString()} NUUR`;
+                lockedTokens.textContent = `${parseFloat(total - claimed).toLocaleString()} NUUR`;
+                claimableTokens.textContent = `${parseFloat(claimable).toLocaleString()} NUUR`;
+                vestingRate.textContent = `${vestingPercent}% / month`;
+                bonusTokens.textContent = `${parseFloat(bonus).toLocaleString()} NUUR`;
+                
+                // Determine user tier based on total amount
+                if (total >= 1000000) {
+                    userTier = 1;
+                    tierBadge.textContent = 'Tier 1';
+                    tierBadge.className = 'tier-badge tier-1';
+                } else if (total >= 500000) {
+                    userTier = 2;
+                    tierBadge.textContent = 'Tier 2';
+                    tierBadge.className = 'tier-badge tier-2';
+                } else if (total >= 100000) {
+                    userTier = 3;
+                    tierBadge.textContent = 'Tier 3';
+                    tierBadge.className = 'tier-badge tier-3';
+                } else {
+                    userTier = 4;
+                    tierBadge.textContent = 'Tier 4';
+                    tierBadge.className = 'tier-badge tier-4';
+                }
+                
+                // Update bonus status
+                if (bonus > 0) {
+                    if (claimableBonus > 0) {
+                        bonusStatus.textContent = `${parseFloat(claimableBonus).toLocaleString()} NUUR available to claim`;
+                        bonusButton.disabled = false;
+                    } else if (bonusClaimed >= bonus) {
+                        bonusStatus.textContent = 'Fully claimed';
+                    } else {
+                        bonusStatus.textContent = 'Available after next vesting period';
+                    }
+                } else {
+                    bonusStatus.textContent = 'No bonus tokens';
+                }
+                
+                // Calculate vesting progress
+                const progress = ((claimed / total) * 100).toFixed(0);
+                vestingProgress.textContent = `${isNaN(progress) ? 0 : progress}%`;
+                progressFill.style.width = `${isNaN(progress) ? 0 : progress}%`;
+                
+                // Enable claim button if there are tokens to claim
+                if (claimable > 0 || claimableBonus > 0) {
+                    claimButton.disabled = false;
+                }
+                
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showNotification('Error loading user data', 'error');
+            }
+        }
+        
+        // Claim tokens
+        async function claimTokens() {
+            if (!contract || !userAddress) return;
+            
+            try {
+                claimButton.disabled = true;
+                claimButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Execute claim transaction
+                await contract.methods.claimTokens().send({ from: userAddress });
+                
+                // Update user data
+                await loadUserData();
+                
+                showNotification('Tokens claimed successfully!');
+                
+            } catch (error) {
+                console.error('Error claiming tokens:', error);
+                showNotification('Error claiming tokens', 'error');
+            } finally {
+                claimButton.disabled = false;
+                claimButton.innerHTML = '<i class="fas fa-download"></i> Claim Tokens';
+            }
+        }
+        
+        // Start countdown timer (example implementation)
+        function startCountdown() {
+            // Set a sample end time (30 days from now)
+            const endTime = new Date();
+            endTime.setDate(endTime.getDate() + 30);
+            
+            function updateCountdown() {
+                const now = new Date();
+                const timeRemaining = endTime - now;
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('days').textContent = '00';
+                    document.getElementById('hours').textContent = '00';
+                    document.getElementById('minutes').textContent = '00';
+                    document.getElementById('seconds').textContent = '00';
+                    return;
+                }
+                
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            // Update countdown every second
+            updateCountdown();
+            const timerInterval = setInterval(updateCountdown, 1000);
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            notificationText.textContent = message;
+            notification.className = 'notification';
+            
+            if (type === 'error') {
+                notification.classList.add('error');
+            } else if (type === 'warning') {
+                notification.classList.add('warning');
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Toggle theme
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            document.body.classList.toggle('dark-theme');
+            
+            if (isDarkTheme) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+            
+            // Save theme preference to localStorage
+            localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
+        }
+        
+        // Event listeners
+        connectButton.addEventListener('click', connectMetaMask);
+        claimButton.addEventListener('click', claimTokens);
+        bonusButton.addEventListener('click', claimTokens); // Same function for simplicity
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // Check if MetaMask is already connected
+        window.addEventListener('load', async () => {
+            // Load theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                isDarkTheme = true;
+                document.body.classList.add('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                    if (accounts.length > 0) {
+                        // Auto-connect if already connected
+                        connectMetaMask();
+                    }
+                } catch (error) {
+                    console.error('Error checking connected accounts:', error);
+                }
+            }
+        });
+    </script>
+    
+    <!-- Include Web3 library -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+</body>
+</html>
