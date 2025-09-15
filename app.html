@@ -160,7 +160,7 @@
             padding: 16px;
             border: none;
             border-radius: 10px;
-            background: linear-gradient(to right, var(--primary), var(--secondary);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
             font-size: 18px;
             font-weight: 600;
@@ -207,16 +207,19 @@
         .success {
             background: rgba(40, 167, 69, 0.2);
             border: 1px solid var(--success);
+            color: #e8f9f0;
         }
         
         .error {
             background: rgba(220, 53, 69, 0.2);
             border: 1px solid var(--danger);
+            color: #fcebea;
         }
         
         .info {
             background: rgba(23, 162, 184, 0.2);
             border: 1px solid #17a2b8;
+            color: #e9f2ff;
         }
         
         .wallet-check {
@@ -271,12 +274,14 @@
         
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #fff;
             border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
         }
         
         @keyframes spin {
@@ -327,6 +332,11 @@
             </div>
             
             <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
                 <label for="telegram">Telegram Username</label>
                 <input type="text" id="telegram" placeholder="@username" required>
             </div>
@@ -361,13 +371,7 @@
             <h4 id="resultTitle"></h4>
             <p id="resultMessage"></p>
             <a href="https://presale.nuur.io" id="presaleLink" class="presale-link" target="_blank" style="display: none;">Click here to participate in the presale</a>
-        </div>
-        
-        <div class="telegram-info">
-            <h4><i class="fab fa-telegram-plane"></i> Telegram Integration</h4>
-            <p>Your application will be sent directly to our Telegram bot for processing. Make sure your Telegram username is correct!</p>
-        </div>
-        
+        </div> 
         <div class="instructions">
             <h4><i class="fas fa-info-circle"></i> Application Instructions</h4>
             <p>To apply as a moderator, you must:</p>
@@ -381,7 +385,7 @@
     </div>
     
     <footer>
-        <p>© 2023 NUUR Ecosystem. All rights reserved.</p>
+        <p>© 2025 NUUR Ecosystem. All rights reserved.</p>
     </footer>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -394,6 +398,35 @@
         const presaleLink = document.getElementById('presaleLink');
         const countrySelect = document.getElementById('country');
 
+        // ✅ Populate country list dynamically
+        const countries = [
+            "Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia","Australia","Austria",
+            "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin",
+            "Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi",
+            "Cambodia","Cameroon","Canada","Cape Verde","Central African Republic","Chad","Chile","China","Colombia",
+            "Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica",
+            "Dominican Republic","Ecuador","Egypt","El Salvador","Estonia","Eswatini","Ethiopia","Fiji","Finland","France",
+            "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guyana","Haiti",
+            "Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan",
+            "Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya",
+            "Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania",
+            "Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia",
+            "Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway",
+            "Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal",
+            "Qatar","Romania","Russia","Rwanda","Saint Lucia","Samoa","San Marino","Saudi Arabia","Senegal","Serbia",
+            "Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Somalia","South Africa","South Korea","Spain",
+            "Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand",
+            "Togo","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Uganda","Ukraine","United Arab Emirates",
+            "United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam",
+            "Yemen","Zambia","Zimbabwe"
+        ];
+        countries.forEach(c => {
+            const option = document.createElement("option");
+            option.value = c;
+            option.textContent = c;
+            countrySelect.appendChild(option);
+        });
+
         // Replace with your actual Telegram bot details
         const TELEGRAM_BOT_TOKEN = '8032211561:AAEH86izjI5_bvtcX-JbnZw2WVrwoDL6JTI';
         const TELEGRAM_CHAT_ID = '7181820663';
@@ -401,46 +434,16 @@
         // Contract details
         const CONTRACT_ADDRESS = '0x98FCc396547D450208e926995a74b61874a1423A';
         const CONTRACT_ABI = [
-            {
-                "inputs": [],
-                "name": "getTokensPurchased",
-                "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [{"internalType": "address","name": "buyer","type": "address"}],
-                "name": "getTokensPurchasedByAddress",
-                "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [{"internalType": "address","name": "buyer","type": "address"}],
-                "name": "hasParticipatedInPresale",
-                "outputs": [{"internalType": "bool","name": "","type": "bool"}],
-                "stateMutability": "view",
-                "type": "function"
-            }
+            { "inputs": [], "name": "getTokensPurchased", "outputs": [{"internalType": "uint256","name":"","type":"uint256"}], "stateMutability": "view", "type": "function" },
+            { "inputs": [{"internalType": "address","name":"buyer","type":"address"}], "name": "getTokensPurchasedByAddress", "outputs": [{"internalType": "uint256","name":"","type":"uint256"}], "stateMutability": "view", "type": "function" },
+            { "inputs": [{"internalType": "address","name":"buyer","type":"address"}], "name": "hasParticipatedInPresale", "outputs": [{"internalType": "bool","name":"","type":"bool"}], "stateMutability": "view", "type": "function" }
         ];
 
         // Token details
         const TOKEN_ADDRESS = '0x003BEc2e6ef4369f9d968eCD288d31B59fD9c2CD';
         const TOKEN_ABI = [
-            {
-                "constant": true,
-                "inputs": [{"name": "_owner","type": "address"}],
-                "name": "balanceOf",
-                "outputs": [{"name": "balance","type": "uint256"}],
-                "type": "function"
-            },
-            {
-                "constant": true,
-                "inputs": [],
-                "name": "decimals",
-                "outputs": [{"name": "","type": "uint8"}],
-                "type": "function"
-            }
+            { "constant": true, "inputs": [{"name": "_owner","type":"address"}], "name": "balanceOf", "outputs": [{"name":"balance","type":"uint256"}], "type": "function" },
+            { "constant": true, "inputs": [], "name": "decimals", "outputs": [{"name":"","type":"uint8"}], "type": "function" }
         ];
 
         const MIN_TOKENS = 5000;
@@ -467,7 +470,7 @@
             }
         }
 
-        // ✅ Fixed Check Eligibility
+        // ✅ Eligibility check with styled inline messages
         async function checkEligibility() {
             const sdaAddress = document.getElementById('sdaAddress').value;
 
@@ -476,14 +479,12 @@
                 return;
             }
 
-            // Show loading state
             resultDiv.style.display = 'block';
             resultDiv.className = 'result info';
-            resultTitle.textContent = 'Checking Eligibility';
-            resultMessage.innerHTML = '<span class="loading"></span> Connecting to network...';
+            resultTitle.innerHTML = '<span style="color:#0056b3;">Checking Eligibility...</span>';
+            resultMessage.innerHTML = '<span class="loading"></span> <em>Please wait while we verify your wallet.</em>';
 
             try {
-                // Initialize Web3 before using utils
                 const web3Initialized = await initWeb3();
                 if (!web3Initialized) {
                     throw new Error('Please install MetaMask to check eligibility');
@@ -494,37 +495,35 @@
                     return;
                 }
 
-                // Check NUUR balance
                 const balance = await tokenContract.methods.balanceOf(sdaAddress).call();
                 const decimals = await tokenContract.methods.decimals().call();
                 const tokenBalance = balance / (10 ** decimals);
 
-                // Check presale participation
                 let participatedInPresale = false;
                 try {
                     participatedInPresale = await contract.methods.hasParticipatedInPresale(sdaAddress).call();
-                } catch (e) {
+                } catch {
                     try {
                         const tokensPurchased = await contract.methods.getTokensPurchasedByAddress(sdaAddress).call();
                         participatedInPresale = tokensPurchased > 0;
                     } catch {
-                        participatedInPresale = true; // fallback
+                        participatedInPresale = false; // Changed from true to false
                     }
                 }
 
                 if (tokenBalance >= MIN_TOKENS && participatedInPresale) {
                     resultDiv.className = 'result success';
-                    resultTitle.textContent = 'Eligibility Confirmed!';
-                    resultMessage.textContent = `Your wallet holds ${tokenBalance.toLocaleString()} NUUR and participated in the presale. You can now submit your application.`;
+                    resultTitle.innerHTML = '<span style="color:green;">✅ Eligibility Confirmed!</span>';
+                    resultMessage.innerHTML = `<b>Your wallet holds ${tokenBalance.toLocaleString()} NUUR</b> and <b>participated in the presale</b>. You can now submit your application.`;
                     submitBtn.disabled = false;
                     presaleLink.style.display = 'none';
                 } else {
                     resultDiv.className = 'result error';
-                    resultTitle.textContent = 'Not Eligible Yet';
+                    resultTitle.innerHTML = '<span style="color:red;">❌ Not Eligible Yet</span>';
                     if (tokenBalance < MIN_TOKENS) {
-                        resultMessage.textContent = `Your wallet holds only ${tokenBalance.toLocaleString()} NUUR. You need at least ${MIN_TOKENS.toLocaleString()} NUUR to apply.`;
+                        resultMessage.innerHTML = `Your wallet holds <b>${tokenBalance.toLocaleString()} NUUR</b>. You need at least <b>${MIN_TOKENS.toLocaleString()} NUUR</b> to apply.`;
                     } else {
-                        resultMessage.textContent = 'Your wallet did not participate in the presale.';
+                        resultMessage.innerHTML = 'Your wallet did not participate in the presale.';
                     }
                     submitBtn.disabled = true;
                     presaleLink.style.display = 'block';
@@ -533,8 +532,8 @@
             } catch (error) {
                 console.error('Error checking eligibility:', error);
                 resultDiv.className = 'result error';
-                resultTitle.textContent = 'Error';
-                resultMessage.textContent = 'There was an error checking your eligibility. Please make sure you are connected to the correct network and try again.';
+                resultTitle.innerHTML = '<span style="color:red;">⚠️ Error</span>';
+                resultMessage.innerHTML = 'There was an error checking your eligibility. Please ensure you are connected to the correct network and try again.';
             }
         }
 
@@ -544,18 +543,22 @@
 
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
+            const telegram = document.getElementById('telegram').value;
+            const xUsername = document.getElementById('xUsername').value;
             const country = countrySelect.value;
             const sdaAddress = document.getElementById('sdaAddress').value;
 
             resultDiv.style.display = 'block';
             resultDiv.className = 'result info';
-            resultTitle.textContent = 'Submitting Application';
-            resultMessage.innerHTML = '<span class="loading"></span> Sending your application...';
+            resultTitle.innerHTML = '<span style="color:#0056b3;">Submitting Application...</span>';
+            resultMessage.innerHTML = '<span class="loading"></span> Please wait while we send your application.';
 
             const message = `
-<b>New Partnership Application</b>
+<b>New Moderator Application</b>
 <b>Name:</b> ${name}
 <b>Email:</b> ${email}
+<b>Telegram:</b> ${telegram}
+<b>X (Twitter):</b> ${xUsername}
 <b>Country:</b> ${country}
 <b>SDA Address:</b> ${sdaAddress}
             `;
@@ -573,7 +576,7 @@
 
                 if (response.ok) {
                     resultDiv.className = 'result success';
-                    resultTitle.textContent = 'Application Submitted!';
+                    resultTitle.innerHTML = '<span style="color:green;">✅ Application Submitted!</span>';
                     resultMessage.textContent = 'Thank you for your application. We will review it and get back to you shortly.';
                     form.reset();
                     submitBtn.disabled = true;
@@ -583,7 +586,7 @@
             } catch (error) {
                 console.error('Error submitting application:', error);
                 resultDiv.className = 'result error';
-                resultTitle.textContent = 'Submission Failed';
+                resultTitle.innerHTML = '<span style="color:red;">❌ Submission Failed</span>';
                 resultMessage.textContent = 'There was an error submitting your application. Please try again later.';
             }
         }
@@ -593,6 +596,5 @@
         form.addEventListener('submit', handleSubmit);
     });
 </script>
-
 </body>
 </html>
