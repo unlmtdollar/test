@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuur Coin - Vesting Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js" type="application/javascript"></script>
+    <!-- Using a reliable CDN for ethers.js -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <style>
         :root {
             --primary: #4a00e0;
@@ -49,44 +50,44 @@
             margin-bottom: 30px;
         }
 
-  .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .logo {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    animation: pulse 2s infinite;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-  
-  .logo-text {
-    font-size: 28px;
-    font-weight: 700;
-    background: linear-gradient(to right, var(--accent), var(--primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }        
         nav {
             display: flex;
             gap: 20px;
@@ -377,6 +378,26 @@
             to { transform: rotate(360deg); }
         }
         
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            gap: 20px;
+        }
+        
+        .loading-overlay.hidden {
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -397,14 +418,19 @@
     </style>
 </head>
 <body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading" style="width: 50px; height: 50px;"></div>
+        <p id="loadingText">Loading Nuur Coin Vesting Portal</p>
+    </div>
+    
     <div class="container">
         <header>
            <div class="logo-container">
-  <div class="logo">
-    <img src="logo.png" alt="Nuur Coin Logo">
-  </div>
-  <div class="logo-text">Nuur Coin</div>
-</div>
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiM0YTAwZTAiLz4KPHBhdGggZD0iTTE4IDM2QzE4IDI3LjE2MzQgMjUuMTYzNCAyMCAzNCAyMEM0Mi44MzY2IDIwIDUwIDI3LjE2MzQgNTAgMzZINDNIMzhIMjNIMThWMzZaIiBmaWxsPSIjOGUyZGUyIi8+CjxjaXJjbGUgY3g9IjM0IiBjeT0iMjYiIHI9IjQiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" alt="Nuur Coin Logo">
+                </div>
+                <div class="logo-text">Nuur Coin</div>
+            </div>
             
             <nav>
                 <a href="#" class="nav-link active">Dashboard</a>
@@ -543,11 +569,33 @@
     </div>
 
     <script>
+        // Check if ethers is loaded, if not try alternative CDN
+        function ensureEthersIsLoaded() {
+            return new Promise((resolve, reject) => {
+                if (typeof ethers !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                
+                // Try loading from alternative CDN
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js';
+                script.onload = () => {
+                    if (typeof ethers !== 'undefined') {
+                        resolve();
+                    } else {
+                        reject(new Error('Could not load ethers.js'));
+                    }
+                };
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
         // Contract ABI - Replace with your actual contract ABI
-        const contractABI = [{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"KYCBatchUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"verified","type":"bool"}],"name":"KYCUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"by","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"presale","type":"address"}],"name":"PresaleContractSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensFunded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"by","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"VestingRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"VestingStarted","type":"event"},{"inputs":[],"name":"MONTH","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TOTAL_MONTHS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"fundVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"}],"name":"getVestingInfo","outputs":[{"internalType":"uint256","name":"initialAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"claimableNow","type":"uint256"},{"internalType":"bool","name":"kyc","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"globalStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"registerVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"setKYC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"setKYCForBatch","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_presale","type":"address"}],"name":"setPresaleContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocated","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalClaimed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vestingSchedule","outputs":[{"internalType":"uint256","name":"initialAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"bool","name":"exists","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStarted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawUnallocated","outputs":[],"stateMutability":"nonpayable","type":"function"}];
-        
+        const contractABI = [{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"KYCBatchUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"verified","type":"bool"}],"name":"KYCUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"by","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"presale","type":"address"}],"name":"PresaleContractSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensFunded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"by","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"VestingRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"VestingStarted","type":"event"},{"inputs":[],"name":"MONTH","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TOTAL_MONTHS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"fundVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"}],"name":"getVestingInfo","outputs":[{"internalType":"uint256","name":"initialAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"claimableNow","type":"uint256"},{"internalType":"bool","name":"kyc","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"globalStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"registerVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"setKYC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"setKYCForBatch","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_presale","type":"address"}],"name":"setPresaleContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocated","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalClaimed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vestingSchedule","outputs":[{"internalType":"uint256","name":"initialAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"bool","name":"exists","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStarted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawUnallocated","outputs":[],"stateMutability":"nonpayable","type":"function"}];      
         // Contract address - Replace with your actual contract address
-        const contractAddress = "0xF2bba480Fc3b2e75019CE54e3Da8D1f9A5d9a067";
+        const contractAddress = "0xEE907CEdF6566140DA17C1196D9B9C5AE8d54f1a";
         
         // NUUR Token address - Replace with your actual token address
         const nuurTokenAddress = "0xd9F17EDf816A9404385aE1c35df7F401a1Ee41a5";
@@ -586,6 +634,8 @@
         const minutesEl = document.getElementById('minutes');
         const secondsEl = document.getElementById('seconds');
         const notificationEl = document.getElementById('notification');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingText = document.getElementById('loadingText');
         
         // State
         let connectedAccount = null;
@@ -596,12 +646,29 @@
         let vestingStartTime = null;
         
         // Initialize
-        window.addEventListener('load', () => {
+        window.addEventListener('load', async () => {
+            try {
+                loadingText.textContent = "Loading blockchain libraries...";
+                await ensureEthersIsLoaded();
+                
+                loadingText.textContent = "Initializing application...";
+                await initApplication();
+                
+                // Hide loading overlay
+                loadingOverlay.classList.add('hidden');
+            } catch (error) {
+                console.error("Failed to initialize application:", error);
+                loadingText.textContent = "Failed to load required libraries. Please refresh the page.";
+                showNotification("Failed to load blockchain libraries", "error");
+            }
+        });
+        
+        async function initApplication() {
             initEthers();
             checkWalletConnection();
             updateTimer(); // Start the countdown timer
             setInterval(updateTimer, 1000);
-        });
+        }
         
         // Initialize ethers.js
         function initEthers() {
@@ -611,7 +678,13 @@
                 
                 // Initialize contracts
                 contract = new ethers.Contract(contractAddress, contractABI, signer);
-                tokenContract = new ethers.Contract(nuurTokenAddress, contractABI, signer);
+                
+                // Simple ERC20 ABI for balance checking
+                const tokenABI = [
+                    "function balanceOf(address) view returns (uint256)",
+                    "function decimals() view returns (uint8)"
+                ];
+                tokenContract = new ethers.Contract(nuurTokenAddress, tokenABI, signer);
             }
         }
         
@@ -754,6 +827,10 @@
                     // Set next vesting time (next month)
                     const nextVestingTime = globalStartTime.toNumber() + (monthsPassed + 1) * 30 * 24 * 60 * 60;
                     vestingStartTime = nextVestingTime * 1000;
+                } else {
+                    // Default to 0 progress if vesting hasn't started
+                    monthsPassedEl.textContent = "0/12";
+                    vestingProgressEl.style.width = "0%";
                 }
                 
                 // Enable claim button if conditions are met
@@ -845,33 +922,35 @@
         }
         
         // Handle chain changes
-        window.ethereum?.on('chainChanged', (chainId) => {
-            if (chainId !== sidraChain.chainId) {
-                showNotification("Please switch to Sidra Chain", "error");
-                connectWalletBtn.textContent = "Connect Wallet";
-                connectWalletBtn.disabled = false;
-            } else {
-                initEthers();
-                checkWalletConnection();
-            }
-        });
-        
-        // Handle account changes
-        window.ethereum?.on('accountsChanged', (accounts) => {
-            if (accounts.length === 0) {
-                // User disconnected their wallet
-                connectedAccount = null;
-                walletAddressEl.textContent = "Not connected";
-                connectWalletBtn.textContent = "Connect Wallet";
-                connectWalletBtn.disabled = false;
-            } else {
-                // User switched accounts
-                connectedAccount = accounts[0];
-                walletAddressEl.textContent = `${connectedAccount.substring(0, 6)}...${connectedAccount.substring(38)}`;
-                initEthers();
-                loadWalletData();
-            }
-        });
+        if (window.ethereum) {
+            window.ethereum.on('chainChanged', (chainId) => {
+                if (chainId !== sidraChain.chainId) {
+                    showNotification("Please switch to Sidra Chain", "error");
+                    connectWalletBtn.textContent = "Connect Wallet";
+                    connectWalletBtn.disabled = false;
+                } else {
+                    initEthers();
+                    checkWalletConnection();
+                }
+            });
+            
+            // Handle account changes
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    // User disconnected their wallet
+                    connectedAccount = null;
+                    walletAddressEl.textContent = "Not connected";
+                    connectWalletBtn.textContent = "Connect Wallet";
+                    connectWalletBtn.disabled = false;
+                } else {
+                    // User switched accounts
+                    connectedAccount = accounts[0];
+                    walletAddressEl.textContent = `${connectedAccount.substring(0, 6)}...${connectedAccount.substring(38)}`;
+                    initEthers();
+                    loadWalletData();
+                }
+            });
+        }
     </script>
 </body>
 </html>
