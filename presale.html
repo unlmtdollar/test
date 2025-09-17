@@ -327,7 +327,7 @@
     .btn-primary {
       background: var(--gradient);
       color: var(--darker);
-      box-shadow: 0 4px极15px rgba(123, 97, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(123, 97, 255, 0.3);
     }
     
     .btn-primary:hover {
@@ -346,7 +346,7 @@
       transform: translateY(-3px);
     }
     
-    .btn:极disabled {
+    .btn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
       transform: none !important;
@@ -437,7 +437,7 @@
     .notification-text {
       flex: 1;
       text-align: center;
-      padding: 极0 1rem;
+      padding: 0 1rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -475,7 +475,7 @@
       display: inline-block;
       padding: 0.6rem 1.2rem;
       background-color: #F87171;
-     极 color: white;
+      color: white;
       border: 1px solid #DC2626;
       border-radius: 6px;
       text-decoration: none;
@@ -517,8 +517,8 @@
   <!-- Notification Banner -->
   <div id="nuurNotice" class="notification-banner" style="display: none;">
     <div class="notification-text">
-      NUUR is built on BSC Testnet. For successful transaction, switch to BSC Testnet network 
-      <a href="https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain" target="_blank" class="notification-link">Learn how to add BSC Testnet to Metamask</a>
+      NUUR is built on Sidra Chain. For successful transaction, switch to Sidra Chain network 
+      <a href="https://youtube.com/shorts/6O1n5q1crd0?si=Vcsx9zxHAR-1nUvz" target="_blank" class="notification-link">Learn how to import Sidrachain to Metamask</a>
     </div>
     <button class="notification-close" onclick="dismissNotice()">&times;</button>
   </div>
@@ -536,7 +536,7 @@
   <!-- Main Container -->
   <main class="main-container">
     <div class="logo-header">
-      <img src="https://via.placeholder.com/50/00F5E4/000000?text=N" alt="NUUR Coin Logo" class="logo-img">
+      <img src="logo.png" alt="NUUR Coin Logo" class="logo-img">
       <span class="logo-text">NUUR Coin</span>
     </div>
     
@@ -552,18 +552,18 @@
       <div id="tokensRemaining" class="tokens-remaining">Checking remaining tokens...</div>
     </div>
     
-    <!-- BNB Input -->
-    <div class="极input-section">
+    <!-- SDA Input -->
+    <div class="input-section">
       <div class="input-label">
         <span>You Pay</span>
-        <span>Balance: <span id="bnbBalance">-</span></span>
+        <span>Balance: <span id="sdaBalance">-</span></span>
       </div>
       <div class="input-container">
         <div class="token-info">
-          <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB" class="token-icon" style="width: 28px; height: 28px;">
-          <span class="token-name">BNB</span>
+          <img src="sidra.png" alt="SDA" class="token-icon">
+          <span class="token-name">SDA</span>
         </div>
-        <input id="bnbAmount" type="number" step="any" min="0.005" max="25" placeholder="0.005" />
+        <input id="sdaAmount" type="number" step="any" min="1" max="5000" placeholder="1.00" />
       </div>
     </div>
     
@@ -571,11 +571,11 @@
     <div class="input-section">
       <div class="input-label">
         <span>You Receive</span>
-        <span>Rate: 1 BNB = 1,000 NUUR</span>
+        <span>Rate: 1 SDA = 200 NUUR</span>
       </div>
       <div class="input-container">
         <div class="token-info">
-          <img src="https://via.placeholder.com/28/7B61FF/FFFFFF?text=N" alt="NUUR" class="token-icon">
+          <img src="logo.png" alt="NUUR" class="token-icon">
           <span class="token-name">NUUR</span>
         </div>
         <span id="nuurEstimate">0</span>
@@ -590,15 +590,15 @@
       </div>
       <div class="info-item">
         <div class="info-label">Rate</div>
-        <div class="info-value highlight">1 BNB = 1,000 NUUR</div>
+        <div class="info-value highlight">1 SDA = 200 NUUR</div>
       </div>
       <div class="info-item">
         <div class="info-label">Min. Buy</div>
-        <div class="info-value">0.005 BNB</div>
+        <div class="info-value">1 SDA</div>
       </div>
       <div class="info-item">
         <div class="info-label">Max. Buy</div>
-        <div class="info-value">25 BNB</div>
+        <div class="info-value">5,000 SDA</div>
       </div>
     </div>
     
@@ -622,27 +622,22 @@
 
   <!-- Footer -->
   <footer>
-    <a href="#" class="report-button" target="_blank">
+    <a href="error-report" class="report-button" target="_blank">
       <i class="fas fa-bug"></i> Report an error
     </a>
   </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // BSC Testnet Configuration
-      const BSC_TESTNET_CHAIN_ID = '0x61'; // 97 in decimal
-      const BSC_TESTNET_RPC_URL = 'https://data-seed-prebsc-1-s1.binance.org:8545/';
-      
       // Constants - PHASE 2
-      const presaleAddress = "YOUR_PRESALE_CONTRACT_ADDRESS_HERE"; // Replace with your BSC Testnet presale contract
-      const nuurTokenAddress = "YOUR_NUUR_TOKEN_ADDRESS_HERE"; // Replace with your BSC Testnet NUUR token
-      const rate = 1000; // 1 BNB = 1,000 NUUR
-      const minBuy = 0.005; // Minimum buy in BNB (0.005 BNB)
-      const maxBuy = 25; // Maximum buy in BNB
+      const presaleAddress = "0xF2bba480Fc3b2e75019CE54e3Da8D1f9A5d9a067";
+      const nuurTokenAddress = "0xd9F17EDf816A9404385aE1c35df7F401a1Ee41a5";
+      const rate = 1000; // 1 SDA = 1000 NUUR (Phase 2)
+      const minBuy = 1; // Minimum buy in SDA
+      const maxBuy = 5000; // Maximum buy in SDA
       
       // Contract ABIs
-      const presaleAbi = [{"inputs":[{"internalType":"address","name":"_nuurToken","type":"address"},{"internalType":"address","name":"_devWallet","type":"address"},{"internalType":"address","name":"initialOwner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed极":false,"internalType":"address","name":"newDevWallet","type":"address"}],"name":"DevWalletUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"NUURWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address极"},{"indexed":true,"internalType":"address","name":"newOwner","极type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"phaseId","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"PhaseUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"isActive","type":"极bool"}],"name":"PresaleStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"SDAWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensDeposited","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint256","name":"sdaAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"nuurAmount","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"}],"name":"TokensPurchased","type":"event"},{"inputs":[],"name":"buyTokens","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"sdaAmount","type":"uint256"}],"name":"calculateNUURAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentRate","outputs":[{"internalType":"uint256","name":"","type":"uint256极"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"depositTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"devWallet","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCurrentPhaseInfo","outputs":[{"internalType":"uint256","name":"phaseId","type":"极uint256"},{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"极uint256"},{"internalType":"极uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getNUURBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"phaseId","type":"uint256"}],"name":"getPhaseInfo","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getSDABalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nuurToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"phaseStartTime","极outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"state极Mutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"phases","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"_status","type":"bool"}],"name":"setPresaleStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalSDAReceived","outputs":[{"internalType":"uint256","name":"","type":"极uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTokensSold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newDevWallet","type":"address"}],"name":"updateDevWallet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newPhaseId","type":"uint256"},{"internalType":"string","极name":"newPhaseName","type":"string"},{"internalType":"uint256","name":"newRate","type":"uint256"}],"name":"updatePhase","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawNUUR","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawSDA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
-
+      const presaleAbi = [{"inputs":[{"internalType":"address","name":"_vestingContract","type":"address"},{"internalType":"address","name":"_devWallet","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"newDevWallet","type":"address"}],"name":"DevWalletUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"phaseId","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"PhaseUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"isActive","type":"bool"}],"name":"PresaleStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint256","name":"sdaAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"nuurAmount","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"}],"name":"TokensPurchased","type":"event"},{"inputs":[],"name":"buyTokens","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"sdaAmount","type":"uint256"}],"name":"calculateNUURAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devWallet","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCurrentPhaseInfo","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"phaseId","type":"uint256"}],"name":"getPhaseInfo","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"phases","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"_status","type":"bool"}],"name":"setPresaleStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalSDAReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTokensSold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newDevWallet","type":"address"}],"name":"updateDevWallet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newPhaseId","type":"uint256"},{"internalType":"string","name":"newName","type":"string"},{"internalType":"uint256","name":"newRate","type":"uint256"}],"name":"updatePhase","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"vestingContract","outputs":[{"internalType":"contract IVesting","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"stateMutability":"payable","type":"receive"}];
       const tokenAbi = [
         {
           "constant": true,
@@ -673,70 +668,20 @@
       const connectWalletBtn = document.getElementById('connectWalletButton');
       const disconnectWalletBtn = document.getElementById('disconnectWalletButton');
       const buyBtn = document.getElementById('buyButton');
-      const bnbInput = document.getElementById('bnbAmount');
+      const sdaInput = document.getElementById('sdaAmount');
       const statusMessage = document.getElementById('statusMessage');
       const spinner = document.getElementById('spinner');
       const walletBalance = document.getElementById('walletBalance');
       const nuurEstimate = document.getElementById('nuurEstimate');
-      const bnbBalance = document.getElementById('bnbBalance');
-      const contractStatus = document.getElementById极('contractStatus');
+      const sdaBalance = document.getElementById('sdaBalance');
+      const contractStatus = document.getElementById('contractStatus');
       const tokensRemaining = document.getElementById('tokensRemaining');
-
-      // Switch to BSC Testnet
-      async function switchToBSC() {
-        try {
-          await provider.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: BSC_TESTNET_CHAIN_ID }],
-          });
-          return true;
-        } catch (switchError) {
-          // This error code indicates that the chain has not been added to MetaMask
-          if (switchError.code === 4902) {
-            try {
-              await provider.request({
-                method: 'wallet_addEthereumChain',
-                params: [
-                  {
-                    chainId: BSC_TESTNET_CHAIN_ID,
-                    chainName: 'Binance Smart Chain Testnet',
-                    nativeCurrency: {
-                      name: 'BNB',
-                      symbol: 'BNB',
-                      decimals: 18,
-                    },
-                    rpcUrls: [BSC_TESTNET_RPC_URL],
-                    blockExplorerUrls: ['https://testnet.bscscan.com/'],
-                  },
-                ],
-              });
-              return true;
-            } catch (addError) {
-              console.error('Failed to add BSC Testnet:', addError);
-              return false;
-            }
-          }
-          console.error('Failed to switch to BSC Testnet:', switchError);
-          return false;
-        }
-      }
 
       // Initialize Web3
       async function initWeb3() {
         provider = window.ethereum;
         if (provider) {
           web3 = new Web3(provider);
-          
-          // Check if we're on the correct network
-          const chainId = await web3.eth.getChainId();
-          if (chainId.toString() !== '97') { // BSC Testnet chain ID
-            const switched = await switch极ToBSC();
-            if (!switched) {
-              showStatus("Please switch to BSC Testnet to continue", "error");
-              return false;
-            }
-          }
-          
           presaleContract = new web3.eth.Contract(presaleAbi, presaleAddress);
           tokenContract = new web3.eth.Contract(tokenAbi, nuurTokenAddress);
           return true;
@@ -802,36 +747,36 @@
         connectWalletBtn.style.display = "inline-block";
         disconnectWalletBtn.style.display = "none";
         walletBalance.innerText = "Not Connected";
-        bnbBalance.innerText = "-";
+        sdaBalance.innerText = "-";
       }
 
       // Show Wallet Balance
       async function showWalletBalance() {
-        if (!web3 || !user极Address) return;
+        if (!web3 || !userAddress) return;
 
         try {
           const balance = await web3.eth.getBalance(userAddress);
           const formattedBalance = parseFloat(web3.utils.fromWei(balance, "ether")).toFixed(4);
-          walletBalance.innerText = `${formattedBalance} BNB`;
-          bnbBalance.innerText = `${formattedBalance} BNB`;
+          walletBalance.innerText = `${formattedBalance} SDA`;
+          sdaBalance.innerText = `${formattedBalance} SDA`;
         } catch (error) {
-          walletBalance.innerText = "Unavailable or switch to BSC Testnet";
-          bnbBalance.innerText = "-";
+          walletBalance.innerText = "Unavailable or switch to Sidra Chain";
+          sdaBalance.innerText = "-";
           console.error(error);
         }
       }
 
       // Buy Tokens
       async function buyTokens() {
-        let bnbAmount = parseFloat(bnbInput.value);
+        let sdaAmount = parseFloat(sdaInput.value);
         
         // Input validation
-        if (!bnbAmount || isNaN(bnbAmount) || bnbAmount < minBuy) {
-          showStatus(`Enter a valid BNB amount (min: ${minBuy})`, "error");
+        if (!sdaAmount || isNaN(sdaAmount) || sdaAmount < minBuy) {
+          showStatus(`Enter a valid SDA amount (min: ${minBuy})`, "error");
           return;
         }
-        if (bnbAmount > maxBuy) {
-          showStatus(`Maximum allowed per transaction is ${maxBuy} BNB`, "error");
+        if (sdaAmount > maxBuy) {
+          showStatus(`Maximum allowed per transaction is ${maxBuy} SDA`, "error");
           return;
         }
         if (!userAddress) {
@@ -846,9 +791,9 @@
         }
         
         // Check if requested amount exceeds contract balance
-        const requestedNuur = bnbAmount * rate;
+        const requestedNuur = sdaAmount * rate;
         if (requestedNuur > contractTokenBalance) {
-          showStatus(`Requested amount exceeds available tokens. Maximum purchase: ${(contractTokenBalance / rate).toFixed(4)} BNB`, "error");
+          showStatus(`Requested amount exceeds available tokens. Maximum purchase: ${Math.floor(contractTokenBalance / rate)} SDA`, "error");
           return;
         }
 
@@ -858,7 +803,7 @@
 
         try {
           // Create the transaction
-          const value = web3.utils.toWei(bnbAmount.toString(), 'ether');
+          const value = web3.utils.toWei(sdaAmount.toString(), 'ether');
           const data = presaleContract.methods.buyTokens().encodeABI();
 
           const txHash = await provider.request({
@@ -872,7 +817,7 @@
             }]
           });
 
-          const explorerLink = `https://testnet.bscscan.com/tx/${txHash}`;
+          const explorerLink = `https://ledger.sidrachain.com/tx/${txHash}`;
           showStatus(`Transaction sent. <a href="${explorerLink}" target="_blank" style="color: var(--primary); text-decoration: underline;">View on Explorer</a>`, "success");
           await showWalletBalance();
           
@@ -903,39 +848,39 @@
         }
       }
 
-      // Calculate NUUR amount on BNB input
-      bnbInput.addEventListener("input", function() {
-        let bnb = parseFloat(this.value || "0");
+      // Calculate NUUR amount on SDA input
+      sdaInput.addEventListener("input", function() {
+        let sda = parseFloat(this.value || "0");
         
         // Validate input
-        if (isNaN(bnb)) {
+        if (isNaN(sda)) {
           nuurEstimate.innerText = "0";
           return;
         }
         
-        if (bnb < minBuy) bnb = minBuy;
-        if (bnb > maxBuy) bnb = maxBuy;
+        if (sda < minBuy) sda = minBuy;
+        if (sda > maxBuy) sda = maxBuy;
         
-        // Calculate NUUR amount (1 BNB = 1,000 NUUR)
-        const nuurAmount = bnb * rate;
+        // Calculate NUUR amount
+        const nuurAmount = sda * rate;
         nuurEstimate.innerText = nuurAmount.toLocaleString();
         
         // Check if requested amount exceeds contract balance
         if (contractTokenBalance > 0 && nuurAmount > contractTokenBalance) {
-          showStatus(`Requested amount exceeds available tokens. Maximum: ${(contractTokenBalance / rate).toFixed(4)} BNB`, "warning");
+          showStatus(`Requested amount exceeds available tokens. Maximum: ${Math.floor(contractTokenBalance / rate)} SDA`, "warning");
         } else {
           showStatus("", "info");
         }
       });
 
       // Enforce min/max in UI
-      bnbInput.addEventListener("blur", function() {
-        let v = parseFloat(bnbInput.value || "0");
-        if (isNaN(v) || v < minBuy) bnbInput.value = minBuy;
-        if (v > maxBuy) bnbInput.value = maxBuy;
+      sdaInput.addEventListener("blur", function() {
+        let v = parseFloat(sdaInput.value || "0");
+        if (isNaN(v) || v < minBuy) sdaInput.value = minBuy;
+        if (v > maxBuy) sdaInput.value = maxBuy;
         
         // Recalculate NUUR amount
-        const nuurAmount = parseFloat(bnbInput.value) * rate;
+        const nuurAmount = parseFloat(sdaInput.value) * rate;
         nuurEstimate.innerText = nuurAmount.toLocaleString();
       });
 
