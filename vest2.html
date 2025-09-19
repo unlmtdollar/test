@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuur Coin - Vesting Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #4a00e0;
+            --secondary: #8e2de2;
+            --accent: #00c6ff;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --card-bg: rgba(26, 26, 46, 0.8);
+            --glow: 0 0 10px rgba(74, 0, 224, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%);
+            color: var(--light);
+            min-height: 100vh;
+            background-attachment: fixed;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-radius: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: var(--glow);
+            animation: pulse 2s infinite;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 10px rgba(74, 0, 224, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(74, 0, 224, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 10px rgba(74, 0, 224, 0.5); }
+        }        
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: all 0.4s ease;
+        }
+        
+        .nav-link:hover:before {
+            left: 100%;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .connect-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .connect-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.4s ease;
+        }
+        
+        .connect-btn:hover:before {
+            left: 100%;
+        }
+        
+        .connect-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 0, 224, 0.6);
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .wallet-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-size: 16px;
+            color: #aaa;
+        }
+        
+        .info-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .kyc-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .verified {
+            background-color: var(--success);
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+        
+        .not-verified {
+            background-color: var(--danger);
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+        }
+        
+        .claim-section {
+            grid-column: span 2;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 10px;
+            width: 30%;
+            transition: width 1s ease;
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
+        }
+        
+        .amounts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .amount-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .amount-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .amount-label {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        
+        .amount-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .time-unit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .time-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .time-label {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .btn {
+            padding: 14px 35px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.4s ease;
+        }
+        
+        .btn:hover:before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: var(--glow);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 0, 224, 0.6);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn:disabled:hover:before {
+            left: -100%;
+        }
+        
+        .btn-tooltip {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .btn-tooltip:after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid rgba(0, 0, 0, 0.8);
+        }
+        
+        .btn:disabled:hover + .btn-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .external-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .ext-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+        
+        .ext-link:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background: var(--dark);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left-color: var(--success);
+        }
+        
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+        
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            gap: 20px;
+        }
+        
+        .loading-overlay.hidden {
+            display: none;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(74, 0, 224, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100vw);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .claim-section {
+                grid-column: span 1;
+            }
+            
+            .amounts {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer {
+                flex-wrap: wrap;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading" style="width: 50px; height: 50px;"></div>
+        <p id="loadingText">Loading Nuur Coin Vesting Portal</p>
+    </div>
+    
+    <div class="container">
+        <header>
+           <div class="logo-container">
+                <div class="logo">
+                    <img src="logo.png" alt="Nuur Coin Logo">
+                </div>
+                <div class="logo-text">Nuur Coin</div>
+            </div>
+            
+            <nav>
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="#" class="nav-link">Claim</a>
+            </nav>
+            
+            <button class="connect-btn" id="connectWallet">
+                <i class="fas fa-wallet"></i> Connect Wallet
+            </button>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Wallet Information</h2>
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="wallet-info">
+                    <div class="info-item">
+                        <span class="info-label">Connected Address:</span>
+                        <span class="info-value" id="walletAddress">Not connected</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">NUUR Balance:</span>
+                        <span class="info-value" id="nuurBalance">0.00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">SDA Balance:</span>
+                        <span class="info-value" id="sdaBalance">0.00</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">KYC Status:</span>
+                        <div class="kyc-status">
+                            <span class="status-badge not-verified" id="kycStatus"></span>
+                            <span class="info-value" id="kycText">Not Verified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Vesting Information</h2>
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="wallet-info">
+                    <div class="info-item">
+                        <span class="info-label">Vesting Status:</span>
+                        <span class="info-value" id="vestingStatus">Not Started</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total Allocated:</span>
+                        <span class="info-value" id="totalAllocated">0.00 NUUR</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total Claimed:</span>
+                        <span class="info-value" id="totalClaimed">0.00 NUUR</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Months Passed:</span>
+                        <span class="info-value" id="monthsPassed">0/12</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card claim-section">
+                <div class="card-header">
+                    <h2 class="card-title">Claim Your Tokens</h2>
+                    <i class="fas fa-gift"></i>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="vestingProgress"></div>
+                </div>
+                
+                <div class="amounts">
+                    <div class="amount-box">
+                        <div class="amount-label">Allocated Amount</div>
+                        <div class="amount-value" id="allocatedAmount">0.00 NUUR</div>
+                    </div>
+                    <div class="amount-box">
+                        <div class="amount-label">Claimable Now</div>
+                        <div class="amount-value" id="claimableAmount">0.00 NUUR</div>
+                    </div>
+                </div>
+                
+                <div class="timer">
+                    <div class="time-unit">
+                        <div class="time-value" id="days">00</div>
+                        <div class="time-label">Days</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="hours">00</div>
+                        <div class="time-label">Hours</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="minutes">00</div>
+                        <div class="time-label">Minutes</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="seconds">00</div>
+                        <div class="time-label">Seconds</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="claimBtn" disabled>
+                        <i class="fas fa-download"></i> Claim Tokens
+                    </button>
+                    <span class="btn-tooltip" id="claimTooltip">Complete KYC verification to enable claiming</span>
+                    <button class="btn btn-secondary" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Refresh Data
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="external-links">
+            <a href="#" class="ext-link">
+                <i class="fas fa-shopping-cart"></i> Presale
+            </a>
+            <a href="#" class="ext-link">
+                <i class="fas fa-bug"></i> Report Issue
+            </a>
+            <a href="#" class="ext-link">
+                <i class="fas fa-file-contract"></i> Contract
+            </a>
+            <a href="#" class="ext-link">
+                <i class="fas fa-question-circle"></i> Help
+            </a>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <div class="notification-content">Operation completed successfully!</div>
+    </div>
+
+    <script>
+        // Create background particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                
+                // Random animation delay
+                const delay = Math.random() * 15;
+                
+                particle.style.left = `${posX}vw`;
+                particle.style.top = `${posY}vh`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Check if ethers is loaded, if not try alternative CDN
+        function ensureEthersIsLoaded() {
+            return new Promise((resolve, reject) {
+                if (typeof ethers !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                
+                // Try loading from alternative CDN
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js';
+                script.onload = () => {
+                    if (typeof ethers !== 'undefined') {
+                        resolve();
+                    } else {
+                        reject(new Error('Could not load ethers.js'));
+                    }
+                };
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        // Contract ABI - Replace with your actual contract ABI
+        const contractABI = [{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"KYCBatchUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"verified","type":"bool"}],"name":"KYCUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"by","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"presale","type":"address"}],"name":"PresaleContractSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensFunded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"by","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"VestingRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"VestingStarted","type":"event"},{"inputs":[],"name":"MONTH","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TOTAL_MONTHS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"fundVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"}],"name":"getVestingInfo","outputs":[{"internalType":"uint256","name":"initialAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"claimableNow","type":"uint256"},{"internalType":"bool","name":"kyc","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"globalStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"beneficiary","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"registerVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"setKYC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"setKYCForBatch","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_presale","type":"address"}],"name":"setPresaleContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocated","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalClaimed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vestingSchedule","outputs":[{"internalType":"uint256","name":"initialAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"bool","name":"exists","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStarted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawUnallocated","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+        // Contract address - Replace with your actual contract address
+        const contractAddress = "0xEE907CEdF6566140DA17C1196D9B9C5AE8d54f1a";
+        
+        // NUUR Token address - Replace with your actual token address
+        const nuurTokenAddress = "0xd9F17EDf816A9404385aE1c35df7F401a1Ee41a5";
+        
+        // Chain configuration for Sidra Chain (97429 / 0x17CAD)
+        const sidraChain = {
+            chainId: "0x17CAD",
+            chainName: "Sidra Chain",
+            nativeCurrency: {
+                name: "Sidra",
+                symbol: "SDA",
+                decimals: 18
+            },
+            rpcUrls: ["https://node.sidrachain.com"],
+            blockExplorerUrls: ["https://ledger.sidrachain.com"]
+        };
+        
+        // DOM Elements
+        const connectWalletBtn = document.getElementById('connectWallet');
+        const walletAddressEl = document.getElementById('walletAddress');
+        const nuurBalanceEl = document.getElementById('nuurBalance');
+        const sdaBalanceEl = document.getElementById('sdaBalance');
+        const kycStatusEl = document.getElementById('kycStatus');
+        const kycTextEl = document.getElementById('kycText');
+        const vestingStatusEl = document.getElementById('vestingStatus');
+        const totalAllocatedEl = document.getElementById('totalAllocated');
+        const totalClaimedEl = document.getElementById('totalClaimed');
+        const monthsPassedEl = document.getElementById('monthsPassed');
+        const vestingProgressEl = document.getElementById('vestingProgress');
+        const allocatedAmountEl = document.getElementById('allocatedAmount');
+        const claimableAmountEl = document.getElementById('claimableAmount');
+        const claimBtn = document.getElementById('claimBtn');
+        const claimTooltip = document.getElementById('claimTooltip');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const notificationEl = document.getElementById('notification');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingText = document.getElementById('loadingText');
+        
+        // State
+        let connectedAccount = null;
+        let provider = null;
+        let signer = null;
+        let contract = null;
+        let tokenContract = null;
+        let vestingStartTime = null;
+        let timeRemaining = 0;
+        let isUserVerified = false;
+        
+        // Initialize
+        window.addEventListener('load', async () => {
+            try {
+                createParticles();
+                
+                loadingText.textContent = "Loading blockchain libraries...";
+                await ensureEthersIsLoaded();
+                
+                loadingText.textContent = "Initializing application...";
+                await initApplication();
+                
+                // Hide loading overlay
+                loadingOverlay.classList.add('hidden');
+            } catch (error) {
+                console.error("Failed to initialize application:", error);
+                loadingText.textContent = "Failed to load required libraries. Please refresh the page.";
+                showNotification("Failed to load blockchain libraries", "error");
+            }
+        });
+        
+        async function initApplication() {
+            initEthers();
+            checkWalletConnection();
+            updateTimer(); // Start the countdown timer
+            setInterval(updateTimer, 1000);
+        }
+        
+        // Initialize ethers.js
+        function initEthers() {
+            if (typeof window.ethereum !== 'undefined') {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                signer = provider.getSigner();
+                
+                // Initialize contracts
+                contract = new ethers.Contract(contractAddress, contractABI, signer);
+                
+                // Simple ERC20 ABI for balance checking
+                const tokenABI = [
+                    "function balanceOf(address) view returns (uint256)",
+                    "function decimals() view returns (uint8)"
+                ];
+                tokenContract = new ethers.Contract(nuurTokenAddress, tokenABI, signer);
+            }
+        }
+        
+        // Connect Wallet
+        connectWalletBtn.addEventListener('click', connectWallet);
+        
+        // Claim Tokens
+        claimBtn.addEventListener('click', claimTokens);
+        
+        // Refresh Data
+        refreshBtn.addEventListener('click', refreshData);
+        
+        // Functions
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Request account access
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    connectedAccount = accounts[0];
+                    
+                    // Check if connected to Sidra Chain
+                    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+                    
+                    if (chainId !== sidraChain.chainId) {
+                        // Try to switch to Sidra Chain
+                        try {
+                            await window.ethereum.request({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{ chainId: sidraChain.chainId }],
+                            });
+                        } catch (switchError) {
+                            // This error code indicates that the chain has not been added to MetaMask
+                            if (switchError.code === 4902) {
+                                await window.ethereum.request({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [sidraChain],
+                                });
+                            } else {
+                                throw switchError;
+                            }
+                        }
+                    }
+                    
+                    // Update UI
+                    walletAddressEl.textContent = `${connectedAccount.substring(0, 6)}...${connectedAccount.substring(38)}`;
+                    connectWalletBtn.innerHTML = "<i class='fas fa-check'></i> Connected";
+                    connectWalletBtn.disabled = true;
+                    
+                    // Initialize ethers with the new connection
+                    initEthers();
+                    
+                    // Load data
+                    await loadWalletData();
+                    showNotification("Wallet connected successfully!", "success");
+                    
+                } catch (error) {
+                    console.error("Error connecting wallet:", error);
+                    showNotification("Failed to connect wallet", "error");
+                }
+            } else {
+                showNotification("Please install MetaMask to claim", "error");
+            }
+        }
+        
+        async function checkWalletConnection() {
+            if (typeof window.ethereum !== 'undefined') {
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                if (accounts.length > 0) {
+                    connectedAccount = accounts[0];
+                    walletAddressEl.textContent = `${connectedAccount.substring(0, 6)}...${connectedAccount.substring(38)}`;
+                    connectWalletBtn.innerHTML = "<i class='fas fa-check'></i> Connected";
+                    connectWalletBtn.disabled = true;
+                    
+                    // Initialize ethers with the existing connection
+                    initEthers();
+                    
+                    await loadWalletData();
+                }
+            }
+        }
+        
+        async function loadWalletData() {
+            if (!connectedAccount || !contract) return;
+            
+            try {
+                // Show loading states
+                nuurBalanceEl.innerHTML = "<span class='loading'></span>";
+                sdaBalanceEl.innerHTML = "<span class='loading'></span>";
+                totalAllocatedEl.innerHTML = "<span class='loading'></span>";
+                totalClaimedEl.innerHTML = "<span class='loading'></span>";
+                allocatedAmountEl.innerHTML = "<span class='loading'></span>";
+                claimableAmountEl.innerHTML = "<span class='loading'></span>";
+                
+                // Fetch KYC status
+                isUserVerified = await contract.kycVerified(connectedAccount);
+                kycStatusEl.className = isUserVerified ? "status-badge verified" : "status-badge not-verified";
+                kycTextEl.textContent = isUserVerified ? "Verified" : "Not Verified";
+                kycTextEl.style.color = isUserVerified ? "#28a745" : "#dc3545";
+                
+                // Fetch NUUR balance
+                const nuurBalance = await tokenContract.balanceOf(connectedAccount);
+                nuurBalanceEl.textContent = ethers.utils.formatUnits(nuurBalance, 18);
+                
+                // Fetch SDA balance
+                const sdaBalance = await provider.getBalance(connectedAccount);
+                sdaBalanceEl.textContent = ethers.utils.formatEther(sdaBalance);
+                
+                // Fetch vesting status
+                const vestingStarted = await contract.vestingStarted();
+                vestingStatusEl.textContent = vestingStarted ? "Active" : "Not Started";
+                vestingStatusEl.style.color = vestingStarted ? "#28a745" : "#dc3545";
+                
+                // Fetch total allocated and claimed
+                const totalAllocated = await contract.totalAllocated();
+                const totalClaimed = await contract.totalClaimed();
+                totalAllocatedEl.textContent = `${ethers.utils.formatUnits(totalAllocated, 18)} NUUR`;
+                totalClaimedEl.textContent = `${ethers.utils.formatUnits(totalClaimed, 18)} NUUR`;
+                
+                // Fetch user's vesting info
+                const vestingInfo = await contract.getVestingInfo(connectedAccount);
+                const initialAmount = vestingInfo.initialAmount;
+                const claimedAmount = vestingInfo.claimedAmount;
+                const claimableNow = vestingInfo.claimableNow;
+                
+                allocatedAmountEl.textContent = `${ethers.utils.formatUnits(initialAmount, 18)} NUUR`;
+                claimableAmountEl.textContent = `${ethers.utils.formatUnits(claimableNow, 18)} NUUR`;
+                
+                // Calculate months passed
+                if (vestingStarted && initialAmount.gt(0)) {
+                    const globalStartTime = await contract.globalStartTime();
+                    const elapsed = Math.floor(Date.now() / 1000) - globalStartTime.toNumber();
+                    const monthsPassed = Math.min(Math.floor(elapsed / (30 * 24 * 60 * 60)), 12);
+                    
+                    monthsPassedEl.textContent = `${monthsPassed}/12`;
+                    
+                    // Update progress bar
+                    const progressPercent = (monthsPassed / 12) * 100;
+                    vestingProgressEl.style.width = `${progressPercent}%`;
+                    
+                    // Set next vesting time (next month)
+                    const nextVestingTime = globalStartTime.toNumber() + (monthsPassed + 1) * 30 * 24 * 60 * 60;
+                    vestingStartTime = nextVestingTime * 1000;
+                    
+                    // Update claim button state
+                    updateClaimButtonState(claimableNow, vestingStartTime);
+                } else {
+                    // Default to 0 progress if vesting hasn't started
+                    monthsPassedEl.textContent = "0/12";
+                    vestingProgressEl.style.width = "0%";
+                    claimBtn.disabled = true;
+                    claimTooltip.textContent = "Vesting has not started yet";
+                }
+                
+            } catch (error) {
+                console.error("Error loading wallet data:", error);
+                showNotification("Failed to load data from blockchain", "error");
+            }
+        }
+        
+        function updateClaimButtonState(claimableNow, vestingStartTime) {
+            const now = Date.now();
+            timeRemaining = vestingStartTime - now;
+            
+            if (!isUserVerified) {
+                claimBtn.disabled = true;
+                claimTooltip.textContent = "Complete KYC verification to enable claiming";
+                return;
+            }
+            
+            if (claimableNow.isZero() || timeRemaining > 0) {
+                claimBtn.disabled = true;
+                
+                // Format the time remaining for the tooltip
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                claimTooltip.textContent = `You can claim after ${days} days, ${hours} hours`;
+            } else {
+                claimBtn.disabled = false;
+                claimTooltip.textContent = "Click to claim your tokens";
+            }
+        }
+        
+        function updateTimer() {
+            if (!vestingStartTime || !isUserVerified) {
+                // Don't show timer if user is not verified
+                daysEl.textContent = "--";
+                hoursEl.textContent = "--";
+                minutesEl.textContent = "--";
+                secondsEl.textContent = "--";
+                return;
+            }
+            
+            const now = Date.now();
+            timeRemaining = vestingStartTime - now;
+            
+            if (timeRemaining <= 0) {
+                daysEl.textContent = "00";
+                hoursEl.textContent = "00";
+                minutesEl.textContent = "00";
+                secondsEl.textContent = "00";
+                
+                // Enable claim button if time is up
+                if (claimableAmountEl.textContent !== "0.00 NUUR") {
+                    claimBtn.disabled = false;
+                    claimTooltip.textContent = "Click to claim your tokens";
+                }
+                return;
+            }
+            
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            daysEl.textContent = days.toString().padStart(2, '0');
+            hoursEl.textContent = hours.toString().padStart(2, '0');
+            minutesEl.textContent = minutes.toString().padStart(2, '0');
+            secondsEl.textContent = seconds.toString().padStart(2, '0');
+            
+            // Update tooltip with remaining time
+            claimTooltip.textContent = `You can claim after ${days} days, ${hours} hours`;
+        }
+        
+        async function claimTokens() {
+            if (!contract) return;
+            
+            // Check if user is verified
+            if (!isUserVerified) {
+                showNotification("Please complete KYC verification before claiming", "warning");
+                return;
+            }
+            
+            // Check if timer has ended
+            if (timeRemaining > 0) {
+                showNotification("Vesting period has not ended yet", "warning");
+                return;
+            }
+            
+            try {
+                showNotification("Claiming tokens...", "success");
+                claimBtn.disabled = true;
+                claimBtn.innerHTML = "<span class='loading'></span> Processing...";
+                
+                // Call the claim function
+                const tx = await contract.claim();
+                
+                // Wait for transaction to be mined
+                await tx.wait();
+                
+                showNotification("Tokens claimed successfully!", "success");
+                
+                // Refresh data
+                await refreshData();
+                
+            } catch (error) {
+                console.error("Error claiming tokens:", error);
+                showNotification("Failed to claim tokens", "error");
+                claimBtn.disabled = false;
+                claimBtn.innerHTML = "<i class='fas fa-download'></i> Claim Tokens";
+            }
+        }
+        
+        async function refreshData() {
+            showNotification("Refreshing data...", "success");
+            refreshBtn.innerHTML = "<span class='loading'></span> Refreshing...";
+            refreshBtn.disabled = true;
+            
+            await loadWalletData();
+            
+            setTimeout(() => {
+                showNotification("Data updated successfully!", "success");
+                refreshBtn.innerHTML = "<i class='fas fa-sync-alt'></i> Refresh Data";
+                refreshBtn.disabled = false;
+            }, 1000);
+        }
+        
+        function showNotification(message, type) {
+            const icon = type === "success" ? "fa-check-circle" : 
+                         type === "error" ? "fa-exclamation-circle" : "fa-exclamation-triangle";
+            notificationEl.innerHTML = `<i class="fas ${icon}"></i><div class="notification-content">${message}</div>`;
+            notificationEl.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notificationEl.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Handle chain changes
+        if (window.ethereum) {
+            window.ethereum.on('chainChanged', (chainId) => {
+                if (chainId !== sidraChain.chainId) {
+                    showNotification("Please switch to Sidra Chain", "error");
+                    connectWalletBtn.textContent = "Connect Wallet";
+                    connectWalletBtn.disabled = false;
+                } else {
+                    initEthers();
+                    checkWalletConnection();
+                }
+            });
+            
+            // Handle account changes
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    // User disconnected their wallet
+                    connectedAccount = null;
+                    walletAddressEl.textContent = "Not connected";
+                    connectWalletBtn.textContent = "Connect Wallet";
+                    connectWalletBtn.disabled = false;
+                } else {
+                    // User switched accounts
+                    connectedAccount = accounts[0];
+                    walletAddressEl.textContent = `${connectedAccount.substring(0, 6)}...${connectedAccount.substring(38)}`;
+                    initEthers();
+                    loadWalletData();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
