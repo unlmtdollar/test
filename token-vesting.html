@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuur Vesting</title>
+    <title>Nuur Vesting Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <style>
@@ -36,14 +36,6 @@
             --color-strong: #4c1d95;
             --color-success: #059669;
             --shadow: 0 8px 20px rgba(11,14,19,0.04);
-        }
-
-        body[data-swap="true"] {
-            --color-primary: #5b21b6;
-            --color-accent: #d4af37;
-            --color-warn: #fb6f6f;
-            --color-strong: #14b8a6;
-            --color-success: #10b981;
         }
 
         * {
@@ -112,14 +104,10 @@
             color: var(--muted);
         }
 
-        /* Mobile Menu Button */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 24px;
-            cursor: pointer;
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
         /* Main Content Layout */
@@ -220,6 +208,12 @@
 
         .info-value {
             font-weight: 600;
+        }
+
+        .kyc-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Dashboard Styles */
@@ -362,6 +356,16 @@
             border-top: 1px solid var(--glass);
         }
 
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
         /* Mobile Responsiveness */
         @media (max-width: 900px) {
             .main-content {
@@ -388,6 +392,10 @@
                 z-index: 100;
                 box-shadow: var(--shadow);
             }
+
+            .header-actions {
+                display: none;
+            }
         }
 
         @media (max-width: 600px) {
@@ -413,6 +421,12 @@
             .countdown-unit {
                 min-width: 50px;
             }
+
+            .claim-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
         }
 
         /* Animation for theme switch */
@@ -422,6 +436,48 @@
 
         .theme-toggle:hover i {
             transform: rotate(180deg);
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--panel);
+            padding: 16px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            z-index: 90;
+        }
+
+        .mobile-menu-items {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .mobile-menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .mobile-menu-item i {
+            font-size: 20px;
+        }
+
+        .mobile-menu-item.active {
+            color: var(--color-primary);
+        }
+
+        @media (max-width: 900px) {
+            .mobile-menu {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -437,6 +493,14 @@
                     <p>Token Migration & Claims</p>
                 </div>
             </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-primary" id="connectBtn">
+                    <i class="fas fa-wallet"></i> Connect Wallet
+                </button>
+            </div>
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
@@ -445,11 +509,11 @@
         <div class="main-content">
             <aside class="sidebar">
                 <div class="wallet-section">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" id="connectBtnSidebar">
                         <i class="fas fa-wallet"></i> Connect Wallet
                     </button>
                     <div style="margin-top: 16px;">
-                        <button class="theme-toggle" id="themeToggle">
+                        <button class="theme-toggle" id="themeToggleSidebar">
                             <i class="fas fa-moon"></i>
                         </button>
                     </div>
@@ -459,7 +523,7 @@
                     <h3 style="margin-bottom: 16px; color: var(--color-primary);">Account Info</h3>
                     <div class="info-row">
                         <span class="info-label">Connected</span>
-                        <span class="info-value">0x1a2b...3c4d</span>
+                        <span class="info-value">Not connected</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Network</span>
@@ -467,15 +531,17 @@
                     </div>
                     <div class="info-row">
                         <span class="info-label">NUUR Balance</span>
-                        <span class="info-value">1,240.50</span>
+                        <span class="info-value">0.00</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">SDA Balance</span>
-                        <span class="info-value">42.75</span>
+                        <span class="info-value">0.00</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">KYC Status</span>
-                        <span class="info-value" style="color: var(--color-success);">Verified</span>
+                        <span class="info-value kyc-status">
+                            <span class="kyc-indicator">❌</span> Not verified
+                        </span>
                     </div>
                 </div>
 
@@ -492,33 +558,33 @@
                 <div class="dashboard-header">
                     <h2>Dashboard</h2>
                     <div style="display: flex; gap: 12px;">
-                        <button class="btn btn-ghost">
+                        <button class="btn btn-ghost" id="refreshBtn">
                             <i class="fas fa-refresh"></i> Refresh
                         </button>
-                        <button class="btn btn-ghost">
+                        <a href="#" class="btn btn-ghost">
                             <i class="fas fa-external-link-alt"></i> Explorer
-                        </button>
+                        </a>
                     </div>
                 </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-title">Total Allocation</div>
-                        <div class="stat-value">10,000 NUUR</div>
+                        <div class="stat-value" id="allocated">0 NUUR</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-title">Claimed Amount</div>
-                        <div class="stat-value">2,450 NUUR</div>
+                        <div class="stat-value" id="claimed">0 NUUR</div>
                     </div>
                 </div>
 
                 <div class="progress-container">
                     <div class="progress-label">
                         <span>Vesting Progress</span>
-                        <span>3/12 Months</span>
+                        <span id="monthsPassed">0/12 Months</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill"></div>
+                        <div class="progress-fill" id="progressBar"></div>
                     </div>
                 </div>
 
@@ -526,28 +592,28 @@
                     <div class="claim-header">
                         <div>
                             <div class="stat-title">Claimable Now</div>
-                            <div class="stat-value">850 NUUR</div>
+                            <div class="stat-value" id="claimableDisplay">0 NUUR</div>
                         </div>
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" id="claimBtn" disabled>
                             <i class="fas fa-gift"></i> Claim Tokens
                         </button>
                     </div>
 
                     <div class="countdown">
                         <div class="countdown-unit">
-                            <div class="countdown-value" id="cdDays">12</div>
+                            <div class="countdown-value" id="cdDays">--</div>
                             <div class="countdown-label">Days</div>
                         </div>
                         <div class="countdown-unit">
-                            <div class="countdown-value" id="cdHours">18</div>
+                            <div class="countdown-value" id="cdHours">--</div>
                             <div class="countdown-label">Hours</div>
                         </div>
                         <div class="countdown-unit">
-                            <div class="countdown-value" id="cdMins">45</div>
+                            <div class="countdown-value" id="cdMins">--</div>
                             <div class="countdown-label">Minutes</div>
                         </div>
                         <div class="countdown-unit">
-                            <div class="countdown-value" id="cdSecs">30</div>
+                            <div class="countdown-value" id="cdSecs">--</div>
                             <div class="countdown-label">Seconds</div>
                         </div>
                     </div>
@@ -557,12 +623,12 @@
                     <div class="action-card">
                         <i class="fas fa-chart-line"></i>
                         <h3>Vesting Status</h3>
-                        <p>Active</p>
+                        <p id="vestingStatus">Not started</p>
                     </div>
                     <div class="action-card">
                         <i class="fas fa-pause-circle"></i>
                         <h3>Contract Status</h3>
-                        <p>Not Paused</p>
+                        <p id="pausedStatus">No</p>
                     </div>
                     <div class="action-card">
                         <i class="fas fa-file-contract"></i>
@@ -581,13 +647,37 @@
         <footer class="app-footer">
             <p>© 2023 Nuur Vesting Platform. All rights reserved.</p>
         </footer>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <div class="mobile-menu-items">
+                <a href="#" class="mobile-menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="mobile-menu-item">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallet</span>
+                </a>
+                <a href="#" class="mobile-menu-item">
+                    <i class="fas fa-gift"></i>
+                    <span>Claim</span>
+                </a>
+                <a href="#" class="mobile-menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Theme toggle functionality
             const themeToggle = document.getElementById('themeToggle');
+            const themeToggleSidebar = document.getElementById('themeToggleSidebar');
             const themeIcon = themeToggle.querySelector('i');
+            const themeIconSidebar = themeToggleSidebar.querySelector('i');
             
             // Check for saved theme preference or use preferred color scheme
             const savedTheme = localStorage.getItem('nuur-theme');
@@ -596,35 +686,101 @@
             if (savedTheme === 'light' || (!savedTheme && !prefersDark)) {
                 document.body.setAttribute('data-theme', 'light');
                 themeIcon.className = 'fas fa-moon';
+                themeIconSidebar.className = 'fas fa-moon';
             } else {
                 document.body.setAttribute('data-theme', 'dark');
                 themeIcon.className = 'fas fa-sun';
+                themeIconSidebar.className = 'fas fa-sun';
             }
             
-            themeToggle.addEventListener('click', function() {
+            function toggleTheme() {
                 const currentTheme = document.body.getAttribute('data-theme');
                 if (currentTheme === 'light') {
                     document.body.setAttribute('data-theme', 'dark');
                     themeIcon.className = 'fas fa-sun';
+                    themeIconSidebar.className = 'fas fa-sun';
                     localStorage.setItem('nuur-theme', 'dark');
                 } else {
                     document.body.setAttribute('data-theme', 'light');
                     themeIcon.className = 'fas fa-moon';
+                    themeIconSidebar.className = 'fas fa-moon';
                     localStorage.setItem('nuur-theme', 'light');
                 }
+            }
+            
+            themeToggle.addEventListener('click', toggleTheme);
+            themeToggleSidebar.addEventListener('click', toggleTheme);
+            
+            // Wallet connection simulation
+            const connectBtn = document.getElementById('connectBtn');
+            const connectBtnSidebar = document.getElementById('connectBtnSidebar');
+            const kycIndicator = document.querySelector('.kyc-indicator');
+            const kycText = document.querySelector('.kyc-status');
+            
+            function connectWallet() {
+                connectBtn.innerHTML = '<i class="fas fa-check-circle"></i> Connected';
+                connectBtnSidebar.innerHTML = '<i class="fas fa-check-circle"></i> Connected';
+                
+                // Update account info
+                document.querySelector('.info-value:first-child').textContent = '0x1a2b...3c4d';
+                document.getElementById('allocated').textContent = '10,000 NUUR';
+                document.getElementById('claimed').textContent = '2,450 NUUR';
+                document.getElementById('claimableDisplay').textContent = '850 NUUR';
+                document.getElementById('vestingStatus').textContent = 'Active';
+                
+                // Randomly assign KYC status
+                const isVerified = Math.random() > 0.5;
+                if (isVerified) {
+                    kycIndicator.textContent = '✅';
+                    kycText.innerHTML = '<span class="kyc-indicator">✅</span> Verified';
+                } else {
+                    kycIndicator.textContent = '❌';
+                    kycText.innerHTML = '<span class="kyc-indicator">❌</span> Not verified';
+                }
+                
+                // Enable claim button if verified
+                document.getElementById('claimBtn').disabled = !isVerified;
+            }
+            
+            connectBtn.addEventListener('click', connectWallet);
+            connectBtnSidebar.addEventListener('click', connectWallet);
+            
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-refresh"></i> Refresh';
+                    // Simulate data refresh
+                    document.getElementById('claimed').textContent = 
+                        (Math.random() * 3000).toFixed(0) + ' NUUR';
+                }, 1500);
             });
             
-            // Countdown timer simulation
+            // Claim button
+            document.getElementById('claimBtn').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-gift"></i> Claim Tokens';
+                    alert('Claim successful! Your tokens have been transferred to your wallet.');
+                }, 2000);
+            });
+            
+            // Countdown timer
             function updateCountdown() {
                 const cdDays = document.getElementById('cdDays');
                 const cdHours = document.getElementById('cdHours');
                 const cdMins = document.getElementById('cdMins');
                 const cdSecs = document.getElementById('cdSecs');
                 
-                let seconds = parseInt(cdSecs.textContent);
-                let minutes = parseInt(cdMins.textContent);
-                let hours = parseInt(cdHours.textContent);
-                let days = parseInt(cdDays.textContent);
+                let seconds = parseInt(cdSecs.textContent) || 0;
+                let minutes = parseInt(cdMins.textContent) || 0;
+                let hours = parseInt(cdHours.textContent) || 0;
+                let days = parseInt(cdDays.textContent) || 0;
+                
+                if (isNaN(seconds)) seconds = 30;
+                if (isNaN(minutes)) minutes = 45;
+                if (isNaN(hours)) hours = 18;
+                if (isNaN(days)) days = 12;
                 
                 seconds--;
                 
@@ -657,17 +813,6 @@
             }
             
             setInterval(updateCountdown, 1000);
-            
-            // Simulate connection status
-            const connectButton = document.querySelector('.btn-primary');
-            connectButton.addEventListener('click', function() {
-                if (connectButton.textContent.includes('Connect')) {
-                    connectButton.innerHTML = '<i class="fas fa-check-circle"></i> Connected';
-                    setTimeout(() => {
-                        connectButton.innerHTML = '<i class="fas fa-wallet"></i> Connect Wallet';
-                    }, 2000);
-                }
-            });
         });
     </script>
 </body>
