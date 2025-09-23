@@ -634,6 +634,15 @@
       padding: 1rem;
       background: var(--card-bg);
       border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .mobile-header-buttons {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     
     .menu-toggle {
@@ -642,6 +651,22 @@
       color: var(--light);
       font-size: 1.5rem;
       cursor: pointer;
+      padding: 0.5rem;
+    }
+    
+    .mobile-wallet-btn {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .mobile-wallet-btn:hover {
+      background: rgba(0, 245, 228, 0.1);
     }
     
     /* Network Indicator */
@@ -774,6 +799,11 @@
       input {
         font-size: 1.1rem;
       }
+      
+      .btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+      }
     }
     
     @media (max-width: 480px) {
@@ -799,6 +829,11 @@
       .flow-step-circle {
         margin-bottom: 0;
       }
+      
+      .mobile-wallet-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -809,9 +844,17 @@
       <i class="fas fa-bars"></i>
     </button>
     <div class="logo-text">NUUR Coin</div>
-    <button class="theme-toggle" id="themeToggleMobile">
-      <i class="fas fa-moon"></i>
-    </button>
+    <div class="mobile-header-buttons">
+      <button class="mobile-wallet-btn" id="connectWalletButtonMobile">
+        <i class="fas fa-wallet"></i> Connect
+      </button>
+      <button class="mobile-wallet-btn hidden" id="disconnectWalletButtonMobile">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+      <button class="theme-toggle" id="themeToggleMobile">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
   </div>
 
   <!-- Sidebar -->
@@ -824,11 +867,13 @@
       </button>
     </div>
     <ul class="sidebar-menu">
-      <li><a href="home"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="kyc-verification"><i class="fas fa-coins"></i> KYC</a></li>
-      <li><a href="claim-tokens"><i class="fas fa-chart-line"></i> Vestor</a></li>
-      <li><a href="whitepaper"><i class="fas fa-file-contract"></i> Whitepaper</a></li>
-      <li><a href="t.me/sidrabank_nuurcoin"><i class="fas fa-users"></i> Community</a></li>
+      <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="#"><i class="fas fa-coins"></i> Presale</a></li>
+      <li><a href="#"><i class="fas fa-chart-line"></i> Charts</a></li>
+      <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="#"><i class="fas fa-file-contract"></i> Whitepaper</a></li>
+      <li><a href="#"><i class="fas fa-users"></i> Community</a></li>
+      <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
     </ul>
   </div>
 
@@ -862,12 +907,12 @@
     <div class="left-panel">
       <div class="main-container">
         <div class="logo-header">
-          <img src="logo.png" alt="NUUR Coin Logo" class="logo-img">
+          <img src="https://via.placeholder.com/50x50/00F5E4/0B0F17?text=N" alt="NUUR Coin Logo" class="logo-img">
           <span class="logo-text">NUUR Coin</span>
         </div>
         
         <h1 class="title">Buy NUUR (Phase 2)</h1>
-        <p class="subtitle">Purchase before Phase 3</p>
+        <p class="subtitle">Purchase NUUR at Phase 2 at lower price</p>
         
         <!-- Network Indicator -->
         <div style="text-align: center; margin-bottom: 1.5rem;">
@@ -909,7 +954,7 @@
         <div class="contract-status">
           <div id="contractStatus" class="status-indicator status-active">
             <span class="status-dot"></span>
-            <span>Phase 2 is still open</span>
+            <span>Phase 2 is ongoing</span>
           </div>
           <div id="tokensRemaining" class="tokens-remaining">Checking remaining tokens...</div>
         </div>
@@ -922,7 +967,7 @@
           </div>
           <div class="input-container">
             <div class="token-info">
-              <img src="sidra.jpg" alt="SDA" class="token-icon">
+              <img src="https://via.placeholder.com/28x28/7B61FF/FFFFFF?text=S" alt="SDA" class="token-icon">
               <span class="token-name">SDA</span>
             </div>
             <input id="sdaAmount" type="number" step="any" min="1" max="5000" placeholder="1.00" />
@@ -996,16 +1041,6 @@
           </div>
         </div>
       </div>
-      
-      <div class="main-container">
-        <h2 style="margin-bottom: 1.5rem;">About NUUR Coin</h2>
-        <p style="color: var(--gray); line-height: 1.6; margin-bottom: 1rem;">
-          NUUR Coin is a revolutionary cryptocurrency built on the Sidra Chain, designed to provide fast, secure, and low-cost transactions.
-        </p>
-        <p style="color: var(--gray); line-height: 1.6;">
-          The presale phase offers early investors the opportunity to acquire NUUR tokens at a favorable rate before public launch.
-        </p>
-      </div>
     </div>
   </div>
 
@@ -1021,7 +1056,7 @@
       // Constants - PHASE 2
       const presaleAddress = "0x98FCc396547D450208e926995a74b61874a1423A";
       const nuurTokenAddress = "0x003BEc2e6ef4369f9d968eCD288d31B59fD9c2CD";
-      const sidraChainId = "0x17CAD"; // Sidra Chain ID (97453 in decimal)
+      const sidraChainId = "0x17CAD"; // Sidra Chain ID (88888 in decimal)
       const rate = 200; // 1 SDA = 200 NUUR (Phase 2)
       const minBuy = 1; // Minimum buy in SDA
       const maxBuy = 5000; // Maximum buy in SDA
@@ -1060,6 +1095,8 @@
       // DOM Elements
       const connectWalletBtn = document.getElementById('connectWalletButton');
       const disconnectWalletBtn = document.getElementById('disconnectWalletButton');
+      const connectWalletBtnMobile = document.getElementById('connectWalletButtonMobile');
+      const disconnectWalletBtnMobile = document.getElementById('disconnectWalletButtonMobile');
       const buyBtn = document.getElementById('buyButton');
       const sdaInput = document.getElementById('sdaAmount');
       const statusMessage = document.getElementById('statusMessage');
@@ -1242,8 +1279,15 @@
           const accounts = await provider.request({ method: "eth_requestAccounts" });
           userAddress = accounts[0];
           showStatus(`Wallet Connected: ${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`, "success");
+          
+          // Update desktop buttons
           connectWalletBtn.style.display = "none";
           disconnectWalletBtn.style.display = "inline-block";
+          
+          // Update mobile buttons
+          connectWalletBtnMobile.style.display = "none";
+          disconnectWalletBtnMobile.style.display = "inline-block";
+          
           await showWalletBalance();
           await checkContractTokenBalance();
           
@@ -1260,8 +1304,15 @@
       function disconnectWallet() {
         userAddress = null;
         showStatus("Wallet disconnected.", "info");
+        
+        // Update desktop buttons
         connectWalletBtn.style.display = "inline-block";
         disconnectWalletBtn.style.display = "none";
+        
+        // Update mobile buttons
+        connectWalletBtnMobile.style.display = "inline-block";
+        disconnectWalletBtnMobile.style.display = "none";
+        
         walletBalance.innerText = "Not Connected";
         sdaBalance.innerText = "-";
         
@@ -1450,6 +1501,8 @@
       // Event Listeners
       connectWalletBtn.addEventListener('click', connectWallet);
       disconnectWalletBtn.addEventListener('click', disconnectWallet);
+      connectWalletBtnMobile.addEventListener('click', connectWallet);
+      disconnectWalletBtnMobile.addEventListener('click', disconnectWallet);
       buyBtn.addEventListener('click', buyTokens);
       themeToggle.addEventListener('click', toggleTheme);
       themeToggleMobile.addEventListener('click', toggleTheme);
