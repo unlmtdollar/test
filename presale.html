@@ -28,6 +28,17 @@
       --glow: 0 0 15px rgba(0, 245, 228, 0.5);
     }
     
+    /* Light mode variables */
+    [data-theme="light"] {
+      --dark: #f0f2f5;
+      --darker: #e4e7eb;
+      --light: #1a1a1a;
+      --gray: #5a6478;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --card-border: rgba(123, 97, 255, 0.2);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
     * {
       margin: 0;
       padding: 0;
@@ -41,12 +52,17 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       padding: 1rem;
       background-image: 
         radial-gradient(circle at 15% 50%, rgba(28, 35, 56, 0.4) 0%, transparent 25%),
         radial-gradient(circle at 85% 30%, rgba(28, 35, 56, 0.4) 0%, transparent 25%);
+      transition: var(--transition);
+    }
+    
+    [data-theme="light"] body {
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(200, 210, 230, 0.4) 0%, transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(200, 210, 230, 0.4) 0%, transparent 25%);
     }
     
     h1, h2, h3, h4, h5 {
@@ -59,22 +75,58 @@
       color: inherit;
     }
     
+    /* Layout */
+    .app-container {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 2rem;
+    }
+    
+    .left-panel, .right-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
     /* Header */
     header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 1.2rem 2rem;
       display: flex;
-      justify-content: flex-end;
-      z-index: 100;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 1.2rem 0;
+      margin-bottom: 1rem;
+    }
+    
+    .theme-toggle {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--light);
+    }
+    
+    .theme-toggle:hover {
+      transform: rotate(30deg);
+      box-shadow: var(--glow);
+    }
+    
+    .wallet-buttons {
+      display: flex;
+      gap: 0.5rem;
     }
     
     /* Main Container */
     .main-container {
-      width: 100%;
-      max-width: 480px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
@@ -94,6 +146,10 @@
       height: 200%;
       background: radial-gradient(circle, rgba(0, 245, 228, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
       z-index: -1;
+    }
+    
+    [data-theme="light"] .main-container::before {
+      background: radial-gradient(circle, rgba(0, 245, 228, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
     }
     
     .logo-header {
@@ -163,6 +219,10 @@
       transition: var(--transition);
     }
     
+    [data-theme="light"] .input-container {
+      background: rgba(255, 255, 255, 0.7);
+    }
+    
     .input-container:focus-within {
       border-color: var(--primary);
       box-shadow: 0 0 0 2px rgba(0, 245, 228, 0.2);
@@ -218,6 +278,10 @@
       transition: var(--transition);
     }
     
+    [data-theme="light"] .info-item {
+      background: rgba(255, 255, 255, 0.5);
+    }
+    
     .info-item:hover {
       border-color: rgba(123, 97, 255, 0.2);
       transform: translateY(-3px);
@@ -247,6 +311,10 @@
       padding: 1rem;
       margin-bottom: 1.5rem;
       text-align: center;
+    }
+    
+    [data-theme="light"] .contract-status {
+      background: rgba(255, 255, 255, 0.7);
     }
     
     .status-indicator {
@@ -489,10 +557,210 @@
       border-color: #B91C1C;
     }
     
+    /* Sidebar for mobile */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100%;
+      background: var(--card-bg);
+      border-right: 1px solid var(--card-border);
+      z-index: 1000;
+      transition: var(--transition);
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+    
+    .sidebar.active {
+      left: 0;
+    }
+    
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      display: none;
+    }
+    
+    .sidebar-overlay.active {
+      display: block;
+    }
+    
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: var(--light);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 1rem;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.8rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    
+    .sidebar-menu a:hover {
+      background: rgba(123, 97, 255, 0.1);
+    }
+    
+    .mobile-header {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--card-border);
+    }
+    
+    .menu-toggle {
+      background: none;
+      border: none;
+      color: var(--light);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    /* Network Indicator */
+    .network-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: rgba(18, 24, 38, 0.7);
+      border: 1px solid rgba(123, 97, 255, 0.2);
+    }
+    
+    [data-theme="light"] .network-indicator {
+      background: rgba(255, 255, 255, 0.7);
+    }
+    
+    .network-correct {
+      background: rgba(72, 187, 120, 0.2);
+      color: #48BB78;
+      border-color: rgba(72, 187, 120, 0.3);
+    }
+    
+    .network-incorrect {
+      background: rgba(245, 101, 101, 0.2);
+      color: #F56565;
+      border-color: rgba(245, 101, 101, 0.3);
+    }
+    
+    /* Transaction Flow */
+    .transaction-flow {
+      display: flex;
+      justify-content: space-between;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    
+    .transaction-flow::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--gray);
+      opacity: 0.3;
+      z-index: 1;
+    }
+    
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+    
+    .flow-step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--dark);
+      border: 2px solid var(--gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+      transition: var(--transition);
+    }
+    
+    .flow-step.active .flow-step-circle {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: var(--dark);
+    }
+    
+    .flow-step.completed .flow-step-circle {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: var(--dark);
+    }
+    
+    .flow-step-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+      text-align: center;
+    }
+    
+    .flow-step.active .flow-step-label {
+      color: var(--primary);
+    }
+    
+    .flow-step.completed .flow-step-label {
+      color: var(--primary);
+    }
+    
     /* Responsive */
-    @media (max-width: 480px) {
+    @media (max-width: 1024px) {
+      .app-container {
+        flex-direction: column;
+      }
+      
+      .left-panel, .right-panel {
+        width: 100%;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .mobile-header {
+        display: flex;
+      }
+      
+      header {
+        display: none;
+      }
+      
       .main-container {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem;
       }
       
       .title {
@@ -506,14 +774,66 @@
       input {
         font-size: 1.1rem;
       }
+    }
+    
+    @media (max-width: 480px) {
+      .main-container {
+        padding: 1.5rem 1rem;
+      }
       
-      header {
-        padding: 1rem;
+      .transaction-flow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .transaction-flow::before {
+        display: none;
+      }
+      
+      .flow-step {
+        flex-direction: row;
+        gap: 1rem;
+      }
+      
+      .flow-step-circle {
+        margin-bottom: 0;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <button class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="logo-text">NUUR Coin</div>
+    <button class="theme-toggle" id="themeToggleMobile">
+      <i class="fas fa-moon"></i>
+    </button>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-text">NUUR Coin</div>
+      <button class="sidebar-close" id="sidebarClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="#"><i class="fas fa-coins"></i> Presale</a></li>
+      <li><a href="#"><i class="fas fa-chart-line"></i> Charts</a></li>
+      <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="#"><i class="fas fa-file-contract"></i> Whitepaper</a></li>
+      <li><a href="#"><i class="fas fa-users"></i> Community</a></li>
+      <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+    </ul>
+  </div>
+
   <!-- Notification Banner -->
   <div id="nuurNotice" class="notification-banner" style="display: none;">
     <div class="notification-text">
@@ -525,100 +845,171 @@
 
   <!-- Header -->
   <header>
-    <button id="connectWalletButton" class="btn btn-outline" style="width: auto;">
-      Connect Wallet
+    <button class="theme-toggle" id="themeToggle">
+      <i class="fas fa-moon"></i>
     </button>
-    <button id="disconnectWalletButton" class="btn btn-outline hidden" style="width: auto; margin-left: 0.5rem;">
-      Disconnect
-    </button>
+    <div class="wallet-buttons">
+      <button id="connectWalletButton" class="btn btn-outline" style="width: auto;">
+        Connect Wallet
+      </button>
+      <button id="disconnectWalletButton" class="btn btn-outline hidden" style="width: auto; margin-left: 0.5rem;">
+        Disconnect
+      </button>
+    </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="main-container">
-    <div class="logo-header">
-      <img src="logo.png" alt="NUUR Coin Logo" class="logo-img">
-      <span class="logo-text">NUUR Coin</span>
-    </div>
-    
-    <h1 class="title">Buy NUUR (Phase 2)</h1>
-    <p class="subtitle">Purchase NUUR tokens during the presale phase</p>
-    
-    <!-- Contract Status -->
-    <div class="contract-status">
-      <div id="contractStatus" class="status-indicator status-active">
-        <span class="status-dot"></span>
-        <span>Contract has tokens available</span>
-      </div>
-      <div id="tokensRemaining" class="tokens-remaining">Checking remaining tokens...</div>
-    </div>
-    
-    <!-- SDA Input -->
-    <div class="input-section">
-      <div class="input-label">
-        <span>You Pay</span>
-        <span>Balance: <span id="sdaBalance">-</span></span>
-      </div>
-      <div class="input-container">
-        <div class="token-info">
-          <img src="sidra.png" alt="SDA" class="token-icon">
-          <span class="token-name">SDA</span>
+  <!-- Main Content -->
+  <div class="app-container">
+    <!-- Left Panel -->
+    <div class="left-panel">
+      <div class="main-container">
+        <div class="logo-header">
+          <img src="logo.png" alt="NUUR Coin Logo" class="logo-img">
+          <span class="logo-text">NUUR Coin</span>
         </div>
-        <input id="sdaAmount" type="number" step="any" min="1" max="5000" placeholder="1.00" />
-      </div>
-    </div>
-    
-    <!-- NUUR Output -->
-    <div class="input-section">
-      <div class="input-label">
-        <span>You Receive</span>
-        <span>Rate: 1 SDA = 200 NUUR</span>
-      </div>
-      <div class="input-container">
-        <div class="token-info">
-          <img src="logo.png" alt="NUUR" class="token-icon">
-          <span class="token-name">NUUR</span>
+        
+        <h1 class="title">Buy NUUR (Phase 2)</h1>
+        <p class="subtitle">Purchase NUUR tokens during the presale phase</p>
+        
+        <!-- Network Indicator -->
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <div id="networkIndicator" class="network-indicator">
+            <i class="fas fa-circle"></i>
+            <span>Network: Not Connected</span>
+          </div>
         </div>
-        <span id="nuurEstimate">0</span>
+        
+        <!-- Transaction Flow -->
+        <div class="transaction-flow">
+          <div class="flow-step completed" id="step1">
+            <div class="flow-step-circle">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <div class="flow-step-label">Connect Wallet</div>
+          </div>
+          <div class="flow-step" id="step2">
+            <div class="flow-step-circle">
+              <i class="fas fa-check"></i>
+            </div>
+            <div class="flow-step-label">Approve</div>
+          </div>
+          <div class="flow-step" id="step3">
+            <div class="flow-step-circle">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div class="flow-step-label">Purchase</div>
+          </div>
+          <div class="flow-step" id="step4">
+            <div class="flow-step-circle">
+              <i class="fas fa-check-double"></i>
+            </div>
+            <div class="flow-step-label">Complete</div>
+          </div>
+        </div>
+        
+        <!-- Contract Status -->
+        <div class="contract-status">
+          <div id="contractStatus" class="status-indicator status-active">
+            <span class="status-dot"></span>
+            <span>Phase 2 is still open</span>
+          </div>
+          <div id="tokensRemaining" class="tokens-remaining">Checking remaining tokens...</div>
+        </div>
+        
+        <!-- SDA Input -->
+        <div class="input-section">
+          <div class="input-label">
+            <span>You Pay</span>
+            <span>Balance: <span id="sdaBalance">-</span></span>
+          </div>
+          <div class="input-container">
+            <div class="token-info">
+              <img src="sidra.jpg" alt="SDA" class="token-icon">
+              <span class="token-name">SDA</span>
+            </div>
+            <input id="sdaAmount" type="number" step="any" min="1" max="5000" placeholder="1.00" />
+          </div>
+        </div>
+        
+        <!-- NUUR Output -->
+        <div class="input-section">
+          <div class="input-label">
+            <span>You Receive</span>
+            <span>Rate: 1 SDA = 200 NUUR</span>
+          </div>
+          <div class="input-container">
+            <div class="token-info">
+              <img src="https://via.placeholder.com/28x28/00F5E4/0B0F17?text=N" alt="NUUR" class="token-icon">
+              <span class="token-name">NUUR</span>
+            </div>
+            <span id="nuurEstimate">0</span>
+          </div>
+        </div>
+        
+        <!-- Buy Button -->
+        <div style="position: relative;">
+          <button id="buyButton" class="btn btn-primary">
+            <i class="fas fa-coins"></i> Buy NUUR
+          </button>
+          <span id="spinner" class="spinner hidden"></span>
+        </div>
+        
+        <!-- Status Message -->
+        <div id="statusMessage" class="status-message"></div>
+        
+        <!-- Wallet Balance -->
+        <div class="wallet-section">
+          <div>Wallet Balance</div>
+          <div id="walletBalance" class="wallet-balance">Not Connected</div>
+        </div>
       </div>
     </div>
     
-    <!-- Info Grid -->
-    <div class="info-grid">
-      <div class="info-item">
-        <div class="info-label">Phase</div>
-        <div class="info-value">NuurPhase2</div>
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <div class="main-container">
+        <h2 style="margin-bottom: 1.5rem;">Presale Information</h2>
+        
+        <!-- Info Grid -->
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Phase</div>
+            <div class="info-value">NuurPhase2</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Rate</div>
+            <div class="info-value highlight">1 SDA = 200 NUUR</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Min. Buy</div>
+            <div class="info-value">1 SDA</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Max. Buy</div>
+            <div class="info-value">5,000 SDA</div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Transaction History</h3>
+          <div style="text-align: center; padding: 2rem; color: var(--gray);">
+            <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+            <p>No transactions yet</p>
+          </div>
+        </div>
       </div>
-      <div class="info-item">
-        <div class="info-label">Rate</div>
-        <div class="info-value highlight">1 SDA = 200 NUUR</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Min. Buy</div>
-        <div class="info-value">1 SDA</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Max. Buy</div>
-        <div class="info-value">5,000 SDA</div>
+      
+      <div class="main-container">
+        <h2 style="margin-bottom: 1.5rem;">About NUUR Coin</h2>
+        <p style="color: var(--gray); line-height: 1.6; margin-bottom: 1rem;">
+          NUUR Coin is a revolutionary cryptocurrency built on the Sidra Chain, designed to provide fast, secure, and low-cost transactions.
+        </p>
+        <p style="color: var(--gray); line-height: 1.6;">
+          The presale phase offers early investors the opportunity to acquire NUUR tokens at a favorable rate before public launch.
+        </p>
       </div>
     </div>
-    
-    <!-- Buy Button -->
-    <div style="position: relative;">
-      <button id="buyButton" class="btn btn-primary">
-        <i class="fas fa-coins"></i> Buy NUUR
-      </button>
-      <span id="spinner" class="spinner hidden"></span>
-    </div>
-    
-    <!-- Status Message -->
-    <div id="statusMessage" class="status-message"></div>
-    
-    <!-- Wallet Balance -->
-    <div class="wallet-section">
-      <div>Wallet Balance</div>
-      <div id="walletBalance" class="wallet-balance">Not Connected</div>
-    </div>
-  </main>
+  </div>
 
   <!-- Footer -->
   <footer>
@@ -630,14 +1021,16 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Constants - PHASE 2
-      const presaleAddress = "0xF2bba480Fc3b2e75019CE54e3Da8D1f9A5d9a067";
-      const nuurTokenAddress = "0xd9F17EDf816A9404385aE1c35df7F401a1Ee41a5";
-      const rate = 1000; // 1 SDA = 1000 NUUR (Phase 2)
+      const presaleAddress = "0x98FCc396547D450208e926995a74b61874a1423A";
+      const nuurTokenAddress = "0x003BEc2e6ef4369f9d968eCD288d31B59fD9c2CD";
+      const sidraChainId = "0x15b38"; // Sidra Chain ID (88888 in decimal)
+      const rate = 200; // 1 SDA = 200 NUUR (Phase 2)
       const minBuy = 1; // Minimum buy in SDA
       const maxBuy = 5000; // Maximum buy in SDA
       
       // Contract ABIs
-      const presaleAbi = [{"inputs":[{"internalType":"address","name":"_vestingContract","type":"address"},{"internalType":"address","name":"_devWallet","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"newDevWallet","type":"address"}],"name":"DevWalletUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"phaseId","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"PhaseUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"isActive","type":"bool"}],"name":"PresaleStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint256","name":"sdaAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"nuurAmount","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"}],"name":"TokensPurchased","type":"event"},{"inputs":[],"name":"buyTokens","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"sdaAmount","type":"uint256"}],"name":"calculateNUURAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devWallet","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCurrentPhaseInfo","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"phaseId","type":"uint256"}],"name":"getPhaseInfo","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"phases","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"_status","type":"bool"}],"name":"setPresaleStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalSDAReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTokensSold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newDevWallet","type":"address"}],"name":"updateDevWallet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newPhaseId","type":"uint256"},{"internalType":"string","name":"newName","type":"string"},{"internalType":"uint256","name":"newRate","type":"uint256"}],"name":"updatePhase","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"vestingContract","outputs":[{"internalType":"contract IVesting","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"stateMutability":"payable","type":"receive"}];
+      const presaleAbi = [{"inputs":[{"internalType":"address","name":"_nuurToken","type":"address"},{"internalType":"address","name":"_devWallet","type":"address"},{"internalType":"address","name":"initialOwner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"newDevWallet","type":"address"}],"name":"DevWalletUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"NUURWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"phaseId","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"PhaseUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"isActive","type":"bool"}],"name":"PresaleStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"SDAWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensDeposited","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint256","name":"sdaAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"nuurAmount","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"}],"name":"TokensPurchased","type":"event"},{"inputs":[],"name":"buyTokens","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"sdaAmount","type":"uint256"}],"name":"calculateNUURAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"depositTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"devWallet","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCurrentPhaseInfo","outputs":[{"internalType":"uint256","name":"phaseId","type":"uint256"},{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getNUURBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"phaseId","type":"uint256"}],"name":"getPhaseInfo","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getSDABalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nuurToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"phaseStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"phases","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"_status","type":"bool"}],"name":"setPresaleStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalSDAReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTokensSold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newDevWallet","type":"address"}],"name":"updateDevWallet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newPhaseId","type":"uint256"},{"internalType":"string","name":"newPhaseName","type":"string"},{"internalType":"uint256","name":"newRate","type":"uint256"}],"name":"updatePhase","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawNUUR","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawSDA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
+
       const tokenAbi = [
         {
           "constant": true,
@@ -663,6 +1056,8 @@
       let tokenContract = null;
       let contractHasTokens = true;
       let contractTokenBalance = 0;
+      let currentNetwork = null;
+      let isCorrectNetwork = false;
 
       // DOM Elements
       const connectWalletBtn = document.getElementById('connectWalletButton');
@@ -676,6 +1071,17 @@
       const sdaBalance = document.getElementById('sdaBalance');
       const contractStatus = document.getElementById('contractStatus');
       const tokensRemaining = document.getElementById('tokensRemaining');
+      const networkIndicator = document.getElementById('networkIndicator');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeToggleMobile = document.getElementById('themeToggleMobile');
+      const menuToggle = document.getElementById('menuToggle');
+      const sidebar = document.getElementById('sidebar');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const sidebarClose = document.getElementById('sidebarClose');
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
+      const step4 = document.getElementById('step4');
 
       // Initialize Web3
       async function initWeb3() {
@@ -684,9 +1090,105 @@
           web3 = new Web3(provider);
           presaleContract = new web3.eth.Contract(presaleAbi, presaleAddress);
           tokenContract = new web3.eth.Contract(tokenAbi, nuurTokenAddress);
+          
+          // Check network
+          await checkNetwork();
+          
+          // Set up network change listener
+          provider.on('chainChanged', (chainId) => {
+            window.location.reload();
+          });
+          
+          // Set up account change listener
+          provider.on('accountsChanged', (accounts) => {
+            if (accounts.length === 0) {
+              disconnectWallet();
+            } else {
+              userAddress = accounts[0];
+              showWalletBalance();
+            }
+          });
+          
           return true;
         }
         return false;
+      }
+
+      // Check network
+      async function checkNetwork() {
+        if (!web3) return;
+        
+        try {
+          const chainId = await web3.eth.getChainId();
+          currentNetwork = chainId;
+          isCorrectNetwork = chainId === parseInt(sidraChainId, 16);
+          
+          // Update network indicator
+          updateNetworkIndicator();
+          
+          return isCorrectNetwork;
+        } catch (error) {
+          console.error("Error checking network:", error);
+          return false;
+        }
+      }
+
+      // Update network indicator
+      function updateNetworkIndicator() {
+        if (!currentNetwork) {
+          networkIndicator.innerHTML = '<i class="fas fa-circle"></i><span>Network: Not Connected</span>';
+          networkIndicator.className = 'network-indicator';
+          return;
+        }
+        
+        if (isCorrectNetwork) {
+          networkIndicator.innerHTML = '<i class="fas fa-check-circle"></i><span>Sidra Chain</span>';
+          networkIndicator.className = 'network-indicator network-correct';
+        } else {
+          networkIndicator.innerHTML = '<i class="fas fa-exclamation-circle"></i><span>Wrong Network</span>';
+          networkIndicator.className = 'network-indicator network-incorrect';
+        }
+      }
+
+      // Switch to Sidra Chain
+      async function switchToSidraChain() {
+        if (!provider) return false;
+        
+        try {
+          await provider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: sidraChainId }],
+          });
+          return true;
+        } catch (switchError) {
+          // This error code indicates that the chain has not been added to MetaMask
+          if (switchError.code === 4902) {
+            try {
+              await provider.request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                  {
+                    chainId: sidraChainId,
+                    chainName: 'Sidra Chain Mainnet',
+                    nativeCurrency: {
+                      name: 'Sidra',
+                      symbol: 'SDA',
+                      decimals: 18
+                    },
+                    rpcUrls: ['https://rpc.sidrachain.com'],
+                    blockExplorerUrls: ['https://ledger.sidrachain.com']
+                  }
+                ]
+              });
+              return true;
+            } catch (addError) {
+              console.error("Error adding Sidra Chain:", addError);
+              return false;
+            }
+          }
+          console.error("Error switching to Sidra Chain:", switchError);
+          return false;
+        }
       }
 
       // Check contract token balance
@@ -726,6 +1228,18 @@
           return;
         }
 
+        // Check if we're on the correct network
+        if (!isCorrectNetwork) {
+          const switchResult = await switchToSidraChain();
+          if (!switchResult) {
+            showStatus("Please switch to Sidra Chain to continue.", "error");
+            return;
+          }
+          // Wait for network switch
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          await checkNetwork();
+        }
+
         try {
           const accounts = await provider.request({ method: "eth_requestAccounts" });
           userAddress = accounts[0];
@@ -734,6 +1248,10 @@
           disconnectWalletBtn.style.display = "inline-block";
           await showWalletBalance();
           await checkContractTokenBalance();
+          
+          // Update transaction flow
+          step1.classList.add('completed');
+          step2.classList.add('active');
         } catch (error) {
           showStatus("Wallet connection failed.", "error");
           console.error(error);
@@ -748,6 +1266,12 @@
         disconnectWalletBtn.style.display = "none";
         walletBalance.innerText = "Not Connected";
         sdaBalance.innerText = "-";
+        
+        // Reset transaction flow
+        step1.classList.remove('completed');
+        step2.classList.remove('active', 'completed');
+        step3.classList.remove('active', 'completed');
+        step4.classList.remove('active', 'completed');
       }
 
       // Show Wallet Balance
@@ -784,6 +1308,12 @@
           return;
         }
         
+        // Check if we're on the correct network
+        if (!isCorrectNetwork) {
+          showStatus("Please switch to Sidra Chain to continue.", "error");
+          return;
+        }
+        
         // Check if contract has tokens
         if (!contractHasTokens) {
           showStatus("Presale contract has no tokens remaining. Purchase not possible.", "error");
@@ -802,6 +1332,10 @@
         showStatus("Processing transaction...", "info");
 
         try {
+          // Update transaction flow
+          step2.classList.add('completed');
+          step3.classList.add('active');
+
           // Create the transaction
           const value = web3.utils.toWei(sdaAmount.toString(), 'ether');
           const data = presaleContract.methods.buyTokens().encodeABI();
@@ -819,6 +1353,11 @@
 
           const explorerLink = `https://ledger.sidrachain.com/tx/${txHash}`;
           showStatus(`Transaction sent. <a href="${explorerLink}" target="_blank" style="color: var(--primary); text-decoration: underline;">View on Explorer</a>`, "success");
+          
+          // Update transaction flow
+          step3.classList.add('completed');
+          step4.classList.add('active');
+          
           await showWalletBalance();
           
           // Update contract balance after purchase
@@ -826,6 +1365,10 @@
         } catch (error) {
           console.error(error);
           showStatus(`Transaction failed: ${error.message || 'Unknown error'}`, "error");
+          
+          // Reset transaction flow on error
+          step3.classList.remove('active', 'completed');
+          step4.classList.remove('active', 'completed');
         } finally {
           buyBtn.disabled = false;
           spinner.classList.add("hidden");
@@ -884,10 +1427,37 @@
         nuurEstimate.innerText = nuurAmount.toLocaleString();
       });
 
+      // Theme toggle
+      function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('nuurTheme', newTheme);
+        
+        // Update icon
+        const icon = themeToggle.querySelector('i');
+        icon.className = newTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+        
+        const iconMobile = themeToggleMobile.querySelector('i');
+        iconMobile.className = newTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+      }
+
+      // Sidebar toggle
+      function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        sidebarOverlay.classList.toggle('active');
+      }
+
       // Event Listeners
       connectWalletBtn.addEventListener('click', connectWallet);
       disconnectWalletBtn.addEventListener('click', disconnectWallet);
       buyBtn.addEventListener('click', buyTokens);
+      themeToggle.addEventListener('click', toggleTheme);
+      themeToggleMobile.addEventListener('click', toggleTheme);
+      menuToggle.addEventListener('click', toggleSidebar);
+      sidebarOverlay.addEventListener('click', toggleSidebar);
+      sidebarClose.addEventListener('click', toggleSidebar);
 
       // Initialize
       initWeb3().then(() => {
@@ -896,6 +1466,17 @@
         
         // Set up periodic contract balance checks
         setInterval(checkContractTokenBalance, 30000); // Check every 30 seconds
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('nuurTheme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        // Update icon based on saved theme
+        const icon = themeToggle.querySelector('i');
+        icon.className = savedTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+        
+        const iconMobile = themeToggleMobile.querySelector('i');
+        iconMobile.className = savedTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
       });
     });
 
