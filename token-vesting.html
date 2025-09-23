@@ -75,17 +75,63 @@
     }
 
     /* layout */
-    .app { width: 100%; max-width: var(--maxw); margin: 18px auto; display: grid; grid-template-columns: 280px 1fr; gap: 18px; align-items: start; padding: 12px; }
+    .app { 
+      width: 100%; 
+      max-width: var(--maxw); 
+      margin: 18px auto; 
+      display: grid; 
+      grid-template-columns: 280px 1fr; 
+      gap: 18px; 
+      align-items: start; 
+      padding: 12px; 
+      box-sizing: border-box;
+      min-width: 320px;
+    }
 
-    .sidebar { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: var(--card-radius); padding: 16px; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.06); min-height:520px; display:flex; flex-direction:column; gap:12px; }
+    .sidebar { 
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); 
+      border-radius: var(--card-radius); 
+      padding: 16px; 
+      box-shadow: var(--shadow); 
+      border: 1px solid rgba(0,0,0,0.06); 
+      min-height:520px;
+      display:flex; 
+      flex-direction:column; 
+      gap:12px; 
+    }
+    
     .brand { display:flex; gap:12px; align-items:center; }
-    .brand .logo { width:56px; height:56px; border-radius: 10px; overflow:hidden; background: linear-gradient(135deg, var(--color-primary), var(--color-strong)); display:flex; align-items:center; justify-content:center; box-shadow: 0 8px 26px rgba(0,0,0,0.12); flex-shrink:0; }
+    .brand .logo { 
+      width:56px; 
+      height:56px; 
+      border-radius: 10px; 
+      overflow:hidden; 
+      background: linear-gradient(135deg, var(--color-primary), var(--color-strong)); 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      box-shadow: 0 8px 26px rgba(0,0,0,0.12); 
+      flex-shrink:0; 
+    }
     .brand .logo img { width:100%; height:100%; object-fit:cover; display:block; }
     .brand h1 { margin:0; font-size:18px; color: var(--color-primary); font-weight:700; }
     .brand p { margin:0; font-size:12px; color:var(--muted); }
 
     .controls { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
-    .btn { display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:10px 12px; border-radius:10px; border: none; cursor:pointer; font-weight:700; transition: transform .12s ease; }
+    .btn { 
+      display:inline-flex; 
+      align-items:center; 
+      justify-content:center; 
+      gap:10px; 
+      padding:10px 12px; 
+      border-radius:10px; 
+      border: none; 
+      cursor:pointer; 
+      font-weight:700; 
+      transition: transform .12s ease;
+      min-height: 44px;
+      white-space: nowrap;
+    }
     .btn:active { transform: translateY(1px); }
     .btn-primary { background: linear-gradient(90deg, var(--color-accent), var(--color-success)); color: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12); }
     .btn-ghost { background: transparent; border: 1px solid rgba(0,0,0,0.06); color: var(--muted); padding: 10px; border-radius: 10px; }
@@ -95,7 +141,17 @@
 
     .card { background: var(--panel); border-radius: var(--radius); padding: 12px; border:1px solid rgba(0,0,0,0.04); box-shadow: var(--shadow); }
 
-    .main { background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border-radius: var(--card-radius); padding: 18px; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.06); min-height:520px; display:flex; flex-direction:column; gap:14px; }
+    .main { 
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); 
+      border-radius: var(--card-radius); 
+      padding: 18px; 
+      box-shadow: var(--shadow); 
+      border: 1px solid rgba(0,0,0,0.06); 
+      min-height:520px; 
+      display:flex; 
+      flex-direction:column; 
+      gap:14px; 
+    }
 
     .top-row { display:flex; justify-content:space-between; align-items:center; gap:12px; }
     .muted { color:var(--muted); font-size:13px; }
@@ -118,186 +174,158 @@
 
     .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
 
-    .modal-backdrop { position: fixed; inset:0; display:none; align-items:center; justify-content:center; background: rgba(2,6,23,0.6); z-index:80; }
+    .modal-backdrop { 
+      position: fixed; 
+      inset:0; 
+      display:none; 
+      align-items:center; 
+      justify-content:center; 
+      background: rgba(2,6,23,0.6); 
+      z-index:80; 
+    }
     .modal-backdrop.show { display:flex; }
-    .modal { width: min(96%, 880px); background: var(--panel); border-radius: 12px; padding:16px; border:1px solid rgba(0,0,0,0.06); }
-    /* Base responsive improvements */
-.app {
-  box-sizing: border-box;
-  min-width: 320px;
-  padding: min(18px, 4vw);
-}
+    .modal { 
+      width: min(96%, 880px); 
+      background: var(--panel); 
+      border-radius: 12px; 
+      padding:16px; 
+      border:1px solid rgba(0,0,0,0.06); 
+    }
 
-.btn {
-  min-height: 44px; /* Better touch targets */
-  white-space: nowrap;
-}
+    .form-input {
+      min-height: 44px;
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.06);
+      background: transparent;
+      color: var(--text-muted);
+      box-sizing: border-box;
+      font-size: 16px; /* Prevent iOS zoom */
+    }
 
-.form-input {
-  min-height: 44px; /* Better touch targets */
-}
-
-/* Update existing media queries */
-@media (max-width: 900px) {
-  .app { 
-    grid-template-columns: 1fr; 
-    padding: min(12px, 3vw);
-    gap: 12px;
-  }
-  
-  .sidebar {
-    padding: 16px;
-  }
-  
-  .main {
-    padding: 16px;
-  }
-  
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  
-  .panel {
-    padding: 16px;
-  }
-  
-  .claim-area {
-    flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
-  }
-  
-  .claim-area .btn {
-    width: 100%;
-  }
-}
-
-@media (max-width: 600px) {
-  .app {
-    padding: min(8px, 2vw);
-  }
-  
-  .brand h1 {
-    font-size: 1.25rem;
-  }
-  
-  .controls {
-    flex-wrap: wrap;
-  }
-  
-  .btn {
-    padding: 10px 16px;
-    font-size: 0.9rem;
-    width: 100%;
-  }
-  
-  .countdown {
-    gap: 8px;
-  }
-  
-  .unit {
-    flex: 1;
-    min-width: 60px;
-    padding: 8px;
-  }
-  
-  .big-value {
-    font-size: 1.25rem;
-  }
-  
-  .modal {
-    width: 90%;
-    padding: 16px;
-  }
-  
-  .form-input {
-    font-size: 16px; /* Prevent iOS zoom */
-  }
-}
-
-@media (max-width: 420px) {
-  .app {
-    padding: min(6px, 1.5vw);
-  }
-  
-  .controls {
-    gap: 8px;
-  }
-  
-  .panel, .card {
-    padding: 12px;
-  }
-  
-  .countdown {
-    gap: 4px;
-  }
-  
-  .unit {
-    min-width: 50px;
-    padding: 6px;
-  }
-  
-  .num {
-    font-size: 0.9rem;
-  }
-  
-  .lbl {
-    font-size: 0.7rem;
-  }
-  
-  /* Improve admin modal on mobile */
-  .modal {
-    padding: 12px;
-  }
-  
-  .modal .grid-2 {
-    grid-template-columns: 1fr;
-  }
-}
-
-    /* responsive */
+    /* Responsive improvements */
     @media (max-width: 900px) {
-      .app { grid-template-columns: 1fr; padding:8px; gap:10px; }
-      .sidebar { order: 0; display:flex; flex-direction:column; align-items:stretch; gap:10px; padding:10px; min-height: auto; }
-      .brand { justify-content: center; text-align: center; }
-      .brand .logo { width: 48px; height: 48px; }
-      .controls { flex-direction:row; gap:8px; margin-left:0; justify-content: center; }
-      .main { order:1; padding:12px; }
-      .grid-2 { grid-template-columns: 1fr; }
-      .card, .panel { padding:12px; }
-      .btn { padding:10px; font-size:14px; }
-      .claim-area { justify-content: space-between; }
-      .unit { min-width:48px; padding:8px; }
-      .top-row { flex-direction: column; align-items: flex-start; }
+      .app { 
+        grid-template-columns: 1fr; 
+        padding: min(12px, 3vw);
+        gap: 12px;
+      }
+      
+      .sidebar {
+        padding: 16px;
+        min-height: auto;
+      }
+      
+      .main {
+        padding: 16px;
+      }
+      
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .panel {
+        padding: 16px;
+      }
+      
+      .claim-area {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+      }
+      
+      .claim-area .btn {
+        width: 100%;
+      }
+      
+      .top-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
 
-    @media (max-width:600px){
-      .app { padding: 6px; }
-      .sidebar { padding: 10px; }
-      .main { padding: 10px; }
-      .brand { flex-direction: column; text-align: center; }
-      .brand h1 { font-size: 16px; }
-      .controls { flex-wrap: wrap; justify-content: center; }
-      .btn { flex: 1; min-width: 120px; }
-      .countdown { justify-content: center; }
-      .unit { min-width: 40px; padding: 6px; }
-      .num { font-size: 14px; }
-      .lbl { font-size: 10px; }
-      .big-value { font-size: 18px; }
-      .claim-amount { font-size: 16px; }
+    @media (max-width: 600px) {
+      .app {
+        padding: min(8px, 2vw);
+      }
+      
+      .brand h1 {
+        font-size: 1.25rem;
+      }
+      
+      .controls {
+        flex-wrap: wrap;
+      }
+      
+      .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        width: 100%;
+      }
+      
+      .countdown {
+        gap: 8px;
+      }
+      
+      .unit {
+        flex: 1;
+        min-width: 60px;
+        padding: 8px;
+      }
+      
+      .big-value {
+        font-size: 1.25rem;
+      }
+      
+      .modal {
+        width: 90%;
+        padding: 16px;
+      }
     }
 
-    @media (max-width:420px){
-      .brand p { display:none; }
-      .big-value { font-size:16px; }
-      .btn { padding:8px; font-size:12px; min-width: 100px; }
-      .controls { gap:4px; }
-      .countdown { gap: 4px; }
-      .unit { min-width: 36px; padding: 4px; }
-      .num { font-size: 12px; }
-      .lbl { font-size: 9px; }
+    @media (max-width: 420px) {
+      .app {
+        padding: min(6px, 1.5vw);
+      }
+      
+      .controls {
+        gap: 8px;
+      }
+      
+      .panel, .card {
+        padding: 12px;
+      }
+      
+      .countdown {
+        gap: 4px;
+      }
+      
+      .unit {
+        min-width: 50px;
+        padding: 6px;
+      }
+      
+      .num {
+        font-size: 0.9rem;
+      }
+      
+      .lbl {
+        font-size: 0.7rem;
+      }
+      
+      .modal {
+        padding: 12px;
+      }
+      
+      .modal .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      
+      .brand p { 
+        display:none; 
+      }
     }
 
     /* Initially hide theme toggle until wallet connect */
@@ -463,7 +491,7 @@
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
         <div>
           <label class="muted small">Add single presale</label>
-          <input id="adminPresale" class="form-input" placeholder="0x..." style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
+          <input id="adminPresale" class="form-input" placeholder="0x..." />
           <div style="margin-top:8px; display:flex; gap:8px">
             <button id="adminAddPresale" class="btn btn-primary">Add</button>
           </div>
@@ -471,7 +499,7 @@
           <div style="height:8px"></div>
 
           <label class="muted small">Add multiple (comma/newline)</label>
-          <textarea id="adminBatch" class="form-input" style="min-height:90px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent"></textarea>
+          <textarea id="adminBatch" class="form-input" style="min-height:90px;"></textarea>
           <div style="margin-top:8px;display:flex;gap:8px">
             <button id="adminBatchAdd" class="btn btn-primary">Add Batch</button>
           </div>
@@ -479,8 +507,8 @@
 
         <div>
           <label class="muted small">Set single KYC</label>
-          <input id="adminKycAddr" class="form-input" placeholder="0x..." style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
-          <select id="adminKycStatus" class="form-input" style="margin-top:8px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent">
+          <input id="adminKycAddr" class="form-input" placeholder="0x..." />
+          <select id="adminKycStatus" class="form-input" style="margin-top:8px;">
             <option value="true">Verified</option>
             <option value="false">Not verified</option>
           </select>
@@ -489,8 +517,8 @@
           <div style="height:8px"></div>
 
           <label class="muted small">Batch KYC (addresses newline/comma) and statuses (comma)</label>
-          <textarea id="adminKycBatchAddrs" class="form-input" style="min-height:80px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent"></textarea>
-          <input id="adminKycBatchStatuses" class="form-input" placeholder="true,false,true" style="margin-top:8px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
+          <textarea id="adminKycBatchAddrs" class="form-input" style="min-height:80px;"></textarea>
+          <input id="adminKycBatchStatuses" class="form-input" placeholder="true,false,true" style="margin-top:8px;" />
           <div style="margin-top:8px"><button id="adminSetKycBatch" class="btn btn-primary">Set Batch KYC</button></div>
         </div>
       </div>
@@ -499,6 +527,7 @@
 
       <div style="display:flex;gap:8px;justify-content:flex-end">
         <button id="adminStart" class="btn btn-primary">Start Vesting</button>
+        <button id="adminStop" class="btn btn-ghost">Stop Vesting</button>
         <button id="adminPause" class="btn btn-ghost">Pause</button>
         <button id="adminUnpause" class="btn btn-ghost">Unpause</button>
       </div>
@@ -517,12 +546,13 @@
 <script>
 (function(){
   /* ------------------- Config -------------------- */
-  const CONTRACT_ADDR = "0xF300235899b647bea68122B18Ff7d757e71BE2a2";
-  const NUUR_TOKEN = "0x135800ac1DB3Ba26af6c4A95c49b1Ed00F851E57";
+  const CONTRACT_ADDR = "0x2D52DfF988FC49A020B941228ACdD2dD34dC551B";
+  const NUUR_TOKEN = "0xbCC99Df0bE6938A2b4Ff73D3d118D5BC1CB9edAa";
   const SIDRA_CHAIN = { chainId: "0x17CAD", blockExplorerUrls:["https://ledger.sidrachain.com"] };
   const EXPLORER = (SIDRA_CHAIN.blockExplorerUrls && SIDRA_CHAIN.blockExplorerUrls[0]) ? SIDRA_CHAIN.blockExplorerUrls[0].replace(/\/$/,'') : '';
 
-  const VESTING_ABI = [{"inputs":[{"internalType":"address","name":"_newToken","type":"address"},{"internalType":"address","name":"_oldToken","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"KYCBatchUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"verified","type":"bool"}],"name":"KYCUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"oldToken","type":"address"}],"name":"OldTokenSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"presale","type":"address"}],"name":"PresaleContractAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"VestingStarted","type":"event"},{"inputs":[],"name":"MONTH_DURATION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VESTING_MONTHS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"presale","type":"address"}],"name":"addOldPresaleContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getOldPresaleContracts","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"newToken","outputs":[{"internalType":"contract INuurCoin","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"oldPresaleContracts","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"oldToken","outputs":[{"internalType":"contract IOldToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"setKYC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"setKYCForBatch","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vestingInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"bool","name":"exists","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStarted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}];
+  const VESTING_ABI = [{"inputs":[{"internalType":"address","name":"_newToken","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"KYCBatchUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"verified","type":"bool"}],"name":"KYCUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"presale","type":"address"}],"name":"PresaleContractAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"VestingStarted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"stopTime","type":"uint256"}],"name":"VestingStopped","type":"event"},{"inputs":[],"name":"MONTH_DURATION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VESTING_MONTHS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"presale","type":"address"}],"name":"addOldPresaleContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getOldPresaleContracts","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserVestingStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"newToken","outputs":[{"internalType":"contract INuurCoin","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"oldPresaleContracts","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"setKYC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"setKYCForBatch","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"totalAmount","type":"uint256"}],"name":"setVestingInfo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"stopVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vestingInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"personalStartTime","type":"uint256"},{"internalType":"bool","name":"exists","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStarted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}]; // PLACEHOLDER - will be filled with new ABI
+
   /* ------------------- DOM -------------------- */
   const connectBtn = document.getElementById('connectBtn');
   const themeToggle = document.getElementById('themeToggle');
@@ -569,6 +599,7 @@
   const adminKycBatchStatuses = document.getElementById('adminKycBatchStatuses');
   const adminSetKycBatchBtn = document.getElementById('adminSetKycBatch');
   const adminStart = document.getElementById('adminStart');
+  const adminStop = document.getElementById('adminStop');
   const adminPause = document.getElementById('adminPause');
   const adminUnpause = document.getElementById('adminUnpause');
   const adminPresaleList = document.getElementById('adminPresaleList');
@@ -586,6 +617,7 @@
   let nextVestingTimeMs = null;
   let lastClaimable = ethers.BigNumber.from(0);
   let isOwner = false;
+  let userPersonalStartTime = 0;
   const POLL_INTERVAL = 15000;
 
   /* ------------------- Utilities -------------------- */
@@ -600,9 +632,9 @@
     }
     clearTimeout(toastShow._t); toastShow._t = setTimeout(()=>{ toastEl.style.display = 'none'; toastEl.textContent = ''; }, 3800);
   }
+  
   function short(addr){ return addr ? `${addr.slice(0,6)}…${addr.slice(-4)}` : '0x--'; }
   
-  // Format SDA balance to 2 decimal places
   function formatSdaBalance(balance) {
     const num = parseFloat(ethers.utils.formatEther(balance));
     return num.toFixed(2);
@@ -610,6 +642,7 @@
 
   /* ----------------- Theme handling ------------------ */
   const body = document.body;
+  
   function applyStoredTheme(){
     const theme = localStorage.getItem('nuur:theme') || 'dark';
     body.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
@@ -627,13 +660,11 @@
   
   applyStoredTheme();
 
-  // show theme toggle after wallet connect
   function showThemeToggle() {
     const t = document.getElementById('themeToggle');
     if (t) t.style.display = 'inline-block';
   }
 
-  // UI toggle handler
   if (themeToggle) {
     themeToggle.addEventListener('click', ()=>{
       const current = body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
@@ -656,19 +687,18 @@
       contract = new ethers.Contract(CONTRACT_ADDR, VESTING_ABI, signer);
       tokenContract = new ethers.Contract(NUUR_TOKEN, ["function balanceOf(address) view returns (uint256)","function decimals() view returns (uint8)"], signer);
 
-      // UI updates
       if (connectBtn) connectBtn.style.display = 'none';
       if (ctaAccountBox) ctaAccountBox.style.display = 'block';
       if (openAdmin) openAdmin.style.display = 'none';
       if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
       if (addrShort) addrShort.textContent = short(account);
+      
       try{ decimals = await tokenContract.decimals(); } catch(e){ decimals = 18; }
+      
       if (contractLink) contractLink.href = EXPLORER ? `${EXPLORER}/address/${CONTRACT_ADDR}` : '#';
       if (explorerTx) explorerTx.href = EXPLORER ? `${EXPLORER}` : '#';
 
-      // show theme toggle now wallet connected
       showThemeToggle();
-
       await loadAll();
       startPoll();
     } catch (e){
@@ -692,19 +722,30 @@
     try {
       const [bNu, bSda] = await Promise.all([ tokenContract.balanceOf(account), provider.getBalance(account) ]);
       if (nuurBal) nuurBal.textContent = ethers.utils.formatUnits(bNu, decimals);
-      if (sdaBal) sdaBal.textContent = formatSdaBalance(bSda); // Format SDA to 2 decimals
+      if (sdaBal) sdaBal.textContent = formatSdaBalance(bSda);
 
       const k = await contract.kycVerified(account);
       if (kycText) kycText.textContent = k ? 'Verified' : 'Not verified';
       if (kycDot) kycDot.style.background = k ? 'var(--color-success)' : 'var(--color-warn)';
 
-      const [vStarted, paused, vestStartBN] = await Promise.all([ contract.vestingStarted(), contract.paused(), contract.vestingStartTime() ]);
+      const [vStarted, paused, vestStartBN] = await Promise.all([ 
+        contract.vestingStarted(), 
+        contract.paused(), 
+        contract.vestingStartTime() 
+      ]);
       vestingStartTimeSec = vestStartBN.toNumber();
+
+      const vestInfo = await contract.vestingInfo(account);
+      userPersonalStartTime = vestInfo.personalStartTime ? vestInfo.personalStartTime.toNumber() : 0;
+
       if (vestingStatus) vestingStatus.textContent = vStarted ? 'Active' : 'Not started';
       if (pausedStatus) pausedStatus.textContent = paused ? 'Yes' : 'No';
 
-      const [totalPurchase, claimable] = await Promise.all([ contract.getTotalPurchase(account), contract.getClaimableAmount(account) ]);
-      const vestInfo = await contract.vestingInfo(account);
+      const [totalPurchase, claimable] = await Promise.all([ 
+        contract.getTotalPurchase(account), 
+        contract.getClaimableAmount(account) 
+      ]);
+      
       const claimed = vestInfo && (vestInfo.claimedAmount || vestInfo[1]) ? (vestInfo.claimedAmount || vestInfo[1]) : ethers.BigNumber.from(0);
 
       if (allocatedEl) allocatedEl.textContent = `${ethers.utils.formatUnits(totalPurchase, decimals)} NUUR`;
@@ -712,14 +753,18 @@
       if (claimableDisplay) claimableDisplay.textContent = `${ethers.utils.formatUnits(claimable, decimals)} NUUR`;
       lastClaimable = claimable;
 
-      // months passed & progress
-      if(vStarted && vestingStartTimeSec > 0){
+      let effectiveStartTime = userPersonalStartTime > 0 ? userPersonalStartTime : vestingStartTimeSec;
+      
+      if(vStarted && effectiveStartTime > 0){
         const now = Math.floor(Date.now()/1000);
-        let months = Math.floor((now - vestingStartTimeSec) / (30*24*60*60));
-        if(months < 0) months = 0; if(months > 12) months = 12;
+        let months = Math.floor((now - effectiveStartTime) / (30*24*60*60));
+        if(months < 0) months = 0; 
+        if(months > 12) months = 12;
+        
         if (monthsPassedEl) monthsPassedEl.textContent = `${months} / 12`;
         if (progressBar) progressBar.style.width = `${(months/12)*100}%`;
-        const nextSec = vestingStartTimeSec + (months+1)*30*24*60*60;
+        
+        const nextSec = effectiveStartTime + (months+1)*30*24*60*60;
         nextVestingTimeMs = nextSec * 1000;
       } else {
         if (monthsPassedEl) monthsPassedEl.textContent = `0 / 12`;
@@ -727,16 +772,14 @@
         nextVestingTimeMs = null;
       }
 
-      // claim button enable
       if (claimBtn) {
-        if(k && claimable.gt(0) && !paused) { 
+        if(k && claimable.gt(0) && !paused && vStarted) { 
           claimBtn.disabled = false; 
         } else { 
           claimBtn.disabled = true; 
         }
       }
 
-      // owner checks
       const owner = await contract.owner().catch(()=>null);
       isOwner = owner && owner.toLowerCase() === account.toLowerCase();
       if (adminBtnSmall) adminBtnSmall.style.display = isOwner ? 'inline-block' : 'none';
@@ -771,7 +814,7 @@
     }
   }
 
-  /* ---------- Admin handlers (names avoid collisions) ---------- */
+  /* ---------- Admin handlers ---------- */
   async function openAdminModal(){
     if(!isOwner){ toastShow('Owner required', 'error'); return; }
     adminModal.classList.add('show'); adminModal.setAttribute('aria-hidden','false');
@@ -786,6 +829,7 @@
       });
     } catch(e){ console.error(e); }
   }
+
   function closeAdminModal(){ adminModal.classList.remove('show'); adminModal.setAttribute('aria-hidden','true'); }
 
   async function adminAddSingle() {
@@ -808,22 +852,21 @@
     if(arr.length === 0){ toastShow('No valid addresses','error'); return; }
     if(!confirm(`Add ${arr.length} presales?`)) return;
     try {
-      try {
-        const tx = await contract.addOldPresaleContracts(arr);
-        const r = await tx.wait();
-        toastShow('Batch added (single tx)', 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
-      } catch(e){
-        let last = null;
-        for(const a of arr){ const tx = await contract.addOldPresaleContract(a); const rr = await tx.wait(); last = rr.transactionHash || tx.hash; }
-        toastShow('Batch added (multiple txs)', 'success', EXPLORER ? `${EXPLORER}/tx/${last}` : null);
+      let lastTxHash = '';
+      for(const a of arr){ 
+        const tx = await contract.addOldPresaleContract(a); 
+        const rr = await tx.wait(); 
+        lastTxHash = rr.transactionHash || tx.hash; 
       }
+      toastShow('Batch added', 'success', EXPLORER ? `${EXPLORER}/tx/${lastTxHash}` : null);
       adminBatch.value = '';
       await openAdminModal();
     } catch(e){ console.error(e); toastShow('Failed to add batch', 'error'); }
   }
 
   async function adminSetKycSingle(){
-    const a = adminKycAddr.value.trim(); const s = adminKycStatus.value === 'true';
+    const a = adminKycAddr.value.trim(); 
+    const s = adminKycStatus.value === 'true';
     if(!a){ toastShow('Enter address','error'); return; }
     try {
       const tx = await contract.setKYC(a, s);
@@ -851,13 +894,62 @@
     } catch(e){ console.error(e); toastShow('Failed batch KYC', 'error'); }
   }
 
-  async function adminStartVesting(){ if(!confirm('Start vesting? This is irreversible.')) return; try{ const tx = await contract.startVesting(); const r = await tx.wait(); toastShow('Vesting started','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); await loadAll(); } catch(e){ console.error(e); toastShow('Failed to start','error'); } }
-  async function adminPauseHandler(){ if(!confirm('Pause contract?')) return; try{ const tx = await contract.pause(); const r = await tx.wait(); toastShow('Paused','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); await loadAll(); } catch(e){ console.error(e); toastShow('Failed to pause','error'); } }
-  async function adminUnpauseHandler(){ if(!confirm('Unpause contract?')) return; try{ const tx = await contract.unpause(); const r = await tx.wait(); toastShow('Unpaused','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); await loadAll(); } catch(e){ console.error(e); toastShow('Failed to unpause','error'); } }
+  async function adminStopVesting(){ 
+    if(!confirm('Stop vesting? This will pause the global vesting process.')) return; 
+    try{ 
+      const tx = await contract.stopVesting(); 
+      const r = await tx.wait(); 
+      toastShow('Vesting stopped','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      await loadAll(); 
+    } catch(e){ 
+      console.error(e); 
+      toastShow('Failed to stop vesting','error'); 
+    } 
+  }
+
+  async function adminStartVesting(){ 
+    if(!confirm('Start vesting?')) return; 
+    try{ 
+      const tx = await contract.startVesting(); 
+      const r = await tx.wait(); 
+      toastShow('Vesting started','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      await loadAll(); 
+    } catch(e){ 
+      console.error(e); 
+      toastShow('Failed to start','error'); 
+    } 
+  }
+
+  async function adminPauseHandler(){ 
+    if(!confirm('Pause contract?')) return; 
+    try{ 
+      const tx = await contract.pause(); 
+      const r = await tx.wait(); 
+      toastShow('Paused','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      await loadAll(); 
+    } catch(e){ 
+      console.error(e); 
+      toastShow('Failed to pause','error'); 
+    } 
+  }
+
+  async function adminUnpauseHandler(){ 
+    if(!confirm('Unpause contract?')) return; 
+    try{ 
+      const tx = await contract.unpause(); 
+      const r = await tx.wait(); 
+      toastShow('Unpaused','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      await loadAll(); 
+    } catch(e){ 
+      console.error(e); 
+      toastShow('Failed to unpause','error'); 
+    } 
+  }
 
   /* ---------------- Polling & countdown ---------------- */
   let pollHandle = null;
   function startPoll(){ if(pollHandle) clearInterval(pollHandle); pollHandle = setInterval(pollTick, POLL_INTERVAL); }
+  
   async function pollTick(){
     try {
       if(!contract || !account) return;
@@ -913,6 +1005,7 @@
   if (adminBatchAdd) adminBatchAdd.addEventListener('click', adminAddBatch);
   if (adminSetKyc) adminSetKyc.addEventListener('click', adminSetKycSingle);
   if (adminSetKycBatchBtn) adminSetKycBatchBtn.addEventListener('click', adminSetKycBatchHandler);
+  if (adminStop) adminStop.addEventListener('click', adminStopVesting);
   if (adminStart) adminStart.addEventListener('click', adminStartVesting);
   if (adminPause) adminPause.addEventListener('click', adminPauseHandler);
   if (adminUnpause) adminUnpause.addEventListener('click', adminUnpauseHandler);
@@ -923,13 +1016,9 @@
     });
   }
 
-  // load stored theme at start
-  (function initTheme(){ applyStoredTheme(); })();
-
-  // start countdown
+  applyStoredTheme();
   startCountdown();
 
-  // expose small debug for dev
   window.__nuur = { loadAll };
 
 })();
