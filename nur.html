@@ -19,7 +19,7 @@
   <meta name="twitter:image" content="logo.png">
   <link rel="icon" href="logo.png" type="image/x-icon">
   <link rel="apple-touch-icon" href="logo.png">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-NSWY7LWMRZ"></script>
@@ -31,23 +31,20 @@
   </script>
   <style>
     :root {
-      --primary: #FF6B35;
-      --primary-light: #FF8E53;
-      --secondary: #4ECDC4;
-      --accent: #FFD166;
-      --dark: #1A1D2B;
-      --darker: #121520;
+      --primary: #FF3E9D;
+      --primary-dark: #E02D85;
+      --secondary: #00D4FF;
+      --accent: #FFB800;
+      --dark: #0A0A14;
+      --darker: #05050A;
       --light: #FFFFFF;
-      --gray: #A6A9B8;
-      --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      --gradient-dark: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(255, 255, 255, 0.1);
-      --radius: 16px;
-      --radius-sm: 8px;
-      --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      --glow: 0 0 20px rgba(255, 107, 53, 0.4);
+      --gray: #8C8CA1;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --radius: 24px;
+      --radius-sm: 12px;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     }
     
     * {
@@ -58,9 +55,9 @@
     
     html, body {
       min-height: 100vh;
-      background: var(--darker);
+      background: var(--dark);
       color: var(--light);
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Space Grotesk', sans-serif;
       scroll-behavior: smooth;
       overflow-x: hidden;
       line-height: 1.6;
@@ -70,14 +67,14 @@
       display: flex;
       flex-direction: column;
       background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(78, 205, 196, 0.1) 0%, transparent 20%);
+        radial-gradient(circle at 0% 0%, rgba(255, 62, 157, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
     }
     
     h1, h2, h3, h4, h5 {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Syne', sans-serif;
       font-weight: 700;
-      line-height: 1.2;
+      line-height: 1.1;
     }
     
     a {
@@ -85,7 +82,28 @@
       color: inherit;
     }
     
-    /* Header & Navigation */
+    /* New Layout Structure - Asymmetric Grid */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 3rem;
+    }
+    
+    .main-content {
+      grid-column: 1;
+    }
+    
+    .sidebar {
+      grid-column: 2;
+    }
+    
+    /* Header - Completely Redesigned */
     header {
       position: fixed;
       top: 0;
@@ -96,15 +114,10 @@
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      background: rgba(26, 29, 43, 0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(10, 10, 20, 0.8);
+      backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       transition: var(--transition);
-    }
-    
-    header.scrolled {
-      padding: 1rem 2rem;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     }
     
     .logo-container {
@@ -117,38 +130,19 @@
       width: 50px;
       height: 50px;
       border-radius: 12px;
-      object-fit: contain;
+      object-fit: cover;
       background: var(--dark);
-      padding: 4px;
       border: 2px solid var(--primary);
-      box-shadow: var(--glow);
       transition: var(--transition);
     }
     
-    .logo-img:hover {
-      transform: scale(1.05);
-    }
-    
     .logo-text {
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 700;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
       font-size: 1.8rem;
-      color: var(--light);
-      letter-spacing: 0.5px;
-    }
-    
-    .logo-text span {
-      color: var(--primary);
-    }
-    
-    .nav-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--light);
-      font-size: 1.5rem;
-      cursor: pointer;
-      z-index: 1100;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     
     .nav-menu {
@@ -162,33 +156,34 @@
       font-weight: 500;
       transition: var(--transition);
       position: relative;
-      padding: 0.5rem 0;
+      padding: 0.8rem 0;
       font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     .nav-link:hover, .nav-link.active {
       color: var(--light);
     }
     
-    .nav-link::after {
+    .nav-link::before {
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
       width: 0;
       height: 2px;
-      background: var(--gradient);
+      background: var(--primary);
       transition: var(--transition);
     }
     
-    .nav-link:hover::after, .nav-link.active::after {
+    .nav-link:hover::before, .nav-link.active::before {
       width: 100%;
     }
     
     .nav-actions {
       display: flex;
       gap: 1rem;
-      margin-left: 1rem;
     }
     
     .btn {
@@ -207,151 +202,70 @@
       overflow: hidden;
     }
     
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: 0.5s;
-    }
-    
-    .btn:hover::before {
-      left: 100%;
-    }
-    
     .btn-primary {
-      background: var(--gradient);
-      color: var(--darker);
-      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: var(--light);
+      box-shadow: 0 8px 25px rgba(255, 62, 157, 0.3);
     }
     
     .btn-primary:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+      box-shadow: 0 12px 35px rgba(255, 62, 157, 0.4);
     }
     
     .btn-outline {
       background: transparent;
       color: var(--primary);
-      border: 1px solid var(--primary);
+      border: 2px solid var(--primary);
     }
     
     .btn-outline:hover {
-      background: rgba(255, 107, 53, 0.1);
+      background: rgba(255, 62, 157, 0.1);
       transform: translateY(-3px);
     }
     
-    /* Mobile Navigation */
-    @media (max-width: 992px) {
-      .nav-toggle {
-        display: block;
-      }
-      
-      .nav-menu {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80%;
-        max-width: 320px;
-        height: 100vh;
-        background: var(--dark);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 6rem 2rem 2rem;
-        transition: var(--transition);
-        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-      }
-      
-      .nav-menu.active {
-        right: 0;
-      }
-      
-      .nav-actions {
-        flex-direction: column;
-        width: 100%;
-        margin-top: 2rem;
-        margin-left: 0;
-      }
-      
-      .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 900;
-        opacity: 0;
-        pointer-events: none;
-        transition: var(--transition);
-      }
-      
-      .overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-    }
-    
-    /* Hero Section */
+    /* Hero Section - Completely New Layout */
     .hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 8rem 2rem 4rem;
+      padding: 10rem 0 4rem;
       position: relative;
-      overflow: hidden;
-    }
-    
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.1) 0%, transparent 30%),
-        radial-gradient(circle at 80% 70%, rgba(78, 205, 196, 0.1) 0%, transparent 30%);
-      z-index: -1;
     }
     
     .hero-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    
+    .hero-text {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
       gap: 2rem;
-      position: relative;
-      z-index: 2;
     }
     
     .hero-badge {
-      background: rgba(255, 107, 53, 0.1);
+      display: inline-block;
+      background: rgba(255, 62, 157, 0.1);
       color: var(--primary);
-      padding: 0.5rem 1.5rem;
+      padding: 0.6rem 1.5rem;
       border-radius: 50px;
       font-size: 0.9rem;
       font-weight: 600;
-      border: 1px solid rgba(255, 107, 53, 0.3);
-      margin-bottom: 1rem;
+      border: 1px solid rgba(255, 62, 157, 0.3);
+      width: fit-content;
     }
     
     .hero-title {
-      font-size: 4rem;
-      color: var(--light);
+      font-size: 4.5rem;
+      line-height: 1;
       margin-bottom: 1rem;
-      letter-spacing: -0.5px;
     }
     
     .hero-title span {
-      background: var(--gradient);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -359,95 +273,106 @@
     .hero-subtitle {
       font-size: 1.3rem;
       color: var(--gray);
-      max-width: 700px;
       line-height: 1.6;
-      font-weight: 400;
     }
     
     .hero-actions {
       display: flex;
       gap: 1.5rem;
       margin-top: 1.5rem;
-      flex-wrap: wrap;
+    }
+    
+    .hero-visual {
+      position: relative;
+      display: flex;
       justify-content: center;
+      align-items: center;
+    }
+    
+    .hero-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 3rem;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      transform: rotate(3deg);
+      transition: var(--transition);
+    }
+    
+    .hero-card:hover {
+      transform: rotate(0deg) translateY(-10px);
     }
     
     .hero-stats {
-      display: flex;
-      gap: 3rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
       margin-top: 3rem;
-      flex-wrap: wrap;
-      justify-content: center;
     }
     
-    .hero-stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .stat-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    
+    .stat-item:hover {
+      background: rgba(255, 62, 157, 0.05);
+      transform: translateY(-5px);
     }
     
     .stat-number {
       font-size: 2.5rem;
       font-weight: 700;
       color: var(--primary);
-      font-family: 'Rajdhani', sans-serif;
+      margin-bottom: 0.5rem;
     }
     
     .stat-label {
-      font-size: 0.9rem;
       color: var(--gray);
+      font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
     
-    /* Features Section */
-    .section {
-      padding: 6rem 2rem;
-      position: relative;
+    /* Features - Card Grid with Different Layout */
+    .features {
+      padding: 6rem 0;
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
     }
     
     .section-title {
-      text-align: center;
-      font-size: 2.8rem;
-      margin-bottom: 3rem;
-      position: relative;
-      display: inline-block;
-      left: 50%;
-      transform: translateX(-50%);
-      color: var(--light);
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
     }
     
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: var(--gradient);
-      border-radius: 2px;
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
     }
     
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2.5rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
     }
     
     .feature-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 2.5rem 2rem;
+      padding: 3rem 2rem;
       transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
       backdrop-filter: blur(10px);
-      height: 100%;
       position: relative;
       overflow: hidden;
     }
@@ -459,7 +384,7 @@
       left: 0;
       width: 100%;
       height: 4px;
-      background: var(--gradient);
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
       transform: scaleX(0);
       transform-origin: left;
       transition: var(--transition);
@@ -475,22 +400,21 @@
     }
     
     .feature-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 18px;
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 107, 53, 0.1);
+      background: rgba(255, 62, 157, 0.1);
       color: var(--primary);
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
     }
     
     .feature-title {
-      font-size: 1.5rem;
-      color: var(--light);
-      margin-bottom: 0.5rem;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
     }
     
     .feature-desc {
@@ -498,89 +422,46 @@
       line-height: 1.7;
     }
     
-    /* Tokenomics Section */
-    .tokenomics {
-      background: linear-gradient(180deg, var(--darker) 0%, rgba(26, 29, 43, 0.9) 100%);
-    }
-    
-    .tokenomics-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4rem;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    
-    .chart-container {
-      flex: 1;
-      min-width: 300px;
-      max-width: 500px;
-    }
-    
-    .chart-card {
+    /* Tokenomics - Sidebar Layout */
+    .tokenomics-sidebar {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
       padding: 2.5rem;
-      text-align: center;
       backdrop-filter: blur(10px);
+      position: sticky;
+      top: 120px;
     }
     
-    .chart-title {
-      font-size: 1.5rem;
+    .sidebar-title {
+      font-size: 1.8rem;
       margin-bottom: 2rem;
       color: var(--primary);
-    }
-    
-    .chart-wrapper {
-      position: relative;
-      width: 100%;
-      height: auto;
-      margin: 0 auto;
-    }
-    
-    .tokenomics-details {
-      flex: 1;
-      min-width: 300px;
-      max-width: 500px;
     }
     
     .tokenomics-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      gap: 1rem;
     }
     
     .tokenomics-item {
       display: flex;
       align-items: center;
-      padding: 1.2rem 1.5rem;
-      background: rgba(255, 255, 255, 0.05);
+      justify-content: space-between;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
       border-radius: var(--radius-sm);
       transition: var(--transition);
-      border-left: 3px solid transparent;
     }
     
     .tokenomics-item:hover {
-      background: rgba(255, 107, 53, 0.1);
-      border-left: 3px solid var(--primary);
-    }
-    
-    .tokenomics-badge {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      margin-right: 1.2rem;
-      flex-shrink: 0;
+      background: rgba(255, 62, 157, 0.05);
     }
     
     .tokenomics-label {
       font-weight: 500;
-      flex: 1;
-      text-align: left;
     }
     
     .tokenomics-value {
@@ -588,196 +469,93 @@
       color: var(--primary);
     }
     
-    /* Presale Section */
+    /* Presale - Timeline Layout */
     .presale {
-      background: linear-gradient(180deg, rgba(26, 29, 43, 0.9) 0%, var(--darker) 100%);
+      padding: 6rem 0;
     }
     
-    .presale-container {
-      max-width: 900px;
-      margin: 0 auto;
+    .presale-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      position: relative;
+    }
+    
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    
+    .timeline-marker {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--primary);
+      position: relative;
+      z-index: 2;
+    }
+    
+    .timeline-content {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 3rem;
-      box-shadow: var(--shadow);
+      padding: 2rem;
       backdrop-filter: blur(10px);
     }
     
-    .presale-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    
-    .presale-title {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-      color: var(--primary);
-    }
-    
-    .presale-subtitle {
-      color: var(--gray);
-      font-size: 1.1rem;
-    }
-    
-    .presale-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.8rem;
-      margin-bottom: 3rem;
-    }
-    
-    .stat-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: var(--radius-sm);
-      padding: 1.8rem;
-      text-align: center;
-      transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .stat-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(255, 107, 53, 0.3);
-    }
-    
-    .stat-value {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-      font-family: 'Rajdhani', sans-serif;
-    }
-    
-    .stat-label {
-      color: var(--gray);
-      font-size: 0.95rem;
-    }
-    
-    .progress-container {
-      margin-bottom: 3rem;
-    }
-    
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
+    .timeline-title {
+      font-size: 1.5rem;
       margin-bottom: 1rem;
-      align-items: center;
-    }
-    
-    .progress-label {
-      font-weight: 600;
-      color: var(--light);
-    }
-    
-    .progress-percent {
-      font-weight: 700;
       color: var(--primary);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 1.2rem;
     }
     
-    .progress-bar {
-      height: 12px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: var(--gradient);
-      border-radius: 10px;
-      transition: width 1s ease;
-      width: 0%;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background-image: linear-gradient(
-        -45deg,
-        rgba(255, 255, 255, 0.2) 25%,
-        transparent 25%,
-        transparent 50%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0.2) 75%,
-        transparent 75%,
-        transparent
-      );
-      z-index: 1;
-      background-size: 20px 20px;
-      animation: move 1s linear infinite;
-      overflow: hidden;
-    }
-    
-    @keyframes move {
-      0% {
-        background-position: 0 0;
-      }
-      100% {
-        background-position: 20px 20px;
-      }
-    }
-    
-    .presale-actions {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      margin-top: 3rem;
-    }
-    
-    /* FAQ Section */
+    /* FAQ - Accordion with Different Style */
     .faq {
-      background: var(--darker);
+      padding: 6rem 0;
     }
     
-    .faq-container {
-      max-width: 900px;
-      margin: 0 auto;
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
     }
     
     .faq-item {
-      margin-bottom: 1.2rem;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
       overflow: hidden;
       transition: var(--transition);
-      backdrop-filter: blur(10px);
-    }
-    
-    .faq-item:hover {
-      border-color: rgba(255, 107, 53, 0.3);
-      transform: translateY(-3px);
     }
     
     .faq-question {
-      padding: 1.8rem;
+      padding: 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
       font-weight: 600;
-      color: var(--light);
       font-size: 1.1rem;
+      transition: var(--transition);
+    }
+    
+    .faq-question:hover {
+      background: rgba(255, 255, 255, 0.03);
     }
     
     .faq-question::after {
       content: '+';
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       color: var(--primary);
       transition: var(--transition);
-      font-weight: 300;
     }
     
     .faq-item.active .faq-question::after {
@@ -788,936 +566,520 @@
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.4s ease;
-      padding: 0 1.8rem;
+      padding: 0 2rem;
     }
     
     .faq-item.active .faq-answer {
       max-height: 500px;
-      padding: 0 1.8rem 1.8rem;
+      padding: 0 2rem 2rem;
     }
     
-    .faq-answer p {
-      color: var(--gray);
-      line-height: 1.7;
-      margin-bottom: 1rem;
-    }
-    
-    /* Contract Section */
-    .contract {
-      background: linear-gradient(180deg, var(--darker) 0%, rgba(26, 29, 43, 0.9) 100%);
-    }
-    
-    .contract-container {
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    
-    .contract-box {
-      background: rgba(255, 107, 53, 0.1);
-      border: 1px solid var(--primary);
-      border-radius: var(--radius);
-      padding: 1.8rem;
-      position: relative;
-      margin-top: 2.5rem;
-      font-family: monospace;
-      text-align: center;
-      word-break: break-all;
-      backdrop-filter: blur(10px);
-      transition: var(--transition);
-    }
-    
-    .contract-box:hover {
-      box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
-    }
-    
-    .copy-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: var(--primary);
-      color: var(--darker);
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-weight: bold;
-      transition: var(--transition);
-      font-family: 'Poppins', sans-serif;
-    }
-    
-    .copy-btn:hover {
-      background: var(--primary-light);
-      transform: translateY(-2px);
-    }
-    
-    /* Footer */
+    /* Footer - Multi-column Layout */
     footer {
-      background: var(--dark);
-      padding: 5rem 2rem 2.5rem;
-      text-align: center;
+      background: rgba(5, 5, 10, 0.9);
+      padding: 5rem 0 2rem;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
-      position: relative;
     }
     
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2.5rem;
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
     }
     
-    .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    
-    .footer-social {
-      display: flex;
-      gap: 1.5rem;
-      margin: 1.5rem 0;
-    }
-    
-    .social-link {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--light);
-      transition: var(--transition);
-      font-size: 1.2rem;
-    }
-    
-    .social-link:hover {
-      background: var(--gradient);
-      color: var(--darker);
-      transform: translateY(-5px);
+    .footer-column h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
     }
     
     .footer-links {
+      list-style: none;
       display: flex;
-      gap: 2.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-direction: column;
+      gap: 0.8rem;
     }
     
     .footer-link {
       color: var(--gray);
       transition: var(--transition);
-      font-weight: 500;
     }
     
     .footer-link:hover {
       color: var(--primary);
     }
     
-    .footer-disclaimer {
-      color: var(--gray);
-      font-size: 0.95rem;
-      max-width: 800px;
-      margin: 1.5rem auto;
-      line-height: 1.7;
-      padding: 1.5rem;
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: rgba(255, 255, 255, 0.05);
-      border-radius: var(--radius-sm);
+      color: var(--light);
+      transition: var(--transition);
     }
     
-    .footer-copyright {
-      margin-top: 2.5rem;
-      color: var(--gray);
-      font-size: 0.9rem;
+    .social-link:hover {
+      background: var(--primary);
+      transform: translateY(-3px);
     }
     
-    /* Notification Banner */
-    .notification-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: linear-gradient(90deg, rgba(255, 238, 186, 0.95) 0%, rgba(255, 221, 142, 0.95) 100%);
-      color: #000;
-      padding: 0.9rem 1.2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 999;
-      font-size: 0.95rem;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .notification-text {
-      flex: 1;
+    .footer-bottom {
       text-align: center;
-      padding: 0 1rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-weight: 500;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--gray);
     }
     
-    .notification-link {
-      color: #0056b3;
-      text-decoration: underline;
-      margin-left: 0.5rem;
-      font-weight: 600;
+    /* Mobile Responsive */
+    @media (max-width: 1200px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        grid-column: 1;
+        margin-top: 3rem;
+      }
+      
+      .tokenomics-sidebar {
+        position: static;
+      }
     }
     
-    .notification-close {
-      background: none;
-      border: none;
-      color: #000;
-      font-size: 1.3rem;
-      cursor: pointer;
-      padding: 0 0.5rem;
-      transition: var(--transition);
-    }
-    
-    .notification-close:hover {
-      transform: rotate(90deg);
-    }
-    
-    /* Popup */
-    .popup {
-      position: fixed;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--dark);
-      color: var(--light);
-      padding: 1.5rem 1.8rem;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      z-index: 999;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      max-width: 90%;
-      backdrop-filter: blur(10px);
-    }
-    
-    .popup.show {
-      opacity: 1;
-    }
-    
-    .popup-close {
-      background: none;
-      border: none;
-      color: var(--light);
-      font-size: 1.3rem;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    
-    .popup-close:hover {
-      color: var(--primary);
-    }
-    
-    .popup-link {
-      color: var(--primary);
-      text-decoration: underline;
-      font-weight: 600;
-    }
-    
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    
-    .animate.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .delay-1 { transition-delay: 0.2s; }
-    .delay-2 { transition-delay: 0.4s; }
-    .delay-3 { transition-delay: 0.6s; }
-    
-    /* Responsive Adjustments */
     @media (max-width: 768px) {
-      .hero-title {
-        font-size: 2.8rem;
+      .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
       }
       
-      .hero-subtitle {
-        font-size: 1.1rem;
-      }
-      
-      .section-title {
-        font-size: 2.2rem;
-      }
-      
-      .hero-actions, .presale-actions {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .btn {
-        width: 100%;
+      .hero-actions {
         justify-content: center;
       }
       
-      .hero-stats {
+      .features-grid, .faq-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-grid {
+        grid-template-columns: 1fr;
         gap: 2rem;
       }
       
-      .stat-number {
-        font-size: 2rem;
-      }
-      
-      .presale-container {
-        padding: 2rem 1.5rem;
-      }
-      
-      .feature-card, .chart-card {
-        padding: 2rem 1.5rem;
-      }
-    }
-    
-    @media (max-width: 480px) {
       .hero-title {
-        font-size: 2.2rem;
-      }
-      
-      .section {
-        padding: 4rem 1rem;
+        font-size: 3rem;
       }
       
       .section-title {
-        font-size: 1.9rem;
+        font-size: 2.5rem;
       }
-      
-      .footer-links {
-        flex-direction: column;
-        gap: 1.2rem;
-      }
+    }
+    
+    /* Animation Classes */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+    
+    .fade-in.active {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-  <!-- Notification Banner -->
-  <div id="notificationBanner" class="notification-banner" style="display: none;">
-    <div class="notification-text">
-      Please note that NUUR is built on Sidra Chain EVM. To purchase NUUR, you need to have SDA in your wallet.
-      <a href="https://www.bittime.com/en/blog/apa-itu-Sidra-Chain" target="_blank" class="notification-link">Learn more about Sidrachain</a>
-    </div>
-    <button class="notification-close" onclick="dismissNotice()">&times;</button>
-  </div>
-
   <!-- Header -->
   <header id="header">
-    <div class="logo-container">
-      <img src="logo.png" alt="Nuur Coin Logo" class="logo-img">
-      <span class="logo-text">Nuur <span>Coin</span></span>
-    </div>
-    
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-      <i class="fas fa-bars"></i>
-    </button>
-    
-    <div class="overlay" id="overlay"></div>
-    
-    <nav class="nav-menu" id="navMenu">
-      <a href="about" class="nav-link active">About</a>
-      <a href="#tokenomics" class="nav-link">Tokenomics</a>
-      <a href="presale-introduction" class="nav-link">Presale</a>
-      <a href="#faq" class="nav-link">FAQ</a>
-      
-      <div class="nav-actions">
-        <a href="presale-introduction" class="btn btn-primary">
-          <i class="fas fa-coins"></i> Buy NUUR
-        </a>
-        <a href="kyc-verification" class="btn btn-primary">
-          <i class="fa-solid fa-shield-check"></i> KYC
-        </a>
-        <a href="airdrop" class="btn btn-outline">
-          <i class="fas fa-gift"></i> Airdrop
-        </a>
-        <a href="claim-tokens" class="btn btn-primary">
-          <i class="fa-solid fa-pickaxe"></i> Claim NUUR
-        </a>
+    <div class="container">
+      <div class="logo-container">
+        <img src="logo.png" alt="Nuur Coin Logo" class="logo-img">
+        <span class="logo-text">NUUR</span>
       </div>
-    </nav>
+      
+      <nav class="nav-menu">
+        <a href="#about" class="nav-link active">About</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#presale" class="nav-link">Presale</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        
+        <div class="nav-actions">
+          <a href="presale-introduction" class="btn btn-primary">
+            <i class="fas fa-coins"></i> Buy Now
+          </a>
+        </div>
+      </nav>
+    </div>
   </header>
 
   <!-- Hero Section -->
   <section class="hero" id="about">
-    <div class="hero-content">
-      <div class="hero-badge animate">Utility Token on Sidra Chain</div>
-      <h1 class="hero-title animate delay-1">Nuur <span>Coin</span></h1>
-      <p class="hero-subtitle animate delay-2">
-        NUUR is a utility token built on the Sidra Chain, representing clarity, guidance, and ethical innovation in the blockchain space. 
-        Empowering a new wave of decentralized applications promoting transparency, fairness, and trust across the ecosystem.
-      </p>
-      <div class="hero-actions animate delay-3">
-        <a href="presale-introduction" class="btn btn-primary">
-          <i class="fas fa-coins"></i> Join Presale
-        </a>
-        <a href="#tokenomics" class="btn btn-outline">
-          <i class="fas fa-chart-pie"></i> Tokenomics
-        </a>
-        <a href="claim-tokens" class="btn btn-primary">
-          <i class="fas fa-coins"></i>Claim NUUR
-        </a>
-      </div>
-      
-      <div class="hero-stats animate delay-3">
-        <div class="hero-stat">
-          <div class="stat-number">10M</div>
-          <div class="stat-label">Total Supply</div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <span class="hero-badge">Utility Token on Sidra Chain</span>
+          <h1 class="hero-title">The Future of <span>Decentralized Finance</span></h1>
+          <p class="hero-subtitle">
+            NUUR is a revolutionary utility token built on the Sidra Chain, designed to bring transparency, 
+            fairness, and trust to the blockchain ecosystem through innovative decentralized applications.
+          </p>
+          <div class="hero-actions">
+            <a href="presale-introduction" class="btn btn-primary">
+              <i class="fas fa-rocket"></i> Join Presale
+            </a>
+            <a href="#features" class="btn btn-outline">
+              <i class="fas fa-chart-line"></i> Learn More
+            </a>
+          </div>
+          
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number">10M</div>
+              <div class="stat-label">Total Supply</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">50%</div>
+              <div class="stat-label">Presale Allocation</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">$0.005</div>
+              <div class="stat-label">Starting Price</div>
+            </div>
+          </div>
         </div>
-        <div class="hero-stat">
-          <div class="stat-number">50%</div>
-          <div class="stat-label">Presale Allocation</div>
-        </div>
-        <div class="hero-stat">
-          <div class="stat-number">$0.005</div>
-          <div class="stat-label">Presale Price</div>
+        
+        <div class="hero-visual">
+          <div class="hero-card">
+            <h3>Presale Live</h3>
+            <div class="progress-bar" style="margin: 1.5rem 0; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden;">
+              <div class="progress-fill" style="height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 45%;"></div>
+            </div>
+            <p>45% Sold • 2,250,000 NUUR</p>
+            <div style="margin-top: 1.5rem;">
+              <a href="presale-introduction" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                <i class="fas fa-bolt"></i> Participate Now
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Features Section -->
-  <section class="section">
-    <h2 class="section-title">Why Choose Nuur Coin</h2>
-    
-    <div class="features-grid">
-      <div class="feature-card animate">
-        <div class="feature-icon">
-          <i class="fas fa-shield-alt"></i>
-        </div>
-        <h3 class="feature-title">Secure & Transparent</h3>
-        <p class="feature-desc">
-          Built on Sidra Chain with audited smart contracts ensuring security and transparency for all transactions.
-        </p>
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Why Choose NUUR</h2>
+        <p class="section-subtitle">Discover the powerful features that make NUUR the ideal utility token for the Sidra Chain ecosystem</p>
       </div>
       
-      <div class="feature-card animate delay-1">
-        <div class="feature-icon">
-          <i class="fas fa-bolt"></i>
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3 class="feature-title">Maximum Security</h3>
+          <p class="feature-desc">
+            Built on the secure Sidra Chain with thoroughly audited smart contracts to ensure the safety of all transactions and holdings.
+          </p>
         </div>
-        <h3 class="feature-title">Fast Transactions</h3>
-        <p class="feature-desc">
-          Benefit from Sidra Chain's high throughput and low latency for quick and efficient transactions.
-        </p>
-      </div>
-      
-      <div class="feature-card animate delay-2">
-        <div class="feature-icon">
-          <i class="fas fa-hand-holding-usd"></i>
+        
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3 class="feature-title">Lightning Fast</h3>
+          <p class="feature-desc">
+            Experience unparalleled transaction speeds thanks to Sidra Chain's high-throughput architecture and optimized consensus mechanism.
+          </p>
         </div>
-        <h3 class="feature-title">Utility Focused</h3>
-        <p class="feature-desc">
-          NUUR powers decentralized apps including DeFi, payments, and community incentives on Sidra Chain.
-        </p>
+        
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <h3 class="feature-title">Multi-Utility</h3>
+          <p class="feature-desc">
+            Powering a diverse range of dApps including DeFi protocols, payment systems, and community governance mechanisms.
+          </p>
+        </div>
+        
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="feature-title">Community Driven</h3>
+          <p class="feature-desc">
+            A token by the community, for the community. NUUR holders have a direct say in the future development of the ecosystem.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Tokenomics Section -->
-  <section class="section tokenomics" id="tokenomics">
-    <h2 class="section-title">Tokenomics</h2>
-    
-    <div class="tokenomics-container">
-      <div class="chart-container animate">
-        <div class="chart-card">
-          <h3 class="chart-title">Token Distribution</h3>
-          <div class="chart-wrapper">
-            <canvas id="tokenomicsChart"></canvas>
+  <!-- Main Content Grid -->
+  <div class="container">
+    <div class="grid-layout">
+      <div class="main-content">
+        <!-- Presale Section -->
+        <section class="presale" id="presale">
+          <div class="section-header">
+            <h2 class="section-title">Presale Timeline</h2>
+            <p class="section-subtitle">Follow our structured presale phases to maximize your participation benefits</p>
+          </div>
+          
+          <div class="presale-timeline">
+            <div class="timeline-item fade-in">
+              <div class="timeline-marker">
+                <i class="fas fa-seedling"></i>
+              </div>
+              <div class="timeline-content">
+                <h3 class="timeline-title">Phase 1: Seed Round</h3>
+                <p>Initial token offering with exclusive bonuses for early supporters. Limited to strategic partners and early believers.</p>
+                <div style="margin-top: 1rem; color: var(--primary); font-weight: 600;">COMPLETED</div>
+              </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+              <div class="timeline-marker">
+                <i class="fas fa-rocket"></i>
+              </div>
+              <div class="timeline-content">
+                <h3 class="timeline-title">Phase 2: Public Presale</h3>
+                <p>Open to the wider community with tiered bonuses based on contribution size. Current phase with 45% already sold.</p>
+                <div style="margin-top: 1rem;">
+                  <a href="presale-introduction" class="btn btn-primary">Join Now</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+              <div class="timeline-marker">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="timeline-content">
+                <h3 class="timeline-title">Phase 3: Exchange Listing</h3>
+                <p>Token listing on SidraSwap and other major exchanges following the successful completion of the presale.</p>
+                <div style="margin-top: 1rem; color: var(--gray);">UPCOMING</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq" id="faq">
+          <div class="section-header">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Find answers to the most common questions about NUUR token</p>
+          </div>
+          
+          <div class="faq-grid">
+            <div class="faq-item fade-in">
+              <div class="faq-question">What is the total supply of NUUR?</div>
+              <div class="faq-answer">
+                <p>The total supply of NUUR tokens is fixed at 10,000,000. There will be no additional minting beyond this cap.</p>
+              </div>
+            </div>
+            
+            <div class="faq-item fade-in">
+              <div class="faq-question">How can I participate in the presale?</div>
+              <div class="faq-answer">
+                <p>Visit our presale page, connect your Sidra Chain compatible wallet, specify the amount you wish to contribute, and confirm the transaction.</p>
+              </div>
+            </div>
+            
+            <div class="faq-item fade-in">
+              <div class="faq-question">When will tokens be distributed?</div>
+              <div class="faq-answer">
+                <p>Tokens will be distributed immediately after the presale concludes and before exchange listings begin.</p>
+              </div>
+            </div>
+            
+            <div class="faq-item fade-in">
+              <div class="faq-question">What wallets are supported?</div>
+              <div class="faq-answer">
+                <p>Any wallet that supports the Sidra Chain network, including MetaMask (with custom RPC), Trust Wallet, and other EVM-compatible wallets.</p>
+              </div>
+            </div>
+            
+            <div class="faq-item fade-in">
+              <div class="faq-question">Is there a vesting period for team tokens?</div>
+              <div class="faq-answer">
+                <p>Yes, team tokens are subject to a 12-month linear vesting period to ensure long-term commitment to the project.</p>
+              </div>
+            </div>
+            
+            <div class="faq-item fade-in">
+              <div class="faq-question">What utilities does NUUR have?</div>
+              <div class="faq-answer">
+                <p>NUUR will power various dApps in the ecosystem including DeFi protocols, NFT marketplaces, gaming platforms, and governance mechanisms.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="tokenomics-sidebar fade-in">
+          <h3 class="sidebar-title">Tokenomics</h3>
+          <ul class="tokenomics-list">
+            <li class="tokenomics-item">
+              <span class="tokenomics-label">Total Supply</span>
+              <span class="tokenomics-value">10,000,000</span>
+            </li>
+            <li class="tokenomics-item">
+              <span class="tokenomics-label">Presale Allocation</span>
+              <span class="tokenomics-value">5,000,000 (50%)</span>
+            </li>
+            <li class="tokenomics-item">
+              <span class="tokenomics-label">Liquidity Pool</span>
+              <span class="tokenomics-value">2,000,000 (20%)</span>
+            </li>
+            <li class="tokenomics-item">
+              <span class="tokenomics-label">Team & Development</span>
+              <span class="tokenomics-value">2,000,000 (20%)</span>
+            </li>
+            <li class="tokenomics-item">
+              <span class="tokenomics-label">Airdrop & Marketing</span>
+              <span class="tokenomics-value">1,000,000 (10%)</span>
+            </li>
+            <li class="tokenomics-item">
+              <span class="tokenomics-label">Presale Price</span>
+              <span class="tokenomics-value">0.005 SDA</span>
+            </li>
+          </ul>
+          
+          <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255, 62, 157, 0.05); border-radius: var(--radius-sm);">
+            <h4 style="margin-bottom: 1rem; color: var(--primary);">Smart Contract</h4>
+            <p style="font-family: monospace; word-break: break-all; font-size: 0.9rem; margin-bottom: 1rem;">
+              0x003BEc2e6ef4369f9d968eCD288d31B59fD9c2CD
+            </p>
+            <button class="btn btn-primary" style="width: 100%;" onclick="copyContract()">
+              <i class="fas fa-copy"></i> Copy Address
+            </button>
           </div>
         </div>
       </div>
-      
-      <div class="tokenomics-details animate delay-1">
-        <h3 class="chart-title">Token Details</h3>
-        <ul class="tokenomics-list">
-          <li class="tokenomics-item">
-            <span class="tokenomics-badge" style="background: #FF6B35;"></span>
-            <span class="tokenomics-label">Total Supply</span>
-            <span class="tokenomics-value">10M NUUR</span>
-          </li>
-          <li class="tokenomics-item">
-            <span class="tokenomics-badge" style="background: #FF8E53;"></span>
-            <span class="tokenomics-label">Presale Allocation</span>
-            <span class="tokenomics-value">5M NUUR (50%)</span>
-          </li>
-          <li class="tokenomics-item">
-            <span class="tokenomics-badge" style="background: #4ECDC4;"></span>
-            <span class="tokenomics-label">Liquidity Allocation</span>
-            <span class="tokenomics-value">2M NUUR (20%)</span>
-          </li>
-          <li class="tokenomics-item">
-            <span class="tokenomics-badge" style="background: #FFD166;"></span>
-            <span class="tokenomics-label">Airdrop Allocation</span>
-            <span class="tokenomics-value">1M NUUR (10%)</span>
-          </li>
-          <li class="tokenomics-item">
-            <span class="tokenomics-badge" style="background: #A6A9B8;"></span>
-            <span class="tokenomics-label">Team Allocation</span>
-            <span class="tokenomics-value">2M NUUR (20%)</span>
-          </li>
-          <li class="tokenomics-item">
-            <span class="tokenomics-badge" style="background: #FF6B35;"></span>
-            <span class="tokenomics-label">Presale Price</span>
-            <span class="tokenomics-value">1 NUUR = 0.005 SDA</span>
-          </li>
-        </ul>
-      </div>
     </div>
-  </section>
-
-  <!-- Presale Section -->
-  <section class="section presale" id="presale">
-    <h2 class="section-title">Presale Progress</h2>
-    
-    <div class="presale-container animate">
-      <div class="presale-header">
-        <h3 class="presale-title">Phase 2 Presale</h3>
-        <p class="presale-subtitle">Join the NUUR token presale before it ends!</p>
-      </div>
-      
-      <div class="presale-stats">
-        <div class="stat-card">
-          <div class="stat-value" id="boughtAmount">Loading...</div>
-          <div class="stat-label">Tokens Sold</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="boughtPercent">Loading...</div>
-          <div class="stat-label">Progress</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="remainingTokens">Loading...</div>
-          <div class="stat-label">Tokens Remaining</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="countdown">--</div>
-          <div class="stat-label">Time Remaining</div>
-        </div>
-      </div>
-      
-      <div class="progress-container">
-        <div class="progress-header">
-          <span class="progress-label">Presale Progress</span>
-          <span class="progress-percent" id="progressPercent">0%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-      </div>
-      
-      <div class="chart-card">
-        <h3 class="chart-title">Presale Distribution</h3>
-        <div class="chart-wrapper">
-          <canvas id="progressChart"></canvas>
-        </div>
-      </div>
-      
-      <div class="presale-actions animate delay-1">
-        <a href="https://nuurtoken.site/presale-introduction" class="btn btn-primary">
-          <i class="fas fa-coins"></i> Join Presale
-        </a>
-        <a href="https://nuurtoken.site/airdrop" class="btn btn-outline">
-          <i class="fas fa-gift"></i> Claim Airdrop
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ Section -->
-  <section class="section faq" id="faq">
-    <h2 class="section-title">Frequently Asked Questions</h2>
-    
-    <div class="faq-container">
-      <div class="faq-item animate">
-        <div class="faq-question">What is Nuur Coin?</div>
-        <div class="faq-answer">
-          <p>Nuur Coin (NUUR) is a utility token built on the Sidra Chain, designed to enable transparent, ethical, and innovative decentralized applications.</p>
-        </div>
-      </div>
-      
-      <div class="faq-item animate delay-1">
-        <div class="faq-question">How do I participate in the presale?</div>
-        <div class="faq-answer">
-          <p>You can participate by visiting the <a href="https://nuurtoken.site/phase2" style="color: var(--primary);">presale page</a>, connecting your wallet, entering the SIDRA amount, and clicking Buy.</p>
-        </div>
-      </div>
-      
-      <div class="faq-item animate delay-1">
-        <div class="faq-question">How do I join the airdrop? Who is eligible?</div>
-        <div class="faq-answer">
-          <p>To join the airdrop, visit <a href="https://nuurtoken.site/airdrop" style="color: var(--primary);">airdrop page</a> and follow the instructions. Eligibility requires participation in the presale.</p>
-        </div>
-      </div>
-      
-      <div class="faq-item animate delay-2">
-        <div class="faq-question">When will $NUUR be listed on exchanges?</div>
-        <div class="faq-answer">
-          <p>$NUUR will be listed on SidraSwap after the presale ends and upon SDA listing. Stay tuned for announcements.</p>
-        </div>
-      </div>
-      
-      <div class="faq-item animate delay-2">
-        <div class="faq-question">Is the smart contract audited?</div>
-        <div class="faq-answer">
-          <p>The Nuur Coin smart contract has been audited for security and transparency.</p>
-        </div>
-      </div>
-      
-      <div class="faq-item animate delay-3">
-        <div class="faq-question">What utility does $NUUR have?</div>
-        <div class="faq-answer">
-          <p>$NUUR powers decentralized apps on Sidra Chain, including DeFi, payments, and community incentives, promoting trust and fairness in the ecosystem.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contract Section -->
-  <section class="section contract">
-    <div class="contract-container animate">
-      <h2 class="section-title">Smart Contract</h2>
-      <p>NUUR Token Contract Address</p>
-      
-      <div class="contract-box">
-        <span id="contract-address">0x003BEc2e6ef4369f9d968eCD288d31B59fD9c2CD</span>
-        <button class="copy-btn" onclick="copyContract()">Copy</button>
-      </div>
-      
-      <div style="margin-top: 2.5rem;">
-        <a href="explorer" class="btn btn-outline" target="_blank">
-          <i class="fas fa-users"></i> View on NUUR Explorer
-        </a>
-      </div>
-    </div>
-  </section>
+  </div>
 
   <!-- Footer -->
   <footer>
-    <div class="footer-content">
-      <div class="footer-logo">
-        <img src="logo.png" alt="Nuur Coin Logo" width="40">
-        <span class="logo-text">Nuur <span>Coin</span></span>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="logo-container" style="margin-bottom: 1.5rem;">
+            <img src="logo.png" alt="Nuur Coin Logo" class="logo-img" style="width: 40px; height: 40px;">
+            <span class="logo-text">NUUR</span>
+          </div>
+          <p style="color: var(--gray); margin-bottom: 1.5rem;">
+            NUUR is a utility token built on the Sidra Chain, empowering decentralized applications with transparency, fairness, and trust.
+          </p>
+          <div class="social-links">
+            <a href="https://twitter.com/NuurCoin" class="social-link" target="_blank">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://t.me/NuurCoin" class="social-link" target="_blank">
+              <i class="fab fa-telegram"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-discord"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-medium"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Navigation</h3>
+          <ul class="footer-links">
+            <li><a href="#about" class="footer-link">About</a></li>
+            <li><a href="#features" class="footer-link">Features</a></li>
+            <li><a href="#presale" class="footer-link">Presale</a></li>
+            <li><a href="#faq" class="footer-link">FAQ</a></li>
+            <li><a href="#" class="footer-link">Whitepaper</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Resources</h3>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Documentation</a></li>
+            <li><a href="#" class="footer-link">Audit Report</a></li>
+            <li><a href="#" class="footer-link">GitHub</a></li>
+            <li><a href="#" class="footer-link">Blog</a></li>
+            <li><a href="#" class="footer-link">Support</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Legal</h3>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Terms of Service</a></li>
+            <li><a href="#" class="footer-link">Cookie Policy</a></li>
+            <li><a href="#" class="footer-link">Disclaimer</a></li>
+          </ul>
+        </div>
       </div>
       
-      <div class="footer-social">
-        <a href="https://twitter.com/NuurCoin" class="social-link" target="_blank" aria-label="Twitter">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://t.me/NuurCoin" class="social-link" target="_blank" aria-label="Telegram">
-          <i class="fab fa-telegram"></i>
-        </a>
-        <a href="https://facebook.com/share/16XHA2ydrf" class="social-link" target="_blank" aria-label="Facebook">
-          <i class="fab fa-facebook"></i>
-        </a>
-        <a href="mailto:mail@nuurtoken.site" class="social-link" aria-label="Email">
-          <i class="fas fa-envelope"></i>
-        </a>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Nuur Coin. All rights reserved.</p>
       </div>
-      
-      <div class="footer-links">
-        <a href="about" class="footer-link">About</a>
-        <a href="#tokenomics" class="footer-link">Tokenomics</a>
-        <a href="phase2" class="footer-link">Presale</a>
-        <a href="#faq" class="footer-link">FAQ</a>
-        <a href="https://ledger.sidrachain.com/address/0x8375694cD94480d715727758a7fd863bC00Afe90" class="footer-link">Donate</a>
-      </div>
-      
-      <p class="footer-disclaimer">
-        NOTE: NUUR will be listed on SidraSwap after presale ends. INVEST WISELY.
-      </p>
-      
-      <p class="footer-copyright">
-        &copy; 2025 Nuur Coin. All rights reserved.
-      </p>
     </div>
   </footer>
 
-  <!-- Popup -->
-  <div class="popup" id="popup" aria-live="polite" role="alert">
-    <button class="popup-close" onclick="dismissPopup()">&times;</button>
-    <p>Watch this quick <a href="https://youtu.be/nuEx-A5gI14?si=EQ5TAbyuEIojFaDN" target="_blank" class="popup-link">video</a> to learn how to buy $NUUR coin</p>
-  </div>
-
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // Mobile Navigation
-    const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('navMenu');
-    const overlay = document.getElementById('overlay');
-    const header = document.getElementById('header');
-    
-    navToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-      overlay.classList.toggle('active');
-      document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
-    });
-    
-    overlay.addEventListener('click', () => {
-      navMenu.classList.remove('active');
-      overlay.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-    
-    // Close mobile menu when clicking on nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
+    // Simple copy function without Web3 dependency
+    function copyContract() {
+      const text = "0x003BEc2e6ef4369f9d968eCD288d31B59fD9c2CD";
+      navigator.clipboard.writeText(text).then(() => {
+        showAlert('Contract address copied to clipboard!');
       });
-    });
+    }
     
-    // Header scroll effect
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
+    // Simple alert function
+    function showAlert(message) {
+      const alert = document.createElement('div');
+      alert.style.position = 'fixed';
+      alert.style.bottom = '20px';
+      alert.style.left = '50%';
+      alert.style.transform = 'translateX(-50%)';
+      alert.style.background = 'var(--primary)';
+      alert.style.color = 'white';
+      alert.style.padding = '1rem 2rem';
+      alert.style.borderRadius = 'var(--radius-sm)';
+      alert.style.zIndex = '10000';
+      alert.style.boxShadow = 'var(--shadow)';
+      alert.textContent = message;
+      document.body.appendChild(alert);
       
-      // Highlight active nav link on scroll
-      let current = '';
-      const sections = document.querySelectorAll('section');
-      
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        if (pageYOffset >= sectionTop - 200) {
-          current = section.getAttribute('id');
-        }
-      });
-      
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-          link.classList.add('active');
-        }
-      });
-    });
+      setTimeout(() => {
+        alert.remove();
+      }, 3000);
+    }
     
     // FAQ Accordion
-    const faqItems = document.querySelectorAll('.faq-item');
-    
-    faqItems.forEach(item => {
-      const question = item.querySelector('.faq-question');
-      
+    document.querySelectorAll('.faq-question').forEach(question => {
       question.addEventListener('click', () => {
-        const currentlyActive = document.querySelector('.faq-item.active');
-        
-        if (currentlyActive && currentlyActive !== item) {
-          currentlyActive.classList.remove('active');
-        }
-        
+        const item = question.parentElement;
         item.classList.toggle('active');
       });
     });
     
-    // Notification Banner
-    function showNotification() {
-      if (!localStorage.getItem('nuurNoticeDismissed')) {
-        document.getElementById('notificationBanner').style.display = 'flex';
-      }
-    }
-    
-    function dismissNotice() {
-      const notice = document.getElementById('notificationBanner');
-      notice.style.display = 'none';
-      localStorage.setItem('nuurNoticeDismissed', 'true');
-    }
-    
-    // Popup
-    function showPopup() {
-      const popup = document.getElementById('popup');
-      setTimeout(() => {
-        popup.classList.add('show');
-      }, 5000);
-    }
-    
-    function dismissPopup() {
-      const popup = document.getElementById('popup');
-      popup.classList.remove('show');
-    }
-    
-    // Copy Contract Address
-    function copyContract() {
-      const text = document.getElementById('contract-address').innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        showAlert('Contract address copied!');
-      });
-    }
-    
-    // Simple Alert
-    function showAlert(message) {
-      const alert = document.createElement('div');
-      alert.className = 'popup show';
-      alert.style.bottom = '6rem';
-      alert.innerHTML = `
-        <button class="popup-close" onclick="this.parentElement.remove()">&times;</button>
-        <p>${message}</p>
-      `;
-      document.body.appendChild(alert);
-      setTimeout(() => alert.remove(), 3000);
-    }
-    
-    // Charts
-    let tokenomicsChart, progressChart;
-    const presaleAddress = "0x98FCc396547D450208e926995a74b61874a1423A";
-    const abi = [
-      { "constant": true, "inputs": [], "name": "nuurToken", "outputs": [{ "name": "", "type": "address" }], "type": "function" }
-    ];
-    const presaleEndDate = new Date("2025-10-27T23:59:59Z");
-    
-    function renderTokenomicsChart() {
-      const ctx = document.getElementById('tokenomicsChart').getContext('2d');
-      tokenomicsChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Presale (50%)', 'Liquidity (20%)', 'Team (20%)', 'Airdrop (10%)'],
-          datasets: [{
-            data: [50, 20, 20, 10],
-            backgroundColor: ['#FF6B35', '#FF8E53', '#4ECDC4', '#FFD166'],
-            borderColor: '#1A1D2B',
-            borderWidth: 3
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                color: '#E3F2FF',
-                font: {
-                  family: 'Poppins'
-                },
-                padding: 20
-              }
-            },
-            tooltip: {
-              callbacks: {
-                label: (context) => `${context.label}: ${context.raw}%`
-              }
-            }
-          },
-          cutout: '60%'
-        }
-      });
-    }
-    
-    async function updatePresaleProgress() {
-      const web3 = new Web3("https://node.sidrachain.com");
-      const contract = new web3.eth.Contract(abi, presaleAddress);
-      
-      try {
-        const nuur = await contract.methods.nuurToken().call();
-        const nuurContract = new web3.eth.Contract([
-          { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint8" }], "type": "function" },
-          { "constant": true, "inputs": [{ "name": "account", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "", "type": "uint256" }], "type": "function" }
-        ], nuur);
-        
-        const decimals = await nuurContract.methods.decimals().call();
-        const balanceRaw = await nuurContract.methods.balanceOf(presaleAddress).call();
-        const balance = parseFloat(balanceRaw / 10 ** decimals);
-        const totalSupply = 1_000_000;
-        const bought = totalSupply - balance;
-        const percent = ((bought / totalSupply) * 100).toFixed(2);
-        
-        // Update UI
-        document.getElementById("boughtAmount").innerText = `${bought.toLocaleString()}`;
-        document.getElementById("boughtPercent").innerText = `${percent}%`;
-        document.getElementById("remainingTokens").innerText = `${balance.toLocaleString()}`;
-        document.getElementById("progressPercent").innerText = `${percent}%`;
-        document.getElementById("progressFill").style.width = `${percent}%`;
-        
-        // Update or create progress chart
-        const progressCtx = document.getElementById('progressChart').getContext('2d');
-        const progressData = {
-          labels: ['Sold', 'Remaining'],
-          datasets: [{
-            data: [bought, balance],
-            backgroundColor: ['#FF6B35', '#1A1D2B'],
-            borderColor: '#1A1D2B',
-            borderWidth: 3
-          }]
-        };
-        
-        if (progressChart) {
-          progressChart.data = progressData;
-          progressChart.update();
-        } else {
-          progressChart = new Chart(progressCtx, {
-            type: 'doughnut',
-            data: progressData,
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  position: 'bottom',
-                  labels: {
-                    color: '#E3F2FF',
-                    font: {
-                      family: 'Poppins'
-                    },
-                    padding: 20
-                  }
-                },
-                tooltip: {
-                  callbacks: {
-                    label: (context) => `${context.label}: ${context.raw.toLocaleString()}`
-                  }
-                }
-              },
-              cutout: '60%'
-            }
-          });
-        }
-      } catch (err) {
-        console.error("Error fetching progress:", err);
-        document.getElementById("boughtAmount").innerText = "Failed to fetch token sold.";
-        document.getElementById("boughtPercent").innerText = "Failed to fetch % sold.";
-        document.getElementById("remainingTokens").innerText = "Failed to fetch amount remaining.";
-      }
-    }
-    
-    function updateCountdown() {
-      const now = new Date();
-      const diff = presaleEndDate - now;
-      
-      if (diff <= 0) {
-        document.getElementById("countdown").innerText = "Ended";
-        return;
-      }
-      
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hrs = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const secs = Math.floor((diff % (1000 * 60)) / 1000);
-      
-      document.getElementById("countdown").innerText = `${days}d ${hrs}h ${mins}m ${secs}s`;
-    }
-    
-    // Intersection Observer for animations
+    // Scroll animations
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1726,18 +1088,43 @@
       });
     }, { threshold: 0.1 });
     
-    document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     
-    // Initialize
-    window.addEventListener('DOMContentLoaded', () => {
-      renderTokenomicsChart();
-      updatePresaleProgress();
-      updateCountdown();
-      showNotification();
-      showPopup();
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.style.background = 'rgba(10, 10, 20, 0.95)';
+        header.style.padding = '1rem 2rem';
+      } else {
+        header.style.background = 'rgba(10, 10, 20, 0.8)';
+        header.style.padding = '1.5rem 2rem';
+      }
+    });
+    
+    // Simple presale progress simulation (replacing Web3 functionality)
+    function simulatePresaleProgress() {
+      const progressFill = document.querySelector('.progress-fill');
+      const soldElement = document.querySelector('.hero-card p');
       
-      setInterval(updatePresaleProgress, 30000);
-      setInterval(updateCountdown, 1000);
+      // Simulate progress increasing over time
+      let progress = 45;
+      const interval = setInterval(() => {
+        progress += Math.random() * 0.5;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+        }
+        
+        progressFill.style.width = `${progress}%`;
+        const soldTokens = Math.round(5000000 * (progress / 100)).toLocaleString();
+        soldElement.textContent = `${progress.toFixed(1)}% Sold • ${soldTokens} NUUR`;
+      }, 5000);
+    }
+    
+    // Initialize when page loads
+    window.addEventListener('DOMContentLoaded', () => {
+      simulatePresaleProgress();
     });
   </script>
 </body>
