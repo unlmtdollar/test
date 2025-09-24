@@ -1,31 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no" />
-  <title>NUUR Coin Presale</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title>Nuur Coin – Utility Token on Sidrachain</title>
+  <meta name="description" content="Nuur Coin (NUUR) is a utility token built on the Sidra Chain, empowering decentralized applications with transparency, fairness, and trust. Join the presale and claim airdrops on SidraChain.">
+  <meta name="keywords" content="Nuur Coin, NUUR, SidraChain, crypto, token, presale, airdrop, DeFi, blockchain, SidraSwap, utility token, halal crypto">
+  <meta name="author" content="Nuur Coin Team">
+  <meta property="og:title" content="Nuur Coin – Utility Token on Sidrachain">
+  <meta property="og:description" content="Empowering decentralized apps with transparency and trust. Join the presale and claim airdrops.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://nuurtoken.site">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nuur Coin – Utility Token on Sidrachain">
+  <meta name="twitter:description" content="Empowering decentralized apps with transparency and trust. Join the presale and claim airdrops.">
+  <meta name="twitter:image" content="logo.png">
+  <link rel="icon" href="logo.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NSWY7LWMRZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NSWY7LWMRZ');
+  </script>
   <style>
     :root {
-      --primary: #00F5E4;
-      --primary-dark: #00C4B5;
-      --secondary: #7B61FF;
-      --accent: #FF5E7D;
-      --dark: #0B0F17;
-      --darker: #070A12;
+      --primary: #FF6B35;
+      --primary-light: #FF8E53;
+      --secondary: #4ECDC4;
+      --accent: #FFD166;
+      --dark: #1A1D2B;
+      --darker: #121520;
       --light: #FFFFFF;
-      --gray: #8A93A7;
-      --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      --gradient-dark: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
-      --card-bg: rgba(18, 24, 38, 0.7);
-      --card-border: rgba(123, 97, 255, 0.15);
-      --radius: 20px;
-      --radius-sm: 10px;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      --gray: #A6A9B8;
+      --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      --gradient-dark: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --radius: 16px;
+      --radius-sm: 8px;
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      --glow: 0 0 15px rgba(0, 245, 228, 0.5);
+      --glow: 0 0 20px rgba(255, 107, 53, 0.4);
     }
     
     * {
@@ -34,24 +56,28 @@
       box-sizing: border-box;
     }
     
-    body {
-      font-family: 'Inter', sans-serif;
+    html, body {
+      min-height: 100vh;
       background: var(--darker);
       color: var(--light);
-      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    
+    body {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
       background-image: 
-        radial-gradient(circle at 15% 50%, rgba(28, 35, 56, 0.4) 0%, transparent 25%),
-        radial-gradient(circle at 85% 30%, rgba(28, 35, 56, 0.4) 0%, transparent 25%);
+        radial-gradient(circle at 10% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(78, 205, 196, 0.1) 0%, transparent 20%);
     }
     
     h1, h2, h3, h4, h5 {
-      font-family: 'Orbitron', sans-serif;
+      font-family: 'Rajdhani', sans-serif;
       font-weight: 700;
+      line-height: 1.2;
     }
     
     a {
@@ -59,336 +85,126 @@
       color: inherit;
     }
     
-    /* Header */
+    /* Header & Navigation */
     header {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      padding: 1.2rem 2rem;
+      padding: 1.5rem 2rem;
       display: flex;
-      justify-content: flex-end;
-      z-index: 100;
-    }
-    
-    /* Main Container */
-    .main-container {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      flex-direction: row;
-      gap: 1.5rem;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(26, 29, 43, 0.95);
       backdrop-filter: blur(10px);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .main-container::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(0, 245, 228, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
-      z-index: -1;
-    }
-    
-    /* Info Panel */
-    .info-panel {
-      flex: 1;
-      background: rgba(11, 15, 23, 0.7);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       transition: var(--transition);
-      max-width: 350px;
-      min-width: 280px;
     }
     
-    .info-panel.collapsed {
-      flex: 0;
-      max-width: 50px;
-      min-width: 50px;
-      padding: 1rem;
-      align-items: center;
-      justify-content: center;
+    header.scrolled {
+      padding: 1rem 2rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     }
     
-    .info-panel.collapsed .info-content {
-      display: none;
-    }
-    
-    .toggle-info {
-      background: var(--gradient);
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      margin-bottom: 1rem;
-      color: var(--darker);
-      font-size: 1rem;
-    }
-    
-    .info-panel.collapsed .toggle-info {
-      margin-bottom: 0;
-      transform: rotate(180deg);
-    }
-    
-    .logo-header {
+    .logo-container {
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1.5rem;
     }
     
     .logo-img {
       width: 50px;
       height: 50px;
-      border-radius: 50%;
+      border-radius: 12px;
       object-fit: contain;
       background: var(--dark);
       padding: 4px;
       border: 2px solid var(--primary);
       box-shadow: var(--glow);
+      transition: var(--transition);
+    }
+    
+    .logo-img:hover {
+      transform: scale(1.05);
     }
     
     .logo-text {
-      font-family: 'Orbitron', sans-serif;
+      font-family: 'Rajdhani', sans-serif;
       font-weight: 700;
       font-size: 1.8rem;
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .info-panel.collapsed .logo-header {
-      display: none;
-    }
-    
-    .title {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
       color: var(--light);
+      letter-spacing: 0.5px;
     }
     
-    .info-panel.collapsed .title {
-      display: none;
-    }
-    
-    .subtitle {
-      color: var(--gray);
-      margin-bottom: 1.5rem;
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-    
-    .info-panel.collapsed .subtitle {
-      display: none;
-    }
-    
-    /* Info Grid */
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.8rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .info-item {
-      background: rgba(18, 24, 38, 0.5);
-      border: 1px solid rgba(123, 97, 255, 0.1);
-      border-radius: var(--radius-sm);
-      padding: 0.8rem;
-      transition: var(--transition);
-    }
-    
-    .info-item:hover {
-      border-color: rgba(123, 97, 255, 0.2);
-      transform: translateY(-2px);
-    }
-    
-    .info-label {
-      font-size: 0.75rem;
-      color: var(--gray);
-      margin-bottom: 0.3rem;
-    }
-    
-    .info-value {
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--light);
-    }
-    
-    .info-value.highlight {
+    .logo-text span {
       color: var(--primary);
-      font-family: 'Orbitron', sans-serif;
     }
     
-    .info-panel.collapsed .info-grid {
+    .nav-toggle {
       display: none;
-    }
-    
-    /* Purchase Panel */
-    .purchase-panel {
-      flex: 2;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-    
-    .purchase-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    .purchase-title {
-      font-size: 1.5rem;
-      color: var(--light);
-    }
-    
-    /* Contract Status */
-    .contract-status {
-      background: rgba(18, 24, 38, 0.7);
-      border-radius: var(--radius-sm);
-      padding: 0.8rem;
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-    
-    .status-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-    
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    
-    .status-active {
-      background: rgba(72, 187, 120, 0.2);
-      color: #48BB78;
-    }
-    
-    .status-active .status-dot {
-      background: #48BB78;
-    }
-    
-    .status-inactive {
-      background: rgba(245, 101, 101, 0.2);
-      color: #F56565;
-    }
-    
-    .status-inactive .status-dot {
-      background: #F56565;
-    }
-    
-    .tokens-remaining {
-      margin-top: 0.4rem;
-      font-size: 0.8rem;
-      color: var(--gray);
-    }
-    
-    /* Input Sections */
-    .input-section {
-      margin-bottom: 1.2rem;
-    }
-    
-    .input-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.6rem;
-      font-size: 0.8rem;
-      color: var(--gray);
-    }
-    
-    .input-container {
-      background: rgba(18, 24, 38, 0.7);
-      border: 1px solid rgba(123, 97, 255, 0.2);
-      border-radius: var(--radius-sm);
-      padding: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: var(--transition);
-    }
-    
-    .input-container:focus-within {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(0, 245, 228, 0.2);
-    }
-    
-    .token-info {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    
-    .token-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      object-fit: contain;
-    }
-    
-    .token-name {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-    
-    input {
-      background: transparent;
+      background: none;
       border: none;
       color: var(--light);
-      font-size: 1.1rem;
-      text-align: right;
-      width: 60%;
-      outline: none;
-      font-family: 'Inter', sans-serif;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1100;
     }
     
-    input::placeholder {
+    .nav-menu {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    
+    .nav-link {
       color: var(--gray);
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+      padding: 0.5rem 0;
+      font-size: 1rem;
     }
     
-    /* Buttons */
+    .nav-link:hover, .nav-link.active {
+      color: var(--light);
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient);
+      transition: var(--transition);
+    }
+    
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+    
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      margin-left: 1rem;
+    }
+    
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.9rem 1.5rem;
+      padding: 0.8rem 1.8rem;
       border-radius: var(--radius-sm);
       font-weight: 600;
       transition: var(--transition);
       border: none;
       cursor: pointer;
       gap: 0.5rem;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       position: relative;
       overflow: hidden;
-      width: 100%;
-      margin-bottom: 1.2rem;
     }
     
     .btn::before {
@@ -409,95 +225,713 @@
     .btn-primary {
       background: var(--gradient);
       color: var(--darker);
-      box-shadow: 0 4px 15px rgba(123, 97, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
     }
     
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(123, 97, 255, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
     }
     
     .btn-outline {
       background: transparent;
       color: var(--primary);
       border: 1px solid var(--primary);
-      width: auto;
     }
     
     .btn-outline:hover {
-      background: rgba(0, 245, 228, 0.1);
+      background: rgba(255, 107, 53, 0.1);
+      transform: translateY(-3px);
+    }
+    
+    /* Mobile Navigation */
+    @media (max-width: 992px) {
+      .nav-toggle {
+        display: block;
+      }
+      
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 320px;
+        height: 100vh;
+        background: var(--dark);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 6rem 2rem 2rem;
+        transition: var(--transition);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+      }
+      
+      .nav-menu.active {
+        right: 0;
+      }
+      
+      .nav-actions {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 2rem;
+        margin-left: 0;
+      }
+      
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 900;
+        opacity: 0;
+        pointer-events: none;
+        transition: var(--transition);
+      }
+      
+      .overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+    
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.1) 0%, transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(78, 205, 196, 0.1) 0%, transparent 30%);
+      z-index: -1;
+    }
+    
+    .hero-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero-badge {
+      background: rgba(255, 107, 53, 0.1);
+      color: var(--primary);
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      margin-bottom: 1rem;
+    }
+    
+    .hero-title {
+      font-size: 4rem;
+      color: var(--light);
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+    
+    .hero-title span {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: var(--gray);
+      max-width: 700px;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+    
+    .hero-actions {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-family: 'Rajdhani', sans-serif;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* Features Section */
+    .section {
+      padding: 6rem 2rem;
+      position: relative;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--light);
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--gradient);
+      border-radius: 2px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      backdrop-filter: blur(10px);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--gradient);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: var(--transition);
+    }
+    
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow);
+    }
+    
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 107, 53, 0.1);
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-title {
+      font-size: 1.5rem;
+      color: var(--light);
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-desc {
+      color: var(--gray);
+      line-height: 1.7;
+    }
+    
+    /* Tokenomics Section */
+    .tokenomics {
+      background: linear-gradient(180deg, var(--darker) 0%, rgba(26, 29, 43, 0.9) 100%);
+    }
+    
+    .tokenomics-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4rem;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    
+    .chart-container {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+    
+    .chart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    
+    .chart-title {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--primary);
+    }
+    
+    .chart-wrapper {
+      position: relative;
+      width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+    
+    .tokenomics-details {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+    
+    .tokenomics-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    
+    .tokenomics-item {
+      display: flex;
+      align-items: center;
+      padding: 1.2rem 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+    
+    .tokenomics-item:hover {
+      background: rgba(255, 107, 53, 0.1);
+      border-left: 3px solid var(--primary);
+    }
+    
+    .tokenomics-badge {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      margin-right: 1.2rem;
+      flex-shrink: 0;
+    }
+    
+    .tokenomics-label {
+      font-weight: 500;
+      flex: 1;
+      text-align: left;
+    }
+    
+    .tokenomics-value {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    /* Presale Section */
+    .presale {
+      background: linear-gradient(180deg, rgba(26, 29, 43, 0.9) 0%, var(--darker) 100%);
+    }
+    
+    .presale-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 3rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    
+    .presale-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .presale-title {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    
+    .presale-subtitle {
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+    
+    .presale-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 3rem;
+    }
+    
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+      padding: 1.8rem;
+      text-align: center;
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 107, 53, 0.3);
+    }
+    
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-family: 'Rajdhani', sans-serif;
+    }
+    
+    .stat-label {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+    
+    .progress-container {
+      margin-bottom: 3rem;
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    
+    .progress-label {
+      font-weight: 600;
+      color: var(--light);
+    }
+    
+    .progress-percent {
+      font-weight: 700;
+      color: var(--primary);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.2rem;
+    }
+    
+    .progress-bar {
+      height: 12px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--gradient);
+      border-radius: 10px;
+      transition: width 1s ease;
+      width: 0%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-image: linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+      );
+      z-index: 1;
+      background-size: 20px 20px;
+      animation: move 1s linear infinite;
+      overflow: hidden;
+    }
+    
+    @keyframes move {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 20px 20px;
+      }
+    }
+    
+    .presale-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+    }
+    
+    /* FAQ Section */
+    .faq {
+      background: var(--darker);
+    }
+    
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .faq-item {
+      margin-bottom: 1.2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+    }
+    
+    .faq-item:hover {
+      border-color: rgba(255, 107, 53, 0.3);
+      transform: translateY(-3px);
+    }
+    
+    .faq-question {
+      padding: 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--light);
+      font-size: 1.1rem;
+    }
+    
+    .faq-question::after {
+      content: '+';
+      font-size: 1.8rem;
+      color: var(--primary);
+      transition: var(--transition);
+      font-weight: 300;
+    }
+    
+    .faq-item.active .faq-question::after {
+      content: '-';
+    }
+    
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      padding: 0 1.8rem;
+    }
+    
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+      padding: 0 1.8rem 1.8rem;
+    }
+    
+    .faq-answer p {
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    
+    /* Contract Section */
+    .contract {
+      background: linear-gradient(180deg, var(--darker) 0%, rgba(26, 29, 43, 0.9) 100%);
+    }
+    
+    .contract-container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .contract-box {
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      position: relative;
+      margin-top: 2.5rem;
+      font-family: monospace;
+      text-align: center;
+      word-break: break-all;
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+    }
+    
+    .contract-box:hover {
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--primary);
+      color: var(--darker);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: bold;
+      transition: var(--transition);
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .copy-btn:hover {
+      background: var(--primary-light);
       transform: translateY(-2px);
     }
     
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none !important;
+    /* Footer */
+    footer {
+      background: var(--dark);
+      padding: 5rem 2rem 2.5rem;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
     }
     
-    /* Wallet Section */
-    .wallet-section {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.8rem;
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .footer-social {
+      display: flex;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .social-link {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--light);
+      transition: var(--transition);
+      font-size: 1.2rem;
+    }
+    
+    .social-link:hover {
+      background: var(--gradient);
+      color: var(--darker);
+      transform: translateY(-5px);
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .footer-link {
       color: var(--gray);
+      transition: var(--transition);
+      font-weight: 500;
     }
     
-    .wallet-balance {
-      font-weight: 600;
+    .footer-link:hover {
       color: var(--primary);
-      margin-top: 0.3rem;
     }
     
-    /* Status Message */
-    .status-message {
-      text-align: center;
-      font-size: 0.8rem;
-      margin-top: 1rem;
-      min-height: 1.2rem;
-      padding: 0.4rem;
+    .footer-disclaimer {
+      color: var(--gray);
+      font-size: 0.95rem;
+      max-width: 800px;
+      margin: 1.5rem auto;
+      line-height: 1.7;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
       border-radius: var(--radius-sm);
     }
     
-    .status-success {
-      background: rgba(72, 187, 120, 0.1);
-      color: #48BB78;
-    }
-    
-    .status-error {
-      background: rgba(245, 101, 101, 0.1);
-      color: #F56565;
-    }
-    
-    .status-info {
-      background: rgba(0, 245, 228, 0.1);
-      color: var(--primary);
-    }
-    
-    .status-warning {
-      background: rgba(237, 137, 54, 0.1);
-      color: #ED8936;
-    }
-    
-    /* Spinner */
-    .spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.25);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-left: 0.5rem;
-      vertical-align: middle;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .hidden {
-      display: none !important;
+    .footer-copyright {
+      margin-top: 2.5rem;
+      color: var(--gray);
+      font-size: 0.9rem;
     }
     
     /* Notification Banner */
@@ -508,19 +942,19 @@
       width: 100%;
       background: linear-gradient(90deg, rgba(255, 238, 186, 0.95) 0%, rgba(255, 221, 142, 0.95) 100%);
       color: #000;
-      padding: 0.8rem 1rem;
+      padding: 0.9rem 1.2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 9999;
-      font-size: 0.85rem;
+      z-index: 999;
+      font-size: 0.95rem;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     }
     
     .notification-text {
       flex: 1;
       text-align: center;
-      padding: 0 0.8rem;
+      padding: 0 1rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -530,7 +964,7 @@
     .notification-link {
       color: #0056b3;
       text-decoration: underline;
-      margin-left: 0.4rem;
+      margin-left: 0.5rem;
       font-weight: 600;
     }
     
@@ -538,9 +972,9 @@
       background: none;
       border: none;
       color: #000;
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       cursor: pointer;
-      padding: 0 0.4rem;
+      padding: 0 0.5rem;
       transition: var(--transition);
     }
     
@@ -548,521 +982,763 @@
       transform: rotate(90deg);
     }
     
-    /* Footer */
-    footer {
-      margin-top: 1.5rem;
-      text-align: center;
+    /* Popup */
+    .popup {
+      position: fixed;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark);
+      color: var(--light);
+      padding: 1.5rem 1.8rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      max-width: 90%;
+      backdrop-filter: blur(10px);
     }
     
-    .report-button {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      background-color: #F87171;
-      color: white;
-      border: 1px solid #DC2626;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: background-color 0.2s ease, border-color 0.2s ease;
-      font-size: 0.8rem;
+    .popup.show {
+      opacity: 1;
     }
     
-    .report-button:hover {
-      background-color: #EF4444;
-      border-color: #B91C1C;
+    .popup-close {
+      background: none;
+      border: none;
+      color: var(--light);
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: var(--transition);
     }
     
-    /* Responsive */
+    .popup-close:hover {
+      color: var(--primary);
+    }
+    
+    .popup-link {
+      color: var(--primary);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    
+    .animate.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .delay-1 { transition-delay: 0.2s; }
+    .delay-2 { transition-delay: 0.4s; }
+    .delay-3 { transition-delay: 0.6s; }
+    
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
-      .main-container {
+      .hero-title {
+        font-size: 2.8rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .section-title {
+        font-size: 2.2rem;
+      }
+      
+      .hero-actions, .presale-actions {
         flex-direction: column;
-        max-width: 480px;
+        gap: 1rem;
       }
       
-      .info-panel {
-        max-width: 100%;
+      .btn {
+        width: 100%;
+        justify-content: center;
       }
       
-      .info-panel.collapsed {
-        max-width: 100%;
-        min-width: 100%;
-        padding: 1rem;
-        flex-direction: row;
-        justify-content: space-between;
+      .hero-stats {
+        gap: 2rem;
       }
       
-      .info-panel.collapsed .toggle-info {
-        margin-bottom: 0;
-        order: 2;
+      .stat-number {
+        font-size: 2rem;
       }
       
-      .info-panel.collapsed .logo-header {
-        display: flex;
-        order: 1;
+      .presale-container {
+        padding: 2rem 1.5rem;
       }
       
-      .info-panel.collapsed .logo-text {
-        display: block;
-      }
-      
-      .info-panel.collapsed .title {
-        display: none;
+      .feature-card, .chart-card {
+        padding: 2rem 1.5rem;
       }
     }
     
     @media (max-width: 480px) {
-      .main-container {
-        padding: 1.2rem;
+      .hero-title {
+        font-size: 2.2rem;
       }
       
-      .purchase-title {
-        font-size: 1.3rem;
+      .section {
+        padding: 4rem 1rem;
       }
       
-      input {
-        font-size: 1rem;
+      .section-title {
+        font-size: 1.9rem;
       }
       
-      header {
-        padding: 1rem;
+      .footer-links {
+        flex-direction: column;
+        gap: 1.2rem;
       }
     }
   </style>
 </head>
 <body>
   <!-- Notification Banner -->
-  <div id="nuurNotice" class="notification-banner" style="display: none;">
+  <div id="notificationBanner" class="notification-banner" style="display: none;">
     <div class="notification-text">
-      NUUR is built on Sidra Chain. For successful transaction, switch to Sidra Chain network 
-      <a href="https://youtube.com/shorts/6O1n5q1crd0?si=Vcsx9zxHAR-1nUvz" target="_blank" class="notification-link">Learn how to import Sidrachain to Metamask</a>
+      Please note that NUUR is built on Sidra Chain EVM. To purchase NUUR, you need to have SDA in your wallet.
+      <a href="https://www.bittime.com/en/blog/apa-itu-Sidra-Chain" target="_blank" class="notification-link">Learn more about Sidrachain</a>
     </div>
     <button class="notification-close" onclick="dismissNotice()">&times;</button>
   </div>
 
   <!-- Header -->
-  <header>
-    <button id="connectWalletButton" class="btn btn-outline" style="width: auto;">
-      Connect Wallet
-    </button>
-    <button id="disconnectWalletButton" class="btn btn-outline hidden" style="width: auto; margin-left: 0.5rem;">
-      Disconnect
-    </button>
-  </header>
-
-  <!-- Main Container -->
-  <main class="main-container">
-    <!-- Info Panel -->
-    <div class="info-panel">
-      <button class="toggle-info" onclick="toggleInfoPanel()">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-      
-      <div class="info-content">
-        <div class="logo-header">
-          <img src="logo.png" alt="NUUR Coin Logo" class="logo-img">
-          <span class="logo-text">NUUR Coin</span>
-        </div>
-        
-        <h2 class="title">NUUR Presale</h2>
-        <p class="subtitle">Purchase NUUR tokens during the presale phase with SDA on the Sidra Chain network.</p>
-        
-        <!-- Info Grid -->
-        <div class="info-grid">
-          <div class="info-item">
-            <div class="info-label">Phase</div>
-            <div class="info-value">NuurPhase2</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Rate</div>
-            <div class="info-value highlight">1 SDA = 200 NUUR</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Min. Buy</div>
-            <div class="info-value">1 SDA</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Max. Buy</div>
-            <div class="info-value">5,000 SDA</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Network</div>
-            <div class="info-value">Sidra Chain</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Token Standard</div>
-            <div class="info-value">ERC-20</div>
-          </div>
-        </div>
-        
-        <div class="contract-status">
-          <div id="contractStatus" class="status-indicator status-active">
-            <span class="status-dot"></span>
-            <span>Tokens Available</span>
-          </div>
-          <div id="tokensRemaining" class="tokens-remaining">Checking remaining tokens...</div>
-        </div>
-      </div>
+  <header id="header">
+    <div class="logo-container">
+      <img src="logo.png" alt="Nuur Coin Logo" class="logo-img">
+      <span class="logo-text">Nuur <span>Coin</span></span>
     </div>
     
-    <!-- Purchase Panel -->
-    <div class="purchase-panel">
-      <div class="purchase-header">
-        <h2 class="purchase-title">Buy NUUR Tokens</h2>
-      </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <nav class="nav-menu" id="navMenu">
+      <a href="about" class="nav-link active">About</a>
+      <a href="#tokenomics" class="nav-link">Tokenomics</a>
+      <a href="presale-introduction" class="nav-link">Presale</a>
+      <a href="#faq" class="nav-link">FAQ</a>
       
-      <!-- SDA Input -->
-      <div class="input-section">
-        <div class="input-label">
-          <span>You Pay</span>
-          <span>Balance: <span id="sdaBalance">-</span></span>
-        </div>
-        <div class="input-container">
-          <div class="token-info">
-            <img src="sidra.png" alt="SDA" class="token-icon">
-            <span class="token-name">SDA</span>
-          </div>
-          <input id="sdaAmount" type="number" step="any" min="1" max="5000" placeholder="1.00" />
-        </div>
-      </div>
-      
-      <!-- NUUR Output -->
-      <div class="input-section">
-        <div class="input-label">
-          <span>You Receive</span>
-          <span>Rate: 1 SDA = 200 NUUR</span>
-        </div>
-        <div class="input-container">
-          <div class="token-info">
-            <img src="logo.png" alt="NUUR" class="token-icon">
-            <span class="token-name">NUUR</span>
-          </div>
-          <span id="nuurEstimate">0</span>
-        </div>
-      </div>
-      
-      <!-- Buy Button -->
-      <div style="position: relative;">
-        <button id="buyButton" class="btn btn-primary">
+      <div class="nav-actions">
+        <a href="presale-introduction" class="btn btn-primary">
           <i class="fas fa-coins"></i> Buy NUUR
-        </button>
-        <span id="spinner" class="spinner hidden"></span>
+        </a>
+        <a href="kyc-verification" class="btn btn-primary">
+          <i class="fa-solid fa-shield-check"></i> KYC
+        </a>
+        <a href="airdrop" class="btn btn-outline">
+          <i class="fas fa-gift"></i> Airdrop
+        </a>
+        <a href="claim-tokens" class="btn btn-primary">
+          <i class="fa-solid fa-pickaxe"></i> Claim NUUR
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="about">
+    <div class="hero-content">
+      <div class="hero-badge animate">Utility Token on Sidra Chain</div>
+      <h1 class="hero-title animate delay-1">Nuur <span>Coin</span></h1>
+      <p class="hero-subtitle animate delay-2">
+        NUUR is a utility token built on the Sidra Chain, representing clarity, guidance, and ethical innovation in the blockchain space. 
+        Empowering a new wave of decentralized applications promoting transparency, fairness, and trust across the ecosystem.
+      </p>
+      <div class="hero-actions animate delay-3">
+        <a href="presale-introduction" class="btn btn-primary">
+          <i class="fas fa-coins"></i> Join Presale
+        </a>
+        <a href="#tokenomics" class="btn btn-outline">
+          <i class="fas fa-chart-pie"></i> Tokenomics
+        </a>
+        <a href="claim-tokens" class="btn btn-primary">
+          <i class="fas fa-coins"></i>Claim NUUR
+        </a>
       </div>
       
-      <!-- Status Message -->
-      <div id="statusMessage" class="status-message"></div>
-      
-      <!-- Wallet Balance -->
-      <div class="wallet-section">
-        <div>Wallet Balance</div>
-        <div id="walletBalance" class="wallet-balance">Not Connected</div>
+      <div class="hero-stats animate delay-3">
+        <div class="hero-stat">
+          <div class="stat-number">10M</div>
+          <div class="stat-label">Total Supply</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-number">50%</div>
+          <div class="stat-label">Presale Allocation</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-number">$0.005</div>
+          <div class="stat-label">Presale Price</div>
+        </div>
       </div>
     </div>
-  </main>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section">
+    <h2 class="section-title">Why Choose Nuur Coin</h2>
+    
+    <div class="features-grid">
+      <div class="feature-card animate">
+        <div class="feature-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h3 class="feature-title">Secure & Transparent</h3>
+        <p class="feature-desc">
+          Built on Sidra Chain with audited smart contracts ensuring security and transparency for all transactions.
+        </p>
+      </div>
+      
+      <div class="feature-card animate delay-1">
+        <div class="feature-icon">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <h3 class="feature-title">Fast Transactions</h3>
+        <p class="feature-desc">
+          Benefit from Sidra Chain's high throughput and low latency for quick and efficient transactions.
+        </p>
+      </div>
+      
+      <div class="feature-card animate delay-2">
+        <div class="feature-icon">
+          <i class="fas fa-hand-holding-usd"></i>
+        </div>
+        <h3 class="feature-title">Utility Focused</h3>
+        <p class="feature-desc">
+          NUUR powers decentralized apps including DeFi, payments, and community incentives on Sidra Chain.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tokenomics Section -->
+  <section class="section tokenomics" id="tokenomics">
+    <h2 class="section-title">Tokenomics</h2>
+    
+    <div class="tokenomics-container">
+      <div class="chart-container animate">
+        <div class="chart-card">
+          <h3 class="chart-title">Token Distribution</h3>
+          <div class="chart-wrapper">
+            <canvas id="tokenomicsChart"></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tokenomics-details animate delay-1">
+        <h3 class="chart-title">Token Details</h3>
+        <ul class="tokenomics-list">
+          <li class="tokenomics-item">
+            <span class="tokenomics-badge" style="background: #FF6B35;"></span>
+            <span class="tokenomics-label">Total Supply</span>
+            <span class="tokenomics-value">10M NUUR</span>
+          </li>
+          <li class="tokenomics-item">
+            <span class="tokenomics-badge" style="background: #FF8E53;"></span>
+            <span class="tokenomics-label">Presale Allocation</span>
+            <span class="tokenomics-value">5M NUUR (50%)</span>
+          </li>
+          <li class="tokenomics-item">
+            <span class="tokenomics-badge" style="background: #4ECDC4;"></span>
+            <span class="tokenomics-label">Liquidity Allocation</span>
+            <span class="tokenomics-value">2M NUUR (20%)</span>
+          </li>
+          <li class="tokenomics-item">
+            <span class="tokenomics-badge" style="background: #FFD166;"></span>
+            <span class="tokenomics-label">Airdrop Allocation</span>
+            <span class="tokenomics-value">1M NUUR (10%)</span>
+          </li>
+          <li class="tokenomics-item">
+            <span class="tokenomics-badge" style="background: #A6A9B8;"></span>
+            <span class="tokenomics-label">Team Allocation</span>
+            <span class="tokenomics-value">2M NUUR (20%)</span>
+          </li>
+          <li class="tokenomics-item">
+            <span class="tokenomics-badge" style="background: #FF6B35;"></span>
+            <span class="tokenomics-label">Presale Price</span>
+            <span class="tokenomics-value">1 NUUR = 0.005 SDA</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Presale Section -->
+  <section class="section presale" id="presale">
+    <h2 class="section-title">Presale Progress</h2>
+    
+    <div class="presale-container animate">
+      <div class="presale-header">
+        <h3 class="presale-title">Phase 2 Presale</h3>
+        <p class="presale-subtitle">Join the NUUR token presale before it ends!</p>
+      </div>
+      
+      <div class="presale-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="boughtAmount">Loading...</div>
+          <div class="stat-label">Tokens Sold</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="boughtPercent">Loading...</div>
+          <div class="stat-label">Progress</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="remainingTokens">Loading...</div>
+          <div class="stat-label">Tokens Remaining</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="countdown">--</div>
+          <div class="stat-label">Time Remaining</div>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-header">
+          <span class="progress-label">Presale Progress</span>
+          <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+      
+      <div class="chart-card">
+        <h3 class="chart-title">Presale Distribution</h3>
+        <div class="chart-wrapper">
+          <canvas id="progressChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="presale-actions animate delay-1">
+        <a href="https://nuurtoken.site/presale-introduction" class="btn btn-primary">
+          <i class="fas fa-coins"></i> Join Presale
+        </a>
+        <a href="https://nuurtoken.site/airdrop" class="btn btn-outline">
+          <i class="fas fa-gift"></i> Claim Airdrop
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section faq" id="faq">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    
+    <div class="faq-container">
+      <div class="faq-item animate">
+        <div class="faq-question">What is Nuur Coin?</div>
+        <div class="faq-answer">
+          <p>Nuur Coin (NUUR) is a utility token built on the Sidra Chain, designed to enable transparent, ethical, and innovative decentralized applications.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item animate delay-1">
+        <div class="faq-question">How do I participate in the presale?</div>
+        <div class="faq-answer">
+          <p>You can participate by visiting the <a href="https://nuurtoken.site/phase2" style="color: var(--primary);">presale page</a>, connecting your wallet, entering the SIDRA amount, and clicking Buy.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item animate delay-1">
+        <div class="faq-question">How do I join the airdrop? Who is eligible?</div>
+        <div class="faq-answer">
+          <p>To join the airdrop, visit <a href="https://nuurtoken.site/airdrop" style="color: var(--primary);">airdrop page</a> and follow the instructions. Eligibility requires participation in the presale.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item animate delay-2">
+        <div class="faq-question">When will $NUUR be listed on exchanges?</div>
+        <div class="faq-answer">
+          <p>$NUUR will be listed on SidraSwap after the presale ends and upon SDA listing. Stay tuned for announcements.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item animate delay-2">
+        <div class="faq-question">Is the smart contract audited?</div>
+        <div class="faq-answer">
+          <p>The Nuur Coin smart contract has been audited for security and transparency.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item animate delay-3">
+        <div class="faq-question">What utility does $NUUR have?</div>
+        <div class="faq-answer">
+          <p>$NUUR powers decentralized apps on Sidra Chain, including DeFi, payments, and community incentives, promoting trust and fairness in the ecosystem.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contract Section -->
+  <section class="section contract">
+    <div class="contract-container animate">
+      <h2 class="section-title">Smart Contract</h2>
+      <p>NUUR Token Contract Address</p>
+      
+      <div class="contract-box">
+        <span id="contract-address">0x003BEc2e6ef4369f9d968eCD288d31B59fD9c2CD</span>
+        <button class="copy-btn" onclick="copyContract()">Copy</button>
+      </div>
+      
+      <div style="margin-top: 2.5rem;">
+        <a href="explorer" class="btn btn-outline" target="_blank">
+          <i class="fas fa-users"></i> View on NUUR Explorer
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer>
-    <a href="error-report" class="report-button" target="_blank">
-      <i class="fas fa-bug"></i> Report an error
-    </a>
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="logo.png" alt="Nuur Coin Logo" width="40">
+        <span class="logo-text">Nuur <span>Coin</span></span>
+      </div>
+      
+      <div class="footer-social">
+        <a href="https://twitter.com/NuurCoin" class="social-link" target="_blank" aria-label="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://t.me/NuurCoin" class="social-link" target="_blank" aria-label="Telegram">
+          <i class="fab fa-telegram"></i>
+        </a>
+        <a href="https://facebook.com/share/16XHA2ydrf" class="social-link" target="_blank" aria-label="Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href="mailto:mail@nuurtoken.site" class="social-link" aria-label="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </div>
+      
+      <div class="footer-links">
+        <a href="about" class="footer-link">About</a>
+        <a href="#tokenomics" class="footer-link">Tokenomics</a>
+        <a href="phase2" class="footer-link">Presale</a>
+        <a href="#faq" class="footer-link">FAQ</a>
+        <a href="https://ledger.sidrachain.com/address/0x8375694cD94480d715727758a7fd863bC00Afe90" class="footer-link">Donate</a>
+      </div>
+      
+      <p class="footer-disclaimer">
+        NOTE: NUUR will be listed on SidraSwap after presale ends. INVEST WISELY.
+      </p>
+      
+      <p class="footer-copyright">
+        &copy; 2025 Nuur Coin. All rights reserved.
+      </p>
+    </div>
   </footer>
 
+  <!-- Popup -->
+  <div class="popup" id="popup" aria-live="polite" role="alert">
+    <button class="popup-close" onclick="dismissPopup()">&times;</button>
+    <p>Watch this quick <a href="https://youtu.be/nuEx-A5gI14?si=EQ5TAbyuEIojFaDN" target="_blank" class="popup-link">video</a> to learn how to buy $NUUR coin</p>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // Toggle info panel function
-    function toggleInfoPanel() {
-      const infoPanel = document.querySelector('.info-panel');
-      infoPanel.classList.toggle('collapsed');
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      // Constants - PHASE 2
-      const presaleAddress = "0x98FCc396547D450208e926995a74b61874a1423A";
-      const nuurTokenAddress = "0x003BEc2e6ef4369f9d968eCD288d31B59fD9c2CD";
-      const rate = 200; // 1 SDA = 200 NUUR (Phase 2)
-      const minBuy = 1; // Minimum buy in SDA
-      const maxBuy = 5000; // Maximum buy in SDA
+    // Mobile Navigation
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    const overlay = document.getElementById('overlay');
+    const header = document.getElementById('header');
+    
+    navToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      overlay.classList.toggle('active');
+      document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+    });
+    
+    overlay.addEventListener('click', () => {
+      navMenu.classList.remove('active');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+    
+    // Close mobile menu when clicking on nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    });
+    
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
       
-      // Contract ABIs
-      const presaleAbi = [{"inputs":[{"internalType":"address","name":"_nuurToken","type":"address"},{"internalType":"address","name":"_devWallet","type":"address"},{"internalType":"address","name":"initialOwner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"newDevWallet","type":"address"}],"name":"DevWalletUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"NUURWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"phaseId","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"PhaseUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"isActive","type":"bool"}],"name":"PresaleStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"SDAWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensDeposited","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint256","name":"sdaAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"nuurAmount","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"}],"name":"TokensPurchased","type":"event"},{"inputs":[],"name":"buyTokens","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"sdaAmount","type":"uint256"}],"name":"calculateNUURAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"depositTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"devWallet","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCurrentPhaseInfo","outputs":[{"internalType":"uint256","name":"phaseId","type":"uint256"},{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getNUURBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"phaseId","type":"uint256"}],"name":"getPhaseInfo","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getSDABalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nuurToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"phaseStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"phases","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"_status","type":"bool"}],"name":"setPresaleStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalSDAReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTokensSold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newDevWallet","type":"address"}],"name":"updateDevWallet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newPhaseId","type":"uint256"},{"internalType":"string","name":"newPhaseName","type":"string"},{"internalType":"uint256","name":"newRate","type":"uint256"}],"name":"updatePhase","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawNUUR","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawSDA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
-
-      const tokenAbi = [
-        {
-          "constant": true,
-          "inputs": [{"name": "_owner", "type": "address"}],
-          "name": "balanceOf",
-          "outputs": [{"name": "balance", "type": "uint256"}],
-          "type": "function"
-        },
-        {
-          "constant": true,
-          "inputs": [],
-          "name": "decimals",
-          "outputs": [{"name": "", "type": "uint8"}],
-          "type": "function"
-        }
-      ];
-
-      // State variables
-      let userAddress = null;
-      let web3 = null;
-      let provider = null;
-      let presaleContract = null;
-      let tokenContract = null;
-      let contractHasTokens = true;
-      let contractTokenBalance = 0;
-
-      // DOM Elements
-      const connectWalletBtn = document.getElementById('connectWalletButton');
-      const disconnectWalletBtn = document.getElementById('disconnectWalletButton');
-      const buyBtn = document.getElementById('buyButton');
-      const sdaInput = document.getElementById('sdaAmount');
-      const statusMessage = document.getElementById('statusMessage');
-      const spinner = document.getElementById('spinner');
-      const walletBalance = document.getElementById('walletBalance');
-      const nuurEstimate = document.getElementById('nuurEstimate');
-      const sdaBalance = document.getElementById('sdaBalance');
-      const contractStatus = document.getElementById('contractStatus');
-      const tokensRemaining = document.getElementById('tokensRemaining');
-
-      // Initialize Web3
-      async function initWeb3() {
-        provider = window.ethereum;
-        if (provider) {
-          web3 = new Web3(provider);
-          presaleContract = new web3.eth.Contract(presaleAbi, presaleAddress);
-          tokenContract = new web3.eth.Contract(tokenAbi, nuurTokenAddress);
-          return true;
-        }
-        return false;
-      }
-
-      // Check contract token balance
-      async function checkContractTokenBalance() {
-        if (!web3) return;
+      // Highlight active nav link on scroll
+      let current = '';
+      const sections = document.querySelectorAll('section');
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
         
-        try {
-          // Get contract NUUR balance
-          const balance = await tokenContract.methods.balanceOf(presaleAddress).call();
-          const decimals = await tokenContract.methods.decimals().call();
-          
-          contractTokenBalance = balance / (10 ** decimals);
-          tokensRemaining.textContent = `${contractTokenBalance.toLocaleString()} NUUR remaining`;
-          
-          // Update contract status
-          if (contractTokenBalance > 0) {
-            contractHasTokens = true;
-            contractStatus.className = 'status-indicator status-active';
-            contractStatus.innerHTML = '<span class="status-dot"></span><span>Tokens Available</span>';
-          } else {
-            contractHasTokens = false;
-            contractStatus.className = 'status-indicator status-inactive';
-            contractStatus.innerHTML = '<span class="status-dot"></span><span>No Tokens Remaining</span>';
-            showStatus("No tokens left for purchase.", "error");
-            buyBtn.disabled = true;
-          }
-        } catch (error) {
-          console.error("Error checking contract balance:", error);
-          tokensRemaining.textContent = "Error checking remaining tokens";
-        }
-      }
-
-      // Connect Wallet
-      async function connectWallet() {
-        if (!await initWeb3()) {
-          showStatus("Please install a Web3 wallet like MetaMask!", "error");
-          return;
-        }
-
-        try {
-          const accounts = await provider.request({ method: "eth_requestAccounts" });
-          userAddress = accounts[0];
-          showStatus(`Wallet Connected: ${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`, "success");
-          connectWalletBtn.style.display = "none";
-          disconnectWalletBtn.style.display = "inline-block";
-          await showWalletBalance();
-          await checkContractTokenBalance();
-        } catch (error) {
-          showStatus("Wallet connection failed.", "error");
-          console.error(error);
-        }
-      }
-
-      // Disconnect Wallet
-      function disconnectWallet() {
-        userAddress = null;
-        showStatus("Wallet disconnected.", "info");
-        connectWalletBtn.style.display = "inline-block";
-        disconnectWalletBtn.style.display = "none";
-        walletBalance.innerText = "Not Connected";
-        sdaBalance.innerText = "-";
-      }
-
-      // Show Wallet Balance
-      async function showWalletBalance() {
-        if (!web3 || !userAddress) return;
-
-        try {
-          const balance = await web3.eth.getBalance(userAddress);
-          const formattedBalance = parseFloat(web3.utils.fromWei(balance, "ether")).toFixed(4);
-          walletBalance.innerText = `${formattedBalance} SDA`;
-          sdaBalance.innerText = `${formattedBalance} SDA`;
-        } catch (error) {
-          walletBalance.innerText = "Unavailable or switch to Sidra Chain";
-          sdaBalance.innerText = "-";
-          console.error(error);
-        }
-      }
-
-      // Buy Tokens
-      async function buyTokens() {
-        let sdaAmount = parseFloat(sdaInput.value);
-        
-        // Input validation
-        if (!sdaAmount || isNaN(sdaAmount) || sdaAmount < minBuy) {
-          showStatus(`Enter a valid SDA amount (min: ${minBuy})`, "error");
-          return;
-        }
-        if (sdaAmount > maxBuy) {
-          showStatus(`Maximum allowed per transaction is ${maxBuy} SDA`, "error");
-          return;
-        }
-        if (!userAddress) {
-          showStatus("Connect wallet first.", "error");
-          return;
-        }
-        
-        // Check if contract has tokens
-        if (!contractHasTokens) {
-          showStatus("Presale contract has no tokens remaining. Purchase not possible.", "error");
-          return;
-        }
-        
-        // Check if requested amount exceeds contract balance
-        const requestedNuur = sdaAmount * rate;
-        if (requestedNuur > contractTokenBalance) {
-          showStatus(`Requested amount exceeds available tokens. Maximum purchase: ${Math.floor(contractTokenBalance / rate)} SDA`, "error");
-          return;
-        }
-
-        buyBtn.disabled = true;
-        spinner.classList.remove("hidden");
-        showStatus("Processing transaction...", "info");
-
-        try {
-          // Create the transaction
-          const value = web3.utils.toWei(sdaAmount.toString(), 'ether');
-          const data = presaleContract.methods.buyTokens().encodeABI();
-
-          const txHash = await provider.request({
-            method: "eth_sendTransaction",
-            params: [{
-              from: userAddress,
-              to: presaleAddress,
-              value: web3.utils.toHex(value),
-              data: data,
-              type: "0x2" // EIP-1559
-            }]
-          });
-
-          const explorerLink = `https://ledger.sidrachain.com/tx/${txHash}`;
-          showStatus(`Transaction sent. <a href="${explorerLink}" target="_blank" style="color: var(--primary); text-decoration: underline;">View on Explorer</a>`, "success");
-          await showWalletBalance();
-          
-          // Update contract balance after purchase
-          setTimeout(checkContractTokenBalance, 5000);
-        } catch (error) {
-          console.error(error);
-          showStatus(`Transaction failed: ${error.message || 'Unknown error'}`, "error");
-        } finally {
-          buyBtn.disabled = false;
-          spinner.classList.add("hidden");
-        }
-      }
-
-      // Show status message
-      function showStatus(message, type = "info") {
-        statusMessage.innerHTML = message;
-        statusMessage.className = "status-message";
-        
-        if (type === "success") {
-          statusMessage.classList.add("status-success");
-        } else if (type === "error") {
-          statusMessage.classList.add("status-error");
-        } else if (type === "warning") {
-          statusMessage.classList.add("status-warning");
-        } else {
-          statusMessage.classList.add("status-info");
-        }
-      }
-
-      // Calculate NUUR amount on SDA input
-      sdaInput.addEventListener("input", function() {
-        let sda = parseFloat(this.value || "0");
-        
-        // Validate input
-        if (isNaN(sda)) {
-          nuurEstimate.innerText = "0";
-          return;
-        }
-        
-        if (sda < minBuy) sda = minBuy;
-        if (sda > maxBuy) sda = maxBuy;
-        
-        // Calculate NUUR amount
-        const nuurAmount = sda * rate;
-        nuurEstimate.innerText = nuurAmount.toLocaleString();
-        
-        // Check if requested amount exceeds contract balance
-        if (contractTokenBalance > 0 && nuurAmount > contractTokenBalance) {
-          showStatus(`Requested amount exceeds available tokens. Maximum: ${Math.floor(contractTokenBalance / rate)} SDA`, "warning");
-        } else {
-          showStatus("", "info");
+        if (pageYOffset >= sectionTop - 200) {
+          current = section.getAttribute('id');
         }
       });
-
-      // Enforce min/max in UI
-      sdaInput.addEventListener("blur", function() {
-        let v = parseFloat(sdaInput.value || "0");
-        if (isNaN(v) || v < minBuy) sdaInput.value = minBuy;
-        if (v > maxBuy) sdaInput.value = maxBuy;
-        
-        // Recalculate NUUR amount
-        const nuurAmount = parseFloat(sdaInput.value) * rate;
-        nuurEstimate.innerText = nuurAmount.toLocaleString();
-      });
-
-      // Event Listeners
-      connectWalletBtn.addEventListener('click', connectWallet);
-      disconnectWalletBtn.addEventListener('click', disconnectWallet);
-      buyBtn.addEventListener('click', buyTokens);
-
-      // Initialize
-      initWeb3().then(() => {
-        // Check contract status even if wallet is not connected
-        checkContractTokenBalance();
-        
-        // Set up periodic contract balance checks
-        setInterval(checkContractTokenBalance, 30000); // Check every 30 seconds
+      
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
       });
     });
-
-    // Notification banner functions
-    window.addEventListener('DOMContentLoaded', () => {
+    
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      
+      question.addEventListener('click', () => {
+        const currentlyActive = document.querySelector('.faq-item.active');
+        
+        if (currentlyActive && currentlyActive !== item) {
+          currentlyActive.classList.remove('active');
+        }
+        
+        item.classList.toggle('active');
+      });
+    });
+    
+    // Notification Banner
+    function showNotification() {
       if (!localStorage.getItem('nuurNoticeDismissed')) {
-        setTimeout(() => {
-          document.getElementById('nuurNotice').style.display = 'flex';
-        }, 2000);
+        document.getElementById('notificationBanner').style.display = 'flex';
       }
-    });
-
-    function dismissNotice() {
-      const notice = document.getElementById('nuurNotice');
-      notice.style.transition = 'opacity 0.5s ease';
-      notice.style.opacity = '0';
-      setTimeout(() => {
-        notice.style.display = 'none';
-        localStorage.setItem('nuurNoticeDismissed', 'true');
-      }, 500);
     }
+    
+    function dismissNotice() {
+      const notice = document.getElementById('notificationBanner');
+      notice.style.display = 'none';
+      localStorage.setItem('nuurNoticeDismissed', 'true');
+    }
+    
+    // Popup
+    function showPopup() {
+      const popup = document.getElementById('popup');
+      setTimeout(() => {
+        popup.classList.add('show');
+      }, 5000);
+    }
+    
+    function dismissPopup() {
+      const popup = document.getElementById('popup');
+      popup.classList.remove('show');
+    }
+    
+    // Copy Contract Address
+    function copyContract() {
+      const text = document.getElementById('contract-address').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showAlert('Contract address copied!');
+      });
+    }
+    
+    // Simple Alert
+    function showAlert(message) {
+      const alert = document.createElement('div');
+      alert.className = 'popup show';
+      alert.style.bottom = '6rem';
+      alert.innerHTML = `
+        <button class="popup-close" onclick="this.parentElement.remove()">&times;</button>
+        <p>${message}</p>
+      `;
+      document.body.appendChild(alert);
+      setTimeout(() => alert.remove(), 3000);
+    }
+    
+    // Charts
+    let tokenomicsChart, progressChart;
+    const presaleAddress = "0x98FCc396547D450208e926995a74b61874a1423A";
+    const abi = [
+      { "constant": true, "inputs": [], "name": "nuurToken", "outputs": [{ "name": "", "type": "address" }], "type": "function" }
+    ];
+    const presaleEndDate = new Date("2025-10-27T23:59:59Z");
+    
+    function renderTokenomicsChart() {
+      const ctx = document.getElementById('tokenomicsChart').getContext('2d');
+      tokenomicsChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Presale (50%)', 'Liquidity (20%)', 'Team (20%)', 'Airdrop (10%)'],
+          datasets: [{
+            data: [50, 20, 20, 10],
+            backgroundColor: ['#FF6B35', '#FF8E53', '#4ECDC4', '#FFD166'],
+            borderColor: '#1A1D2B',
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#E3F2FF',
+                font: {
+                  family: 'Poppins'
+                },
+                padding: 20
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: (context) => `${context.label}: ${context.raw}%`
+              }
+            }
+          },
+          cutout: '60%'
+        }
+      });
+    }
+    
+    async function updatePresaleProgress() {
+      const web3 = new Web3("https://node.sidrachain.com");
+      const contract = new web3.eth.Contract(abi, presaleAddress);
+      
+      try {
+        const nuur = await contract.methods.nuurToken().call();
+        const nuurContract = new web3.eth.Contract([
+          { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint8" }], "type": "function" },
+          { "constant": true, "inputs": [{ "name": "account", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "", "type": "uint256" }], "type": "function" }
+        ], nuur);
+        
+        const decimals = await nuurContract.methods.decimals().call();
+        const balanceRaw = await nuurContract.methods.balanceOf(presaleAddress).call();
+        const balance = parseFloat(balanceRaw / 10 ** decimals);
+        const totalSupply = 1_000_000;
+        const bought = totalSupply - balance;
+        const percent = ((bought / totalSupply) * 100).toFixed(2);
+        
+        // Update UI
+        document.getElementById("boughtAmount").innerText = `${bought.toLocaleString()}`;
+        document.getElementById("boughtPercent").innerText = `${percent}%`;
+        document.getElementById("remainingTokens").innerText = `${balance.toLocaleString()}`;
+        document.getElementById("progressPercent").innerText = `${percent}%`;
+        document.getElementById("progressFill").style.width = `${percent}%`;
+        
+        // Update or create progress chart
+        const progressCtx = document.getElementById('progressChart').getContext('2d');
+        const progressData = {
+          labels: ['Sold', 'Remaining'],
+          datasets: [{
+            data: [bought, balance],
+            backgroundColor: ['#FF6B35', '#1A1D2B'],
+            borderColor: '#1A1D2B',
+            borderWidth: 3
+          }]
+        };
+        
+        if (progressChart) {
+          progressChart.data = progressData;
+          progressChart.update();
+        } else {
+          progressChart = new Chart(progressCtx, {
+            type: 'doughnut',
+            data: progressData,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: {
+                    color: '#E3F2FF',
+                    font: {
+                      family: 'Poppins'
+                    },
+                    padding: 20
+                  }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: (context) => `${context.label}: ${context.raw.toLocaleString()}`
+                  }
+                }
+              },
+              cutout: '60%'
+            }
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching progress:", err);
+        document.getElementById("boughtAmount").innerText = "Failed to fetch token sold.";
+        document.getElementById("boughtPercent").innerText = "Failed to fetch % sold.";
+        document.getElementById("remainingTokens").innerText = "Failed to fetch amount remaining.";
+      }
+    }
+    
+    function updateCountdown() {
+      const now = new Date();
+      const diff = presaleEndDate - now;
+      
+      if (diff <= 0) {
+        document.getElementById("countdown").innerText = "Ended";
+        return;
+      }
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hrs = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      document.getElementById("countdown").innerText = `${days}d ${hrs}h ${mins}m ${secs}s`;
+    }
+    
+    // Intersection Observer for animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+    
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTokenomicsChart();
+      updatePresaleProgress();
+      updateCountdown();
+      showNotification();
+      showPopup();
+      
+      setInterval(updatePresaleProgress, 30000);
+      setInterval(updateCountdown, 1000);
+    });
   </script>
 </body>
 </html>
