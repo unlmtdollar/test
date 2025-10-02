@@ -1225,6 +1225,7 @@
         <div class="wallet-section">
           <div>Wallet Balance</div>
           <div id="walletBalance" class="wallet-balance">Not Connected</div>
+          <div style="margin-top: 0.5rem;">Your NUUR Balance: <span id="nuurBalance" class="wallet-balance">-</span></div>
         </div>
       </div>
     </div>
@@ -1244,6 +1245,7 @@
       const rate = 20; // 1 SDA = 20 NUUR (Phase 3)
       const minBuy = 1; // Minimum buy in SDA
       const maxBuy = 50000; // Maximum buy in SDA
+      const gasBuffer = 0.01; // 0.01 SDA buffer for gas fees
       
       // Contract ABIs
       const presaleAbi = [{"inputs":[{"internalType":"address","name":"_nuurToken","type":"address"},{"internalType":"address","name":"_devWallet","type":"address"},{"internalType":"address","name":"initialOwner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"newDevWallet","type":"address"}],"name":"DevWalletUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"NUURWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"phaseId","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"PhaseUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"isActive","type":"bool"}],"name":"PresaleStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"SDAWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensDeposited","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint256","name":"sdaAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"nuurAmount","type":"uint256"},{"indexed":false,"internalType":"string","name":"phaseName","type":"string"},{"indexed":false,"internalType":"uint256","name":"rate","type":"uint256"}],"name":"TokensPurchased","type":"event"},{"inputs":[],"name":"buyTokens","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"sdaAmount","type":"uint256"}],"name":"calculateNUURAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhaseName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"depositTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"devWallet","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCurrentPhaseInfo","outputs":[{"internalType":"uint256","name":"phaseId","type":"uint256"},{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getNUURBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"phaseId","type":"uint256"}],"name":"getPhaseInfo","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getSDABalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nuurToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"phaseStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"phases","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"rate","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"tokensSold","type":"uint256"},{"internalType":"uint256","name":"sdaReceived","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"presaleActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"_status","type":"bool"}],"name":"setPresaleStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalSDAReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalTokensSold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newDevWallet","type":"address"}],"name":"updateDevWallet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newPhaseId","type":"uint256"},{"internalType":"string","name":"newPhaseName","type":"string"},{"internalType":"uint256","name":"newRate","type":"uint256"}],"name":"updatePhase","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawNUUR","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawSDA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}];
@@ -1276,6 +1278,8 @@
       let currentNetwork = null;
       let isCorrectNetwork = false;
       let isTransactionInProgress = false;
+      let userSdaBalance = 0;
+      let userNuurBalance = 0;
 
       // DOM Elements
       const connectWalletBtn = document.getElementById('connectWalletButton');
@@ -1289,6 +1293,7 @@
       const walletBalance = document.getElementById('walletBalance');
       const nuurEstimate = document.getElementById('nuurEstimate');
       const sdaBalance = document.getElementById('sdaBalance');
+      const nuurBalance = document.getElementById('nuurBalance');
       const contractStatus = document.getElementById('contractStatus');
       const tokensRemaining = document.getElementById('tokensRemaining');
       const networkIndicator = document.getElementById('networkIndicator');
@@ -1361,6 +1366,31 @@
       function hideFailureNotification() {
         notificationOverlay.classList.remove('active');
         failureNotification.classList.remove('active');
+      }
+
+      // Clean error message
+      function cleanErrorMessage(errorMsg) {
+        if (!errorMsg) return 'Transaction failed. Please try again.';
+        
+        // Remove MetaMask-specific text
+        let cleanedMsg = errorMsg.replace('MetaMask Tx Signature: ', '');
+        cleanedMsg = cleanedMsg.replace('MetaMask ', '');
+        
+        // Improve common error messages
+        if (cleanedMsg.includes('user denied transaction signature')) {
+          return 'Transaction was cancelled.';
+        }
+        if (cleanedMsg.includes('insufficient funds')) {
+          return 'Insufficient SDA balance for transaction and gas fees.';
+        }
+        if (cleanedMsg.includes('gas')) {
+          return 'Transaction failed due to gas estimation issues.';
+        }
+        if (cleanedMsg.includes('revert')) {
+          return 'Transaction reverted. Please check your inputs and try again.';
+        }
+        
+        return cleanedMsg;
       }
 
       // Initialize Web3
@@ -1560,6 +1590,7 @@
         
         walletBalance.innerText = "Not Connected";
         sdaBalance.innerText = "-";
+        nuurBalance.innerText = "-";
         
         // Reset transaction flow
         step1.classList.remove('completed');
@@ -1573,15 +1604,30 @@
         if (!web3 || !userAddress) return;
 
         try {
+          // Get SDA balance
           const balance = await web3.eth.getBalance(userAddress);
-          const formattedBalance = parseFloat(web3.utils.fromWei(balance, "ether")).toFixed(4);
+          userSdaBalance = parseFloat(web3.utils.fromWei(balance, "ether"));
+          const formattedBalance = userSdaBalance.toFixed(4);
           walletBalance.innerText = `${formattedBalance} SDA`;
           sdaBalance.innerText = `${formattedBalance} SDA`;
+          
+          // Get NUUR balance
+          const nuurBalanceWei = await tokenContract.methods.balanceOf(userAddress).call();
+          const decimals = await tokenContract.methods.decimals().call();
+          userNuurBalance = nuurBalanceWei / (10 ** decimals);
+          nuurBalance.innerText = `${userNuurBalance.toLocaleString()} NUUR`;
         } catch (error) {
           walletBalance.innerText = "Unavailable or switch to Sidra Chain";
           sdaBalance.innerText = "-";
+          nuurBalance.innerText = "-";
           console.error(error);
         }
+      }
+
+      // Check if user has sufficient balance for transaction
+      function hasSufficientBalance(sdaAmount) {
+        const totalRequired = parseFloat(sdaAmount) + gasBuffer;
+        return userSdaBalance >= totalRequired;
       }
 
       // Buy Tokens
@@ -1617,6 +1663,12 @@
         // Check if contract has tokens
         if (!contractHasTokens) {
           showStatus("Presale phase is over. Wait for the next phase.", "error");
+          return;
+        }
+        
+        // Check if user has sufficient SDA balance (including gas buffer)
+        if (!hasSufficientBalance(sdaAmount)) {
+          showStatus(`Insufficient SDA balance. You need at least ${(sdaAmount + gasBuffer).toFixed(2)} SDA (including gas fees).`, "error");
           return;
         }
         
@@ -1683,7 +1735,7 @@
           console.error(error);
           
           // Show failure notification
-          let errorMsg = error.message || 'Unknown error occurred';
+          let errorMsg = cleanErrorMessage(error.message);
           let txHash = null;
           
           // Extract transaction hash if available
@@ -1766,6 +1818,8 @@
         // Check if requested amount exceeds contract balance
         if (contractTokenBalance > 0 && nuurAmount > contractTokenBalance) {
           showStatus(`Amount cannot exceed available tokens. Maximum: ${Math.floor(contractTokenBalance / rate)} SDA`, "warning");
+        } else if (userAddress && !hasSufficientBalance(sda)) {
+          showStatus(`Insufficient SDA balance. You need at least ${(sda + gasBuffer).toFixed(2)} SDA (including gas fees).`, "warning");
         } else {
           showStatus("", "info");
         }
