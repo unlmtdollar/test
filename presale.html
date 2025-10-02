@@ -79,7 +79,7 @@
     .app-container {
       display: flex;
       width: 100%;
-      max-width: 500px; /* Reduced for better PC layout */
+      max-width: 500px;
       margin: 0 auto;
       gap: 2rem;
     }
@@ -97,7 +97,7 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      max-width: 500px; /* Match app-container width */
+      max-width: 500px;
       padding: 1.2rem 0;
       margin: 0 auto 1rem;
     }
@@ -131,7 +131,7 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 2rem; /* Reduced padding for better proportions */
+      padding: 2rem;
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
       position: relative;
@@ -159,7 +159,7 @@
       align-items: center;
       justify-content: center;
       gap: 1rem;
-      margin-bottom: 1.5rem; /* Reduced margin */
+      margin-bottom: 1.5rem;
     }
     
     .logo-img {
@@ -184,7 +184,7 @@
     
     .title {
       text-align: center;
-      font-size: 1.6rem; /* Slightly smaller for better proportions */
+      font-size: 1.6rem;
       margin-bottom: 0.5rem;
       color: var(--light);
     }
@@ -192,8 +192,8 @@
     .subtitle {
       text-align: center;
       color: var(--gray);
-      margin-bottom: 2rem; /* Reduced margin */
-      font-size: 0.95rem; /* Slightly smaller */
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
     }
     
     /* Input Sections */
@@ -214,7 +214,7 @@
       background: rgba(18, 24, 38, 0.7);
       border: 1px solid rgba(123, 97, 255, 0.2);
       border-radius: var(--radius-sm);
-      padding: 1rem; /* Reduced padding */
+      padding: 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -252,9 +252,9 @@
       background: transparent;
       border: none;
       color: var(--light);
-      font-size: 1.1rem; /* Slightly smaller */
+      font-size: 1.1rem;
       text-align: right;
-      width: 50%; /* Reduced width */
+      width: 50%;
       outline: none;
       font-family: 'Inter', sans-serif;
     }
@@ -268,14 +268,14 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
-      margin-bottom: 1.5rem; /* Reduced margin */
+      margin-bottom: 1.5rem;
     }
     
     .info-item {
       background: rgba(18, 24, 38, 0.5);
       border: 1px solid rgba(123, 97, 255, 0.1);
       border-radius: var(--radius-sm);
-      padding: 0.8rem; /* Reduced padding */
+      padding: 0.8rem;
       text-align: center;
       transition: var(--transition);
     }
@@ -297,7 +297,7 @@
     
     .info-value {
       font-weight: 600;
-      font-size: 0.9rem; /* Slightly smaller */
+      font-size: 0.9rem;
       color: var(--light);
     }
     
@@ -365,7 +365,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.9rem 1.5rem; /* Reduced padding */
+      padding: 0.9rem 1.5rem;
       border-radius: var(--radius-sm);
       font-weight: 600;
       transition: var(--transition);
@@ -488,13 +488,12 @@
     }
     
     /* Success Notification */
-    .success-notification {
+    .success-notification, .failure-notification {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.8);
       background: var(--card-bg);
-      border: 1px solid rgba(72, 187, 120, 0.3);
       border-radius: var(--radius);
       padding: 2rem;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -507,12 +506,20 @@
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
-    .success-notification.active {
+    .success-notification {
+      border: 1px solid rgba(72, 187, 120, 0.3);
+    }
+    
+    .failure-notification {
+      border: 1px solid rgba(245, 101, 101, 0.3);
+    }
+    
+    .success-notification.active, .failure-notification.active {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
     }
     
-    .success-close {
+    .success-close, .failure-close {
       position: absolute;
       top: 1rem;
       right: 1rem;
@@ -524,12 +531,12 @@
       transition: var(--transition);
     }
     
-    .success-close:hover {
+    .success-close:hover, .failure-close:hover {
       color: var(--light);
       transform: scale(1.1);
     }
     
-    .success-icon {
+    .success-icon, .failure-icon {
       width: 80px;
       height: 80px;
       margin: 0 auto 1.5rem;
@@ -547,6 +554,26 @@
     .success-icon .check {
       fill: none;
       stroke: #48BB78;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: check-animation 0.5s 0.4s ease-in-out forwards;
+    }
+    
+    .failure-icon .circle {
+      fill: none;
+      stroke: #F56565;
+      stroke-width: 3;
+      stroke-linecap: round;
+      transform-origin: center;
+      animation: circle-animation 0.6s ease-in-out forwards;
+    }
+    
+    .failure-icon .cross {
+      fill: none;
+      stroke: #F56565;
       stroke-width: 3;
       stroke-linecap: round;
       stroke-linejoin: round;
@@ -584,26 +611,48 @@
       color: #48BB78;
     }
     
-    .success-message {
+    .failure-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #F56565;
+    }
+    
+    .success-message, .failure-message {
       color: var(--gray);
       margin-bottom: 1.5rem;
       line-height: 1.5;
     }
     
-    .success-link {
+    .success-link, .failure-link {
       display: inline-block;
-      background: rgba(72, 187, 120, 0.1);
-      color: #48BB78;
       padding: 0.7rem 1.5rem;
       border-radius: var(--radius-sm);
       text-decoration: none;
       font-weight: 500;
       transition: var(--transition);
-      border: 1px solid rgba(72, 187, 120, 0.2);
+      border: 1px solid;
+    }
+    
+    .success-link {
+      background: rgba(72, 187, 120, 0.1);
+      color: #48BB78;
+      border-color: rgba(72, 187, 120, 0.2);
+    }
+    
+    .failure-link {
+      background: rgba(245, 101, 101, 0.1);
+      color: #F56565;
+      border-color: rgba(245, 101, 101, 0.2);
     }
     
     .success-link:hover {
       background: rgba(72, 187, 120, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .failure-link:hover {
+      background: rgba(245, 101, 101, 0.2);
       transform: translateY(-2px);
     }
     
@@ -945,7 +994,7 @@
         font-size: 0.9rem;
       }
       
-      .success-notification {
+      .success-notification, .failure-notification {
         padding: 1.5rem;
         max-width: 90%;
       }
@@ -996,6 +1045,20 @@
     <h3 class="success-title">Purchase Successful!</h3>
     <p class="success-message">Your NUUR tokens have been purchased successfully. The tokens will be sent to your wallet shortly.</p>
     <a href="#" class="success-link" id="explorerLink" target="_blank">View on Explorer</a>
+  </div>
+
+  <!-- Failure Notification -->
+  <div class="failure-notification" id="failureNotification">
+    <button class="failure-close" id="failureClose">&times;</button>
+    <div class="failure-icon">
+      <svg viewBox="0 0 52 52">
+        <circle class="circle" cx="26" cy="26" r="25" fill="none"/>
+        <path class="cross" d="M16 16l20 20M36 16L16 36"/>
+      </svg>
+    </div>
+    <h3 class="failure-title">Transaction Failed</h3>
+    <p class="failure-message" id="failureMessage">Your transaction could not be processed. Please try again.</p>
+    <a href="#" class="failure-link" id="failureExplorerLink" target="_blank">View on Explorer</a>
   </div>
 
   <!-- Mobile Header -->
@@ -1240,9 +1303,13 @@
       const step3 = document.getElementById('step3');
       const step4 = document.getElementById('step4');
       const successNotification = document.getElementById('successNotification');
+      const failureNotification = document.getElementById('failureNotification');
       const notificationOverlay = document.getElementById('notificationOverlay');
       const successClose = document.getElementById('successClose');
+      const failureClose = document.getElementById('failureClose');
       const explorerLink = document.getElementById('explorerLink');
+      const failureExplorerLink = document.getElementById('failureExplorerLink');
+      const failureMessage = document.getElementById('failureMessage');
 
       // Show success notification
       function showSuccessNotification(txHash) {
@@ -1260,10 +1327,40 @@
         svg.parentNode.replaceChild(newSvg, svg);
       }
 
+      // Show failure notification
+      function showFailureNotification(txHash, errorMessage) {
+        // Update explorer link if available
+        if (txHash) {
+          const explorerUrl = `https://ledger.sidrachain.com/tx/${txHash}`;
+          failureExplorerLink.href = explorerUrl;
+          failureExplorerLink.style.display = 'inline-block';
+        } else {
+          failureExplorerLink.style.display = 'none';
+        }
+        
+        // Update error message
+        failureMessage.textContent = errorMessage || 'Your transaction could not be processed. Please try again.';
+        
+        // Show notification
+        notificationOverlay.classList.add('active');
+        failureNotification.classList.add('active');
+        
+        // Reset animation by removing and re-adding the SVG
+        const svg = failureNotification.querySelector('svg');
+        const newSvg = svg.cloneNode(true);
+        svg.parentNode.replaceChild(newSvg, svg);
+      }
+
       // Hide success notification
       function hideSuccessNotification() {
         notificationOverlay.classList.remove('active');
         successNotification.classList.remove('active');
+      }
+
+      // Hide failure notification
+      function hideFailureNotification() {
+        notificationOverlay.classList.remove('active');
+        failureNotification.classList.remove('active');
       }
 
       // Initialize Web3
@@ -1580,11 +1677,24 @@
             
             showStatus("Transaction completed successfully!", "success");
           } else {
-            throw new Error("Transaction failed");
+            throw new Error("Transaction failed on chain");
           }
         } catch (error) {
           console.error(error);
-          showStatus(`Transaction failed: ${error.message || 'Unknown error'}`, "error");
+          
+          // Show failure notification
+          let errorMsg = error.message || 'Unknown error occurred';
+          let txHash = null;
+          
+          // Extract transaction hash if available
+          if (error.transactionHash) {
+            txHash = error.transactionHash;
+          } else if (error.receipt && error.receipt.transactionHash) {
+            txHash = error.receipt.transactionHash;
+          }
+          
+          // Show failure notification
+          showFailureNotification(txHash, errorMsg);
           
           // Reset transaction flow on error
           step3.classList.remove('active', 'completed');
@@ -1706,7 +1816,11 @@
       sidebarOverlay.addEventListener('click', toggleSidebar);
       sidebarClose.addEventListener('click', toggleSidebar);
       successClose.addEventListener('click', hideSuccessNotification);
-      notificationOverlay.addEventListener('click', hideSuccessNotification);
+      failureClose.addEventListener('click', hideFailureNotification);
+      notificationOverlay.addEventListener('click', function() {
+        hideSuccessNotification();
+        hideFailureNotification();
+      });
 
       // Initialize
       initWeb3().then(() => {
