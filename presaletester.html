@@ -1217,7 +1217,7 @@
         </div>
 
         <div class="logo-header">
-          <img src="logo.png" alt="NUUR Coin Logo" class="logo-img">
+          <img src="https://via.placeholder.com/50x50/00F5E4/000000?text=N" alt="NUUR Coin Logo" class="logo-img">
           <span class="logo-text">NUUR Coin</span>
         </div>
         
@@ -1277,7 +1277,7 @@
           </div>
           <div class="input-container">
             <div class="token-info">
-              <img src="sidra.png" alt="SDA" class="token-icon">
+              <img src="https://via.placeholder.com/28x28/7B61FF/FFFFFF?text=S" alt="SDA" class="token-icon">
               <span class="token-name">SDA</span>
             </div>
             <input id="sdaAmount" type="number" step="any" min="1" max="5000" placeholder="1.00" />
@@ -1292,7 +1292,7 @@
           </div>
           <div class="input-container">
             <div class="token-info">
-              <img src="logo.png" alt="NUUR" class="token-icon">
+              <img src="https://via.placeholder.com/28x28/00F5E4/000000?text=N" alt="NUUR" class="token-icon">
               <span class="token-name">NUUR</span>
             </div>
             <span id="nuurEstimate">0</span>
@@ -1301,7 +1301,7 @@
         
         <!-- Buy Button -->
         <div style="position: relative;">
-          <button id="buyButton" class="btn btn-primary">
+          <button id="buyButton" class="btn btn-primary" type="button">
             <i class="fas fa-coins"></i> Buy NUUR
           </button>
           <span id="spinner" class="spinner hidden"></span>
@@ -1409,6 +1409,45 @@
       const pendingTxHash = document.getElementById('pendingTxHash');
       const viewPendingTxBtn = document.getElementById('viewPendingTxBtn');
       const dismissPendingTxBtn = document.getElementById('dismissPendingTxBtn');
+
+      // FIXED: Enhanced buy button event handler to prevent page link behavior
+      function setupBuyButtonHandler() {
+        // Remove any existing event listeners by cloning the button
+        const newBuyBtn = buyBtn.cloneNode(true);
+        buyBtn.parentNode.replaceChild(newBuyBtn, buyBtn);
+        
+        // Get the new button reference
+        const fixedBuyBtn = document.getElementById('buyButton');
+        
+        // Add comprehensive event prevention
+        fixedBuyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          e.stopPropagation();
+          
+          console.log('Buy button clicked - processing purchase');
+          
+          // Small delay to ensure event is fully handled
+          setTimeout(() => {
+            buyTokens();
+          }, 10);
+          
+          return false;
+        });
+        
+        // Additional event listeners to catch any bubbling events
+        fixedBuyBtn.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        });
+        
+        fixedBuyBtn.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        });
+        
+        return fixedBuyBtn;
+      }
 
       // Show success notification
       function showSuccessNotification(txHash) {
@@ -2075,7 +2114,6 @@
       disconnectWalletBtn.addEventListener('click', disconnectWallet);
       connectWalletBtnMobile.addEventListener('click', connectWallet);
       disconnectWalletBtnMobile.addEventListener('click', disconnectWallet);
-      buyBtn.addEventListener('click', buyTokens);
       themeToggle.addEventListener('click', toggleTheme);
       themeToggleMobile.addEventListener('click', toggleTheme);
       menuToggle.addEventListener('click', toggleSidebar);
@@ -2092,6 +2130,14 @@
       notificationOverlay.addEventListener('click', function() {
         hideSuccessNotification();
         hideFailureNotification();
+      });
+
+      // FIXED: Setup buy button with enhanced event handling
+      let fixedBuyBtn;
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+          fixedBuyBtn = setupBuyButtonHandler();
+        }, 100);
       });
 
       // Initialize
