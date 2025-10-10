@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Nuur Vesting</title>
-
+  <title>Nuur Claim</title>
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -30,23 +29,21 @@
       --radius: 12px;
     }
 
-    /* Light theme explicit palette */
     body[data-theme="light"] {
       --bg: #f4f6f9;
       --panel: #ffffff;
       --muted: #334155;
       --text-muted: #0b1220;
 
-      --color-primary: #b8860b;  /* darker gold */
-      --color-accent: #0f766e;   /* deep teal */
-      --color-warn: #fb923c;     /* warm orange */
-      --color-strong: #4c1d95;   /* indigo (muted) */
-      --color-success: #059669;  /* deeper emerald */
+      --color-primary: #b8860b;
+      --color-accent: #0f766e;
+      --color-warn: #fb923c;
+      --color-strong: #4c1d95;
+      --color-success: #059669;
 
       --shadow: 0 8px 20px rgba(11,14,19,0.04);
     }
 
-    /* Smooth animated transitions for theme changes */
     html, body {
       transition: background-color 360ms ease, color 360ms ease;
       background: linear-gradient(180deg, var(--bg) 0%, rgba(0,0,0,0.02) 100%);
@@ -58,7 +55,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Elements that animate on theme change */
     .sidebar, .main, .panel, .card, .modal, .btn {
       transition: background-color 360ms ease, color 360ms ease, box-shadow 360ms ease, border-color 360ms ease;
     }
@@ -119,138 +115,21 @@
     .modal-backdrop.show { display:flex; }
     .modal { width: min(96%, 880px); background: var(--panel); border-radius: 12px; padding:16px; border:1px solid rgba(0,0,0,0.06); }
 
-    /* Base responsive improvements */
-    .app {
-      box-sizing: border-box;
-      min-width: 320px;
-      padding: min(18px, 4vw);
+    .user-type-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
-
-    .btn {
-      min-height: 44px; /* Better touch targets */
-      white-space: nowrap;
+    .whale-badge {
+      background: var(--color-strong);
+      color: white;
     }
-
-    .form-input {
-      min-height: 44px; /* Better touch targets */
-    }
-
-    /* Update existing media queries */
-    @media (max-width: 900px) {
-      .app { 
-        grid-template-columns: 1fr; 
-        padding: min(12px, 3vw);
-        gap: 12px;
-      }
-      
-      .sidebar {
-        padding: 16px;
-      }
-      
-      .main {
-        padding: 16px;
-      }
-      
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      
-      .panel {
-        padding: 16px;
-      }
-      
-      .claim-area {
-        flex-direction: column;
-        gap: 16px;
-        align-items: stretch;
-      }
-      
-      .claim-area .btn {
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .app { padding: min(8px, 2vw); }
-      
-      .brand h1 {
-        font-size: 1.25rem;
-      }
-      
-      .controls {
-        flex-wrap: wrap;
-      }
-      
-      .btn {
-        padding: 10px 16px;
-        font-size: 0.9rem;
-        width: 100%;
-      }
-      
-      .countdown {
-        gap: 8px;
-      }
-      
-      .unit {
-        flex: 1;
-        min-width: 60px;
-        padding: 8px;
-      }
-      
-      .big-value {
-        font-size: 1.25rem;
-      }
-      
-      .modal {
-        width: 90%;
-        padding: 16px;
-      }
-      
-      .form-input {
-        font-size: 16px; /* Prevent iOS zoom */
-      }
-    }
-
-    @media (max-width: 420px) {
-      .app {
-        padding: min(6px, 1.5vw);
-      }
-      
-      .controls {
-        gap: 8px;
-      }
-      
-      .panel, .card {
-        padding: 12px;
-      }
-      
-      .countdown {
-        gap: 4px;
-      }
-      
-      .unit {
-        min-width: 50px;
-        padding: 6px;
-      }
-      
-      .num {
-        font-size: 0.9rem;
-      }
-      
-      .lbl {
-        font-size: 0.7rem;
-      }
-      
-      /* Improve admin modal on mobile */
-      .modal {
-        padding: 12px;
-      }
-      
-      .modal .grid-2 {
-        grid-template-columns: 1fr;
-      }
+    .small-badge {
+      background: var(--color-success);
+      color: white;
     }
 
     /* responsive */
@@ -296,74 +175,25 @@
       .lbl { font-size: 9px; }
     }
 
-    /* Initially hide theme toggle until wallet connect */
     #themeToggle { display: none; }
-
-    /*
-      Toast system styles: small unobtrusive toasts stacking vertically.
-      Uses CSS variables for consistent theming.
-    */
-    #toastContainer {
-      position: fixed;
-      right: 18px;
-      top: 18px;
-      z-index: 20000;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      pointer-events: none; /* let clicks pass through except toasts */
-    }
-    .toast {
-      pointer-events: auto; /* enable interactions inside toast */
-      min-width: 200px;
-      max-width: 360px;
-      background: var(--panel);
-      color: var(--text-muted);
-      padding: 10px 14px;
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-      border-left: 4px solid var(--color-accent);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 600;
-      opacity: 0;
-      transform: translateY(-8px);
-      transition: opacity 200ms ease, transform 200ms ease;
-    }
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .toast.success { border-left-color: var(--color-success); }
-    .toast.error { border-left-color: var(--color-warn); }
-    .toast.info { border-left-color: var(--color-accent); }
-    .toast a { color: var(--color-primary); margin-left: 8px; text-decoration: underline; font-weight:700; }
-    /* end toast CSS */
-
-    /* Extra small helper for referral list inside admin modal */
-    .ref-list-mini { font-size: 13px; color: var(--muted); margin-top: 8px; }
-    .ref-list-mini div { padding: 4px 0; }
   </style>
 </head>
 <body data-theme="dark">
-  <div class="app" role="application" aria-label="Nuur vesting app">
-
+  <div class="app" role="application" aria-label="Nuur claim app">
     <!-- SIDEBAR -->
     <aside class="sidebar" aria-label="sidebar">
       <div class="brand" aria-hidden="false">
         <div class="logo" title="Nuur Logo">
-          <img id="logoImg" src="logo.jpg" alt="Nuur Logo" />
+          <img id="logoImg" src="logo.png" alt="Nuur Logo" />
         </div>
         <div style="flex:1">
-          <h1>Nuur Vesting</h1>
+          <h1>Nuur Claim</h1>
           <p class="small">Token migration & claims</p>
         </div>
       </div>
 
       <div class="controls" id="sidebarControls" role="toolbar" aria-label="controls">
         <button id="connectBtn" class="btn btn-primary" aria-live="polite">Connect Wallet</button>
-        <!-- hidden until wallet is connected -->
         <button id="themeToggle" class="btn btn-theme" title="Toggle light / dark">
           <i class="fas fa-moon"></i> Mode
         </button>
@@ -397,30 +227,6 @@
           <div style="margin-top:6px"><span id="kycDot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--color-warn);margin-right:8px"></span><span id="kycText">Not verified</span></div>
         </div>
 
-        <!-- New status fields (inserted visually within account box, no layout change) -->
-        <div id="initialStatusWrap" style="margin-top:10px; display:none;">
-          <div class="muted small">Initial 20% Claimed</div>
-          <div id="initialClaimedText" style="font-weight:700">No</div>
-        </div>
-
-        <div id="referralBonusWrap" style="margin-top:8px; display:none;">
-          <div class="muted small">Referral bonus paid</div>
-          <div id="referralPaidText" style="font-weight:700">No</div>
-        </div>
-
-        <!-- Referrer info (who referred this user) -->
-        <div id="referrerWrap" style="margin-top:10px; display:none;">
-          <div class="muted small">Referred by</div>
-          <div id="referrerAddrText" style="font-weight:700">—</div>
-        </div>
-
-        <!-- If current user is a referrer, show count/list -->
-        <div id="referredListWrap" style="margin-top:10px; display:none;">
-          <div class="muted small">Verified referrals</div>
-          <div id="referredCountText" style="font-weight:700">0</div>
-          <div id="referredListMini" style="margin-top:6px; color:var(--muted); font-size:13px"></div>
-        </div>
-
         <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
           <button id="refreshBtnSmall" class="btn btn-ghost">Refresh</button>
           <button id="adminBtnSmall" class="btn btn-ghost" style="display:none">Admin</button>
@@ -429,7 +235,7 @@
 
       <div class="small" style="margin-top:auto">
         <div><strong>Notes</strong></div>
-        <div style="margin-top:6px" class="muted small">Please make sure you have completed the KYC verification.</div>
+        <div style="margin-top:6px" class="muted small">Please make sure you have completed the KYC verification and taken a snapshot before claiming.</div>
       </div>
     </aside>
 
@@ -438,7 +244,7 @@
       <div class="top-row">
         <div>
           <h2 style="margin:0">Dashboard</h2>
-          <div class="muted small" style="margin-top:6px">Overview of your vesting and claim status</div>
+          <div class="muted small" style="margin-top:6px">Overview of your claim status</div>
         </div>
 
         <div style="display:flex;gap:8px;align-items:center">
@@ -453,8 +259,8 @@
           <h3>Allocation</h3>
           <div style="display:flex;justify-content:space-between;align-items:center">
             <div>
-              <div class="muted small">Total allocated</div>
-              <div id="allocated" class="big-value" style="margin-top:8px">0 NUUR</div>
+              <div class="muted small">Snapshot Balance</div>
+              <div id="snapshotBalance" class="big-value" style="margin-top:8px">0 NUUR</div>
             </div>
             <div style="text-align:right">
               <div class="muted small">Claimed</div>
@@ -469,6 +275,11 @@
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
             <div class="muted small">Months passed</div>
             <div id="monthsPassed" style="font-weight:800">0 / 12</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <div class="muted small">User Type</div>
+            <div id="userType" style="margin-top:6px"></div>
           </div>
 
           <div class="claim-area">
@@ -493,12 +304,18 @@
         <div class="panel">
           <h3>Actions</h3>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button id="takeSnapshotBtn" class="btn btn-primary">Take Snapshot</button>
             <button id="refreshBtnLarge" class="btn btn-ghost">Refresh</button>
           </div>
 
           <div style="margin-top:12px">
-            <div class="muted small">Explorer</div>
-            <div style="margin-top:8px"><a id="explorerTx" class="muted small" href="#" target="_blank" rel="noopener">Last TX</a></div>
+            <div class="muted small">Snapshot Status</div>
+            <div style="margin-top:8px" id="snapshotStatus">Not taken</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <div class="muted small">Monthly Rate</div>
+            <div style="margin-top:8px" id="monthlyRate">0%</div>
           </div>
 
           <div style="margin-top:12px">
@@ -510,17 +327,6 @@
               <div class="muted small">Paused:</div><div id="pausedStatus">No</div>
             </div>
           </div>
-
-          <!-- Small Referral summary box on main panel -->
-          <div style="margin-top:12px">
-            <div class="muted small">Referral summary</div>
-            <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-              <div class="muted small">You referred:</div>
-              <div id="youReferredCount" style="font-weight:800">0</div>
-            </div>
-            <div id="youReferredList" style="margin-top:8px; color:var(--muted); font-size:13px"></div>
-          </div>
-
         </div>
       </div>
     </main>
@@ -540,22 +346,6 @@
 
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
         <div>
-          <label class="muted small">Add single presale</label>
-          <input id="adminPresale" class="form-input" placeholder="0x..." style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
-          <div style="margin-top:8px; display:flex; gap:8px">
-            <button id="adminAddPresale" class="btn btn-primary">Add</button>
-          </div>
-
-          <div style="height:8px"></div>
-
-          <label class="muted small">Add multiple (comma/newline)</label>
-          <textarea id="adminBatch" class="form-input" style="min-height:90px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent"></textarea>
-          <div style="margin-top:8px;display:flex;gap:8px">
-            <button id="adminBatchAdd" class="btn btn-primary">Add Batch</button>
-          </div>
-        </div>
-
-        <div>
           <label class="muted small">Set single KYC</label>
           <input id="adminKycAddr" class="form-input" placeholder="0x..." style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
           <select id="adminKycStatus" class="form-input" style="margin-top:8px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent">
@@ -566,10 +356,27 @@
 
           <div style="height:8px"></div>
 
-          <label class="muted small">Batch KYC (addresses newline/comma) and statuses (comma)</label>
+          <label class="muted small">Batch KYC (addresses comma/newline separated)</label>
           <textarea id="adminKycBatchAddrs" class="form-input" style="min-height:80px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent"></textarea>
-          <input id="adminKycBatchStatuses" class="form-input" placeholder="true,false,true" style="margin-top:8px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
+          <select id="adminKycBatchStatus" class="form-input" style="margin-top:8px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent">
+            <option value="true">All Verified</option>
+            <option value="false">All Not Verified</option>
+          </select>
           <div style="margin-top:8px"><button id="adminSetKycBatch" class="btn btn-primary">Set Batch KYC</button></div>
+        </div>
+
+        <div>
+          <label class="muted small">Contract Funds</label>
+          <div style="margin-top:8px">
+            <div class="muted small">Contract Balance:</div>
+            <div id="contractBalance" style="font-weight:800; margin-top:4px">0 NUUR</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <label class="muted small">Deposit Funds</label>
+            <input id="depositAmount" class="form-input" placeholder="Amount in NUUR" style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
+            <div style="margin-top:8px"><button id="adminDeposit" class="btn btn-primary">Deposit</button></div>
+          </div>
         </div>
       </div>
 
@@ -580,811 +387,518 @@
         <button id="adminPause" class="btn btn-ghost">Pause</button>
         <button id="adminUnpause" class="btn btn-ghost">Unpause</button>
       </div>
-
-      <div style="height:12px"></div>
-
-      <div>
-        <div class="muted small">Presale list</div>
-        <div id="adminPresaleList" style="margin-top:8px"></div>
-
-        <!-- referral/admin lookup -->
-        <div style="margin-top:12px">
-          <div class="muted small">Referral / Eligibility Check</div>
-          <div style="margin-top:8px">
-            <input id="adminReferralAddr" class="form-input" placeholder="Address to check (referrer or user)" style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
-            <div id="adminReferralInfo" style="margin-top:8px" class="ref-list-mini"></div>
-            <div id="adminReferralList" style="margin-top:8px" class="ref-list-mini"></div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- Toast container -->
-  <div id="toastContainer" aria-live="polite"></div>
-
-  <div id="toast" style="display:none; position:fixed; right:18px; top:18px; background:var(--panel); color:var(--muted); padding:10px 14px; border-radius:10px; box-shadow:var(--shadow); z-index:90;"></div>
+  <div id="toast" style="position:fixed; right:18px; top:18px; display:none; background:var(--panel); color:var(--muted); padding:10px 14px; border-radius:10px; box-shadow:var(--shadow); z-index:90;"></div>
 
 <script>
+(function(){
+  /* ------------------- Config -------------------- */
+  const CONTRACT_ADDR = "YOUR_CONTRACT_ADDRESS_HERE";
+  const NUUR_TOKEN = "YOUR_NUUR_TOKEN_ADDRESS_HERE";
+  const SIDRA_CHAIN = { chainId: "0x17CAD", blockExplorerUrls:["https://ledger.sidrachain.com"] };
+  const EXPLORER = (SIDRA_CHAIN.blockExplorerUrls && SIDRA_CHAIN.blockExplorerUrls[0]) ? SIDRA_CHAIN.blockExplorerUrls[0].replace(/\/$/,'') : '';
 
-/* ------------------- Config -------------------- */
-const CONTRACT_ADDR = "0xeeC8B0A55fC4eDd00F09E01C4bAB96d4ddE8B2eA";            // <<-- your NuurVesting contract address
-const NUUR_TOKEN = "0x003BEc2e6ef4369f9d968eCD288d31B59fD9c2CD";               // <<-- optional NUUR token address for local balance display
-const REFERRAL_CONTRACT_ADDR = "0xd0BAd194173A2C58088ADB4c5f0f450Cc5e797BD";   // <<-- your referral contract address (deployed)
-const SIDRA_CHAIN = { chainId: "0x17CAD", blockExplorerUrls:["https://ledger.sidrachain.com"] };
-const EXPLORER = (SIDRA_CHAIN.blockExplorerUrls && SIDRA_CHAIN.blockExplorerUrls[0]) ? SIDRA_CHAIN.blockExplorerUrls[0].replace(/\/$/,'') : '';
+  const VESTING_ABI = [
+    "function owner() view returns (address)",
+    "function newToken() view returns (address)",
+    "function oldToken() view returns (address)",
+    "function vestingStartTime() view returns (uint256)",
+    "function vestingStarted() view returns (bool)",
+    "function paused() view returns (bool)",
+    "function kycVerified(address) view returns (bool)",
+    "function claimInfo(address) view returns (uint256 totalAmount, uint256 claimedAmount, uint256 snapshotBalance, bool snapshotTaken, bool exists)",
+    "function getUserTotalPurchase(address) view returns (uint256)",
+    "function getClaimableAmount(address) view returns (uint256)",
+    "function getUserClaimInfo(address) view returns (uint256 totalAmount, uint256 claimedAmount, uint256 snapshotBalance, bool snapshotTaken, bool isWhaleHolder, uint256 monthlyPercent)",
+    "function takeSnapshot()",
+    "function claim()",
+    "function startVesting()",
+    "function pause()",
+    "function unpause()",
+    "function setKYC(address, bool)",
+    "function setKYCForBatch(address[], bool)",
+    "function depositFunds(uint256)",
+    "function emergencyWithdraw(address, uint256)",
+    "event TokensClaimed(address indexed beneficiary, uint256 amount)",
+    "event SnapshotTaken(address indexed user, uint256 balance)",
+    "event KYCUpdated(address indexed user, bool verified)",
+    "event KYCBatchUpdated(address[] users, bool status)",
+    "event VestingStarted(uint256 startTime)",
+    "event Paused()",
+    "event Unpaused()",
+    "event FundsDeposited(uint256 amount)"
+  ];
+
+  /* ------------------- DOM -------------------- */
+  const connectBtn = document.getElementById('connectBtn');
+  const themeToggle = document.getElementById('themeToggle');
+
+  const ctaAccountBox = document.getElementById('accountBox');
+  const addrShort = document.getElementById('addrShort');
+  const chainLabel = document.getElementById('chainLabel');
+  const nuurBal = document.getElementById('nuurBal');
+  const sdaBal = document.getElementById('sdaBal');
+  const kycDot = document.getElementById('kycDot');
+  const kycText = document.getElementById('kycText');
+  const refreshBtnSmall = document.getElementById('refreshBtnSmall');
+  const refreshBtnLarge = document.getElementById('refreshBtnLarge');
+  const takeSnapshotBtn = document.getElementById('takeSnapshotBtn');
+  const adminBtnSmall = document.getElementById('adminBtnSmall');
+  const openAdmin = document.getElementById('openAdmin');
+  const disconnectBtn = document.getElementById('disconnectBtn');
+
+  const snapshotBalance = document.getElementById('snapshotBalance');
+  const claimedEl = document.getElementById('claimed');
+  const claimableDisplay = document.getElementById('claimableDisplay');
+  const progressBar = document.getElementById('progressBar');
+  const monthsPassedEl = document.getElementById('monthsPassed');
+  const userType = document.getElementById('userType');
+  const snapshotStatus = document.getElementById('snapshotStatus');
+  const monthlyRate = document.getElementById('monthlyRate');
+  const cdDays = document.getElementById('cdDays');
+  const cdHours = document.getElementById('cdHours');
+  const cdMins = document.getElementById('cdMins');
+  const cdSecs = document.getElementById('cdSecs');
+  const vestingStatus = document.getElementById('vestingStatus');
+  const pausedStatus = document.getElementById('pausedStatus');
+  const claimBtn = document.getElementById('claimBtn');
+  const contractLink = document.getElementById('contractLink');
+
+  // admin modal elements
+  const adminModal = document.getElementById('adminModal');
+  const closeAdmin = document.getElementById('closeAdmin');
+  const adminKycAddr = document.getElementById('adminKycAddr');
+  const adminKycStatus = document.getElementById('adminKycStatus');
+  const adminSetKyc = document.getElementById('adminSetKyc');
+  const adminKycBatchAddrs = document.getElementById('adminKycBatchAddrs');
+  const adminKycBatchStatus = document.getElementById('adminKycBatchStatus');
+  const adminSetKycBatchBtn = document.getElementById('adminSetKycBatch');
+  const contractBalance = document.getElementById('contractBalance');
+  const depositAmount = document.getElementById('depositAmount');
+  const adminDeposit = document.getElementById('adminDeposit');
+  const adminStart = document.getElementById('adminStart');
+  const adminPause = document.getElementById('adminPause');
+  const adminUnpause = document.getElementById('adminUnpause');
+
+  const toastEl = document.getElementById('toast');
+
+  /* ------------------- State -------------------- */
+  let provider = null;
+  let signer = null;
+  let account = null;
+  let contract = null;
+  let tokenContract = null;
+  let decimals = 18;
+  let vestingStartTimeSec = 0;
+  let nextVestingTimeMs = null;
+  let lastClaimable = ethers.BigNumber.from(0);
+  let isOwner = false;
+  const POLL_INTERVAL = 15000;
+
+  /* ------------------- Utilities -------------------- */
+  function toastShow(msg, kind = 'info', link=null){
+    toastEl.style.display = 'block';
+    toastEl.textContent = msg;
+    if(link){
+      const a = document.createElement('a');
+      a.href = link; a.target = '_blank'; a.textContent = ' View';
+      a.style.marginLeft = '8px'; a.style.color = 'var(--color-primary)';
+      toastEl.appendChild(a);
+    }
+    clearTimeout(toastShow._t); toastShow._t = setTimeout(()=>{ toastEl.style.display = 'none'; toastEl.textContent = ''; }, 3800);
+  }
   
-const VESTING_ABI = [{"inputs":[{"internalType":"address","name":"_newToken","type":"address"},{"internalType":"address","name":"_oldToken","type":"address"},{"internalType":"address","name":"_referralContract","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"KYCBatchUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"verified","type":"bool"}],"name":"KYCUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"oldToken","type":"address"}],"name":"OldTokenSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"presale","type":"address"}],"name":"PresaleContractAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referee","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonus","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"VestingStarted","type":"event"},{"inputs":[],"name":"MONTH_DURATION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_BONUS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REFERRAL_MIN_PURCHASE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VESTING_MONTHS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"presale","type":"address"}],"name":"addOldPresaleContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getOldPresaleContracts","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"newToken","outputs":[{"internalType":"contract INuurCoin","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"oldPresaleContracts","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"oldToken","outputs":[{"internalType":"contract IOldToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referralBonusPaid","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"referralContract","outputs":[{"internalType":"contract IReferral","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"setKYC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool[]","name":"statuses","type":"bool[]"}],"name":"setKYCForBatch","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vestingInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"bool","name":"exists","type":"bool"},{"internalType":"bool","name":"initialClaimed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStarted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}];
-
-/* Referral contract minimal ABI - expects a function returning address[] */
-const REFERRAL_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"previousReferrer","type":"address"}],"name":"ReferralCleared","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"}],"name":"ReferralRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"referrer","type":"address"}],"name":"ReferralSetByOwner","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpaused","type":"event"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"clearReferral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getReferrer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"referralCountOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"}],"name":"registerReferral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"address","name":"referrer","type":"address"}],"name":"setReferralFor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"}];
-
-/* ------------------- DOM -------------------- */
-const connectBtn = document.getElementById('connectBtn');
-const themeToggle = document.getElementById('themeToggle');
-
-const ctaAccountBox = document.getElementById('accountBox');
-const addrShort = document.getElementById('addrShort');
-const chainLabel = document.getElementById('chainLabel');
-const nuurBal = document.getElementById('nuurBal');
-const sdaBal = document.getElementById('sdaBal');
-const kycDot = document.getElementById('kycDot');
-const kycText = document.getElementById('kycText');
-const initialStatusWrap = document.getElementById('initialStatusWrap');
-const initialClaimedText = document.getElementById('initialClaimedText');
-const referralBonusWrap = document.getElementById('referralBonusWrap');
-const referralPaidText = document.getElementById('referralPaidText');
-const referrerWrap = document.getElementById('referrerWrap');
-const referrerAddrText = document.getElementById('referrerAddrText');
-const referredListWrap = document.getElementById('referredListWrap');
-const referredCountText = document.getElementById('referredCountText');
-const referredListMini = document.getElementById('referredListMini');
-
-const refreshBtnSmall = document.getElementById('refreshBtnSmall');
-const refreshBtnLarge = document.getElementById('refreshBtnLarge');
-const adminBtnSmall = document.getElementById('adminBtnSmall');
-const openAdmin = document.getElementById('openAdmin');
-const disconnectBtn = document.getElementById('disconnectBtn');
-
-const allocatedEl = document.getElementById('allocated');
-const claimedEl = document.getElementById('claimed');
-const claimableDisplay = document.getElementById('claimableDisplay');
-const progressBar = document.getElementById('progressBar');
-const monthsPassedEl = document.getElementById('monthsPassed');
-const cdDays = document.getElementById('cdDays');
-const cdHours = document.getElementById('cdHours');
-const cdMins = document.getElementById('cdMins');
-const cdSecs = document.getElementById('cdSecs');
-const vestingStatus = document.getElementById('vestingStatus');
-const pausedStatus = document.getElementById('pausedStatus');
-const claimBtn = document.getElementById('claimBtn');
-const contractLink = document.getElementById('contractLink');
-const explorerTx = document.getElementById('explorerTx');
-
-const adminModal = document.getElementById('adminModal');
-const closeAdmin = document.getElementById('closeAdmin');
-const adminPresale = document.getElementById('adminPresale');
-const adminAddPresale = document.getElementById('adminAddPresale');
-const adminBatch = document.getElementById('adminBatch');
-const adminBatchAdd = document.getElementById('adminBatchAdd');
-const adminKycAddr = document.getElementById('adminKycAddr');
-const adminKycStatus = document.getElementById('adminKycStatus');
-const adminSetKyc = document.getElementById('adminSetKyc');
-const adminKycBatchAddrs = document.getElementById('adminKycBatchAddrs');
-const adminKycBatchStatuses = document.getElementById('adminKycBatchStatuses');
-const adminSetKycBatchBtn = document.getElementById('adminSetKycBatch');
-const adminStart = document.getElementById('adminStart');
-const adminPause = document.getElementById('adminPause');
-const adminUnpause = document.getElementById('adminUnpause');
-const adminPresaleList = document.getElementById('adminPresaleList');
-const adminReferralInfo = document.getElementById('adminReferralInfo');
-const adminReferralList = document.getElementById('adminReferralList');
-const adminReferralAddr = document.getElementById('adminReferralAddr');
-
-const toastContainer = document.getElementById('toastContainer');
-
-/* ------------------- State -------------------- */
-let provider = null;
-let signer = null;
-let account = null;
-let contract = null;
-let tokenContract = null;
-let referralContract = null;
-let decimals = 18;
-let vestingStartTimeSec = 0;
-let nextVestingTimeMs = null;
-let lastClaimable = ethers.BigNumber.from(0);
-let isOwner = false;
-let countdownInterval = null;
-let pollHandle = null;
-const POLL_INTERVAL = 15000;
-
-/* ------------------- Utilities -------------------- */
-
-/**
- * Toast helper
- * - kind: 'info' | 'success' | 'error'
- * - msg: string
- * - options.link (optional): url
- * - options.duration (ms)
- */
-function showToast(msg, kind='info', options = {}) {
-  const duration = options.duration || 3800;
-  const id = 'toast_' + Date.now() + Math.floor(Math.random()*1000);
-  const el = document.createElement('div');
-  el.className = `toast ${kind} show`;
-  el.id = id;
-  el.setAttribute('role','status');
-  el.style.pointerEvents = 'auto';
-  // icon
-  const ico = document.createElement('span');
-  ico.style.marginRight = '8px';
-  ico.innerHTML = kind === 'success' ? '✔️' : (kind === 'error' ? '⚠️' : 'ℹ️');
-  el.appendChild(ico);
-  // text
-  const text = document.createElement('div');
-  text.style.flex = '1';
-  text.textContent = msg;
-  el.appendChild(text);
-  // optional link
-  if (options.link) {
-    const a = document.createElement('a');
-    a.href = options.link;
-    a.target = '_blank';
-    a.textContent = 'View';
-    el.appendChild(a);
-  }
-  toastContainer.appendChild(el);
-  // show animation
-  requestAnimationFrame(()=> el.classList.add('show'));
-  // auto remove
-  setTimeout(()=> {
-    el.classList.remove('show');
-    setTimeout(()=> el.remove(), 220);
-  }, duration);
-  return id;
-}
-
-/* Safe short address display */
-function short(addr){
-  if(!addr) return '0x--';
-  try{
-    return `${addr.slice(0,6)}…${addr.slice(-4)}`;
-  }catch(e){
-    return addr;
-  }
-}
-
-/* Format SDA balance to 2 decimal places */
-function formatSdaBalance(balance) {
-  try {
+  function short(addr){ return addr ? `${addr.slice(0,6)}…${addr.slice(-4)}` : '0x--'; }
+  
+  function formatSdaBalance(balance) {
     const num = parseFloat(ethers.utils.formatEther(balance));
     return num.toFixed(2);
-  } catch (e) {
-    return '0.00';
   }
-}
 
-/* Format big number with decimals */
-function fmtUnits(bn, d=18) {
-  try { return ethers.utils.formatUnits(bn, d); } catch(e) { return '0'; }
-}
-
-/* Ensure callback safe */
-function safeTry(fn, fallback = null) {
-  return (async ()=> {
-    try { return await fn(); } catch(e) { console.debug('safeTry err', e); return fallback; }
-  })();
-}
-
-/* ----------------- Theme handling ------------------ */
-const body = document.body;
-function applyStoredTheme(){
-  const theme = localStorage.getItem('nuur:theme') || 'dark';
-  body.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
-  updateThemeIcon(theme);
-}
-function updateThemeIcon(theme) {
-  const themeIcon = themeToggle.querySelector('i');
-  if (theme === 'light') { themeIcon.className = 'fas fa-sun'; }
-  else { themeIcon.className = 'fas fa-moon'; }
-}
-applyStoredTheme();
-
-function showThemeToggle() { const t = document.getElementById('themeToggle'); if (t) t.style.display = 'inline-block'; }
-if (themeToggle) {
-  themeToggle.addEventListener('click', ()=>{
-    const current = body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-    const next = current === 'light' ? 'dark' : 'light';
-    body.setAttribute('data-theme', next);
-    localStorage.setItem('nuur:theme', next);
-    updateThemeIcon(next);
-    showToast(`Switched to ${next} theme`, 'info');
-  });
-}
-
-/* ---------------- Wallet & Contract logic ---------------- */
-
-async function connectWallet(){
-  if(!window.ethereum){ showToast('Please install MetaMask or compatible wallet','error'); return; }
-  provider = new ethers.providers.Web3Provider(window.ethereum);
-  try {
-    await provider.send('eth_requestAccounts',[]);
-    signer = provider.getSigner();
-    account = await signer.getAddress();
-    contract = new ethers.Contract(CONTRACT_ADDR, VESTING_ABI, signer);
-    // token contract optional
-    tokenContract = NUUR_TOKEN ? new ethers.Contract(NUUR_TOKEN, ["function balanceOf(address) view returns (uint256)","function decimals() view returns (uint8)"], signer) : null;
-    // referral contract (read-only is fine)
-    referralContract = REFERRAL_CONTRACT_ADDR ? new ethers.Contract(REFERRAL_CONTRACT_ADDR, REFERRAL_ABI, provider) : null;
-
-    // UI updates
-    if (connectBtn) connectBtn.style.display = 'none';
-    if (ctaAccountBox) ctaAccountBox.style.display = 'block';
-    if (openAdmin) openAdmin.style.display = 'none';
-    if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
-    if (addrShort) addrShort.textContent = short(account);
-
-    try{ if (tokenContract) decimals = await tokenContract.decimals(); else decimals = 18; } catch(e){ decimals = 18; }
-
-    if (contractLink) contractLink.href = EXPLORER ? `${EXPLORER}/address/${CONTRACT_ADDR}` : '#';
-    if (explorerTx) explorerTx.href = EXPLORER ? `${EXPLORER}` : '#';
-
-    // show theme toggle now wallet connected
-    showThemeToggle();
-
-    // Load all data and kick off polling & countdown
-    await loadAll();
-    startPoll();
-
-    showToast('Wallet connected', 'success');
-  } catch (e){
-    console.error(e);
-    showToast('Wallet connection failed', 'error');
+  /* ----------------- Theme handling ------------------ */
+  const body = document.body;
+  function applyStoredTheme(){
+    const theme = localStorage.getItem('nuur:theme') || 'dark';
+    body.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+    updateThemeIcon(theme);
   }
-}
-
-async function disconnectWallet(){
-  account = null; signer = null; provider = null; contract = null; tokenContract = null; referralContract = null;
-  if (connectBtn) connectBtn.style.display = 'inline-block';
-  if (ctaAccountBox) ctaAccountBox.style.display = 'none';
-  if (openAdmin) openAdmin.style.display = 'none';
-  if (disconnectBtn) disconnectBtn.style.display = 'none';
-  if (themeToggle) themeToggle.style.display = 'none';
-  clearInterval(countdownInterval);
-  clearInterval(pollHandle);
-  showToast('Disconnected', 'info');
-}
-
-/* ---------------- Data loaders ---------------- */
-
-/**
- * Primary UI refresh:
- * - loads balances, kyc status, vesting status & times
- * - loads allocation / claimed / claimable
- * - updates initial claim & referral paid indicators
- * - loads referrer / referred lists using referralContract (if available)
- * - calculates next vesting time and sets countdown
- */
-async function loadAll(){
-  if(!contract || !account) return;
-  try {
-    // balance fetch (token & native)
-    const [bNu, bSda] = await Promise.all([ tokenContract ? tokenContract.balanceOf(account) : ethers.BigNumber.from(0), provider.getBalance(account) ]);
-    if (nuurBal) nuurBal.textContent = tokenContract ? fmtUnits(bNu, decimals) : '0.00';
-    if (sdaBal) sdaBal.textContent = formatSdaBalance(bSda);
-
-    // kyc status
-    const k = await safeTry(()=> contract.kycVerified(account), false);
-    if (kycText) kycText.textContent = k ? 'Verified' : 'Not verified';
-    if (kycDot) kycDot.style.background = k ? 'var(--color-success)' : 'var(--color-warn)';
-
-    // vesting start/paused
-    const [vStarted, paused, vestStartBN] = await Promise.all([ contract.vestingStarted().catch(()=>false), contract.paused().catch(()=>false), safeTry(()=> contract.vestingStartTime(), 0) ]);
-    vestingStartTimeSec = vestStartBN ? Number(vestStartBN.toString()) : 0;
-    if (vestingStatus) vestingStatus.textContent = vStarted ? 'Active' : 'Not started';
-    if (pausedStatus) pausedStatus.textContent = paused ? 'Yes' : 'No';
-
-    // purchases & claimable & vesting info
-    const [totalPurchase, claimable] = await Promise.all([ contract.getTotalPurchase(account).catch(()=>ethers.BigNumber.from(0)), contract.getClaimableAmount(account).catch(()=>ethers.BigNumber.from(0)) ]);
-    const vestInfo = await safeTry(()=> contract.vestingInfo(account), null);
-    // vestInfo shape can vary; handle gracefully
-    let claimed = ethers.BigNumber.from(0);
-    let totalAllocated = ethers.BigNumber.from(0);
-    let initialClaimed = false;
-    if (vestInfo) {
-      // try object names first
-      if (vestInfo.totalAmount !== undefined) totalAllocated = vestInfo.totalAmount;
-      else totalAllocated = vestInfo[0] || ethers.BigNumber.from(0);
-
-      if (vestInfo.claimedAmount !== undefined) claimed = vestInfo.claimedAmount;
-      else claimed = vestInfo[1] || ethers.BigNumber.from(0);
-
-      // initialClaimed may be available as fourth element or named property
-      if (typeof vestInfo.initialClaimed !== 'undefined') initialClaimed = vestInfo.initialClaimed;
-      else if (typeof vestInfo[3] !== 'undefined') initialClaimed = vestInfo[3];
-      else initialClaimed = false;
-    }
-
-    // referral bonus status for this address (if available)
-    let referralPaid = false;
-    try { referralPaid = await contract.referralBonusPaid(account); } catch(e){ referralPaid = false; }
-
-    // Update DOM
-    if (allocatedEl) allocatedEl.textContent = `${fmtUnits(totalPurchase, decimals)} NUUR`;
-    if (claimedEl) claimedEl.textContent = `${fmtUnits(claimed, decimals)} NUUR`;
-    if (claimableDisplay) claimableDisplay.textContent = `${fmtUnits(claimable, decimals)} NUUR`;
-    lastClaimable = claimable;
-
-    // months passed & progress calculation (approx 30-day months)
-    if (vStarted && vestingStartTimeSec > 0) {
-      const now = Math.floor(Date.now()/1000);
-      let months = Math.floor((now - vestingStartTimeSec) / (30*24*60*60));
-      if (months < 0) months = 0; if (months > 12) months = 12;
-      if (monthsPassedEl) monthsPassedEl.textContent = `${months} / 12`;
-      if (progressBar) progressBar.style.width = `${(months/12)*100}%`;
-      const nextSec = vestingStartTimeSec + (months+1)*30*24*60*60;
-      nextVestingTimeMs = nextSec * 1000;
+  
+  function updateThemeIcon(theme) {
+    const themeIcon = themeToggle.querySelector('i');
+    if (theme === 'light') {
+      themeIcon.className = 'fas fa-sun';
     } else {
-      if (monthsPassedEl) monthsPassedEl.textContent = `0 / 12`;
-      if (progressBar) progressBar.style.width = `0%`;
-      nextVestingTimeMs = null;
+      themeIcon.className = 'fas fa-moon';
     }
-
-    // Update initial claim & referral paid displays (account box)
-    if (initialStatusWrap) {
-      initialStatusWrap.style.display = 'block';
-      initialClaimedText.textContent = initialClaimed ? 'Yes' : 'No';
-    }
-    if (referralBonusWrap) {
-      referralBonusWrap.style.display = 'block';
-      referralPaidText.textContent = referralPaid ? 'Yes' : 'No';
-    }
-
-    // load referrer (who referred this user) if mapping exists in vesting contract or referral contract
-    await loadReferrerForUser(account);
-
-    // load referred users if current user is a referrer (via referralContract)
-    await loadReferralsForReferrer(account);
-
-    // enable/disable claim button
-    if (claimBtn) {
-      if(k && claimable.gt(0) && !paused) {
-        claimBtn.disabled = false;
-      } else {
-        claimBtn.disabled = true;
-      }
-    }
-
-    // owner checks
-    const owner = await safeTry(()=> contract.owner(), null);
-    isOwner = owner && owner.toLowerCase() === account.toLowerCase();
-    if (adminBtnSmall) adminBtnSmall.style.display = isOwner ? 'inline-block' : 'none';
-    if (openAdmin) openAdmin.style.display = isOwner ? 'inline-block' : 'none';
-    if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
-
-  } catch (e){
-    console.error('loadAll error', e);
-    showToast('Failed to load on-chain data', 'error');
   }
-}
+  
+  applyStoredTheme();
 
-/* ------------ Referrer & Referred listing ------------ */
-
-/**
- * loadReferrerForUser
- * - tries to read mapping from vesting contract `referrers(address)`
- * - falls back to referralContract.referredBy(user) if present
- * Updates the #referrerWrap in the account box.
- */
-async function loadReferrerForUser(userAddr) {
-  if (!userAddr) return;
-  let found = null;
-  // try vesting contract mapping
-  try {
-    if (contract && typeof contract.referrers === 'function') {
-      found = await safeTry(()=> contract.referrers(userAddr), null);
-      if (found && found !== ethers.constants.AddressZero) {
-        referrerWrap.style.display = 'block';
-        referrerAddrText.textContent = short(found);
-        return;
-      }
-    }
-  } catch(e) {
-    // ignore
+  function showThemeToggle() {
+    const t = document.getElementById('themeToggle');
+    if (t) t.style.display = 'inline-block';
   }
 
-  // try referral contract mapping
-  try {
-    if (referralContract && typeof referralContract.referredBy === 'function') {
-      found = await safeTry(()=> referralContract.referredBy(userAddr), null);
-      if (found && found !== ethers.constants.AddressZero) {
-        referrerWrap.style.display = 'block';
-        referrerAddrText.textContent = short(found);
-        return;
-      }
-    }
-  } catch(e){ /* ignore */ }
-
-  // none found
-  referrerWrap.style.display = 'none';
-  referrerAddrText.textContent = '—';
-}
-
-/**
- * loadReferralsForReferrer
- * - requests referred users from referral contract: getReferredUsers(referrer)
- * - filters those who are KYC verified according to vesting contract
- * - updates referredListWrap and main panel youReferredCount & youReferredList
- */
-async function loadReferralsForReferrer(referrerAddr) {
-  try {
-    // hide defaults
-    if (!referredListWrap) return;
-    referredListWrap.style.display = 'none';
-    referredCountText.textContent = '0';
-    referredListMini.innerHTML = '';
-
-    // also clear main panel small box
-    const youReferredCount = document.getElementById('youReferredCount');
-    const youReferredList = document.getElementById('youReferredList');
-    if (youReferredCount) youReferredCount.textContent = '0';
-    if (youReferredList) youReferredList.innerHTML = '';
-
-    if (!referralContract || typeof referralContract.getReferredUsers !== 'function') {
-      // referral contract not available, exit silently
-      return;
-    }
-
-    const arr = await safeTry(()=> referralContract.getReferredUsers(referrerAddr), []);
-    if (!arr || arr.length === 0) {
-      // nothing to show
-      return;
-    }
-
-    // for each referred address, check KYC and present sliced address in lists for verified ones
-    let verified = [];
-    for (const r of arr) {
-      try {
-        const k = await safeTry(()=> contract.kycVerified(r), false);
-        if (k) verified.push(r);
-      } catch(e) {
-        console.debug('loadReferralsForReferrer check err', e);
-      }
-    }
-
-    // update account mini list (only verified)
-    if (verified.length > 0) {
-      referredListWrap.style.display = 'block';
-      referredCountText.textContent = String(verified.length);
-      referredListMini.innerHTML = verified.map(a => `<div>${short(a)}</div>`).join('');
-    } else {
-      referredListWrap.style.display = 'none';
-      referredCountText.textContent = '0';
-      referredListMini.innerHTML = '';
-    }
-
-    // main panel "you referred" summary
-    if (youReferredCount) youReferredCount.textContent = String(arr.length);
-    if (youReferredList) youReferredList.innerHTML = arr.map(a=> `<div>${short(a)}</div>`).join('');
-
-  } catch(e) {
-    console.error('loadReferralsForReferrer', e);
-  }
-}
-
-/* ------------ Countdown & auto-refresh ------------ */
-
-/**
- * startCountdownForUser
- * - Computes the next claim time based on vestingStartTime OR lastClaimTime
- * - Updates the countdown DOM elements every second
- * - When it reaches 0, shows "Now" and triggers loadAll() once
- *
- * Note: This function cancels previous countdown interval to avoid duplication.
- */
-function startCountdownForUser(lastClaimTimeRaw) {
-  // clear old interval if present
-  if (countdownInterval) {
-    clearInterval(countdownInterval);
-    countdownInterval = null;
-  }
-
-  // convert lastClaimTimeRaw to number if BigNumber
-  let lastClaimTime = 0;
-  try {
-    if (!lastClaimTimeRaw) lastClaimTime = 0;
-    else if (typeof lastClaimTimeRaw === 'object' && lastClaimTimeRaw.toNumber) lastClaimTime = lastClaimTimeRaw.toNumber();
-    else lastClaimTime = Number(lastClaimTimeRaw);
-  } catch(e) {
-    lastClaimTime = Number(lastClaimTimeRaw) || 0;
-  }
-
-  countdownInterval = setInterval(async ()=> {
-    try {
-      // compute base time (if no last claim, base on vesting start)
-      let vestStart = vestingStartTimeSec || 0;
-      if (!vestStart) {
-        // try to fetch in case not loaded yet
-        try { vestStart = Number(await contract.vestingStartTime()); } catch(e){}
-      }
-      const base = (lastClaimTime === 0) ? vestStart : lastClaimTime;
-      if (!base || base === 0) {
-        // nothing to count down to
-        if (cdDays) cdDays.textContent='--';
-        if (cdHours) cdHours.textContent='--';
-        if (cdMins) cdMins.textContent='--';
-        if (cdSecs) cdSecs.textContent='--';
-        return;
-      }
-      const nextClaim = base + 30 * 24 * 60 * 60; // 30 days in seconds
-      const now = Math.floor(Date.now()/1000);
-      let diff = nextClaim - now;
-      if (diff <= 0) {
-        // show Now and trigger a single refresh of on-chain claimable balances
-        if (cdDays) cdDays.textContent='00';
-        if (cdHours) cdHours.textContent='00';
-        if (cdMins) cdMins.textContent='00';
-        if (cdSecs) cdSecs.textContent='00';
-        // Auto-refresh once (so we don't call loadAll repeatedly)
-        // Only call if claimable appears to increase
-        await loadAll();
-        // stop interval for now - loadAll will recreate proper timing after reading last claim
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-        return;
-      } else {
-        const days = Math.floor(diff/(24*3600));
-        diff -= days * 24 * 3600;
-        const hours = Math.floor(diff/3600);
-        diff -= hours * 3600;
-        const mins = Math.floor(diff/60);
-        const secs = diff % 60;
-        if (cdDays) cdDays.textContent = String(days).padStart(2,'0');
-        if (cdHours) cdHours.textContent = String(hours).padStart(2,'0');
-        if (cdMins) cdMins.textContent = String(mins).padStart(2,'0');
-        if (cdSecs) cdSecs.textContent = String(secs).padStart(2,'0');
-      }
-    } catch(e) {
-      console.error('countdown tick err', e);
-    }
-  }, 1000);
-}
-
-/* ---------------- Claim action --------------- */
-
-/**
- * claimTokens()
- * - calls contract.claim()
- * - shows toast on success/failure
- * - after success, refresh UI (loadAll)
- * - if the transaction contains referral events or relevant info you wish to show,
- *   you can parse the receipt here (not shown to keep UI minimal)
- */
-async function claimTokens(){
-  if(!contract || !account) { showToast('Wallet not connected', 'error'); return; }
-  try {
-    showToast('Submitting claim tx...', 'info');
-    if (claimBtn) {
-      claimBtn.disabled = true;
-      claimBtn.textContent = 'Processing...';
-    }
-    const tx = await contract.claim();
-    const receipt = await tx.wait();
-    // On success:
-    showToast('Claim successful — thanks!', 'success');
-    // Refresh UI
-    await loadAll();
-    // Restore button label
-    if (claimBtn) { claimBtn.textContent = 'Claim'; claimBtn.disabled = false; }
-    // If you want a redirect for referral tx success specifically, handle it here.
-    // (Per earlier requirement, referral txn redirect was desired for registration)
-  } catch (e) {
-    console.error('claimTokens err', e);
-    showToast('Claim failed: ' + (e && e.message ? e.message.split('\n')[0] : 'Unknown'), 'error');
-    if (claimBtn) { claimBtn.disabled = false; claimBtn.textContent = 'Claim'; }
-  }
-}
-
-/* ---------------- Admin handlers ---------------- */
-
-async function openAdminModal(){
-  if(!isOwner){ showToast('Owner required', 'error'); return; }
-  adminModal.classList.add('show'); adminModal.setAttribute('aria-hidden','false');
-  // load presale list & clear referral info area
-  try {
-    const arr = await safeTry(()=> contract.getOldPresaleContracts(), []);
-    adminPresaleList.innerHTML = '';
-    if(!arr || arr.length === 0) adminPresaleList.innerHTML = '<div class="muted small">No presales</div>';
-    else arr.forEach((a,i)=>{
-      const item = document.createElement('div'); item.style.padding='6px 0'; item.style.display='flex'; item.style.justifyContent='space-between';
-      const link = document.createElement('a'); link.href = EXPLORER? `${EXPLORER}/address/${a}`:'#'; link.target='_blank'; link.textContent = `${i}: ${a}`; link.style.color='var(--muted)';
-      item.appendChild(link); adminPresaleList.appendChild(item);
+  if (themeToggle) {
+    themeToggle.addEventListener('click', ()=>{
+      const current = body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const next = current === 'light' ? 'dark' : 'light';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('nuur:theme', next);
+      updateThemeIcon(next);
+      toastShow(`Switched to ${next} theme`);
     });
-  } catch(e){ console.error(e); }
-}
-
-function closeAdminModal(){ adminModal.classList.remove('show'); adminModal.setAttribute('aria-hidden','true'); }
-
-async function adminAddSingle() {
-  const a = adminPresale.value.trim();
-  if(!a){ showToast('Enter address','error'); return; }
-  try {
-    if(!confirm(`Add presale: ${a}?`)) return;
-    const tx = await contract.addOldPresaleContract(a);
-    const r = await tx.wait();
-    showToast('Presale added', 'success');
-    adminPresale.value = '';
-    await openAdminModal();
-  } catch(e){ console.error(e); showToast('Failed to add presale', 'error'); }
-}
-
-async function adminAddBatch(){
-  const raw = adminBatch.value.trim();
-  if(!raw){ showToast('Enter addresses','error'); return; }
-  const arr = raw.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
-  if(arr.length === 0){ showToast('No valid addresses','error'); return; }
-  if(!confirm(`Add ${arr.length} presales?`)) return;
-  try {
-    try {
-      const tx = await contract.addOldPresaleContracts(arr);
-      const r = await tx.wait();
-      showToast('Batch added (single tx)', 'success');
-    } catch(e){
-      // fallback to one-by-one
-      let last = null;
-      for(const a of arr){ const tx = await contract.addOldPresaleContract(a); const rr = await tx.wait(); last = rr.transactionHash || tx.hash; }
-      showToast('Batch added (multiple txs)', 'success');
-    }
-    adminBatch.value = '';
-    await openAdminModal();
-  } catch(e){ console.error(e); showToast('Failed to add batch', 'error'); }
-}
-
-async function adminSetKycSingle(){
-  const a = adminKycAddr.value.trim(); const s = adminKycStatus.value === 'true';
-  if(!a){ showToast('Enter address','error'); return; }
-  try {
-    const tx = await contract.setKYC(a, s);
-    const r = await tx.wait();
-    showToast('KYC updated', 'success');
-    adminKycAddr.value = '';
-    if(a.toLowerCase() === account.toLowerCase()) await loadAll();
-    // update referral info area
-    await loadAdminReferralInfo(a);
-  } catch(e){ console.error(e); showToast('Failed to set KYC', 'error'); }
-}
-
-async function adminSetKycBatchHandler(){
-  const rawAddrs = adminKycBatchAddrs.value.trim();
-  const rawStats = adminKycBatchStatuses.value.trim();
-  if(!rawAddrs || !rawStats){ showToast('Provide addresses and statuses','error'); return; }
-  const addrs = rawAddrs.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
-  const stats = rawStats.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean).map(s => s === 'true');
-  if(addrs.length !== stats.length){ showToast('Length mismatch','error'); return; }
-  if(!confirm(`Set KYC for ${addrs.length} addresses?`)) return;
-  try {
-    const tx = await contract.setKYCForBatch(addrs, stats);
-    const r = await tx.wait();
-    showToast('Batch KYC updated', 'success');
-    adminKycBatchAddrs.value=''; adminKycBatchStatuses.value='';
-    await loadAll();
-  } catch(e){ console.error(e); showToast('Failed batch KYC', 'error'); }
-}
-
-async function adminStartVesting(){ if(!confirm('Start vesting? This is irreversible.')) return; try{ const tx = await contract.startVesting(); const r = await tx.wait(); showToast('Vesting started','success'); await loadAll(); } catch(e){ console.error(e); showToast('Failed to start','error'); } }
-async function adminPauseHandler(){ if(!confirm('Pause contract?')) return; try{ const tx = await contract.pause(); const r = await tx.wait(); showToast('Paused','success'); await loadAll(); } catch(e){ console.error(e); showToast('Failed to pause','error'); } }
-async function adminUnpauseHandler(){ if(!confirm('Unpause contract?')) return; try{ const tx = await contract.unpause(); const r = await tx.wait(); showToast('Unpaused','success'); await loadAll(); } catch(e){ console.error(e); showToast('Failed to unpause','error'); } }
-
-/* Admin referral lookup: show purchases, KYC, initialClaimed, referralPaid, and list of referred users */
-async function loadAdminReferralInfo(addr) {
-  if(!addr) { adminReferralInfo.innerHTML = '<div class="muted small">Enter an address to check</div>'; adminReferralList.innerHTML=''; return; }
-  try {
-    const [totalPurchase, kyc, vInfo, bonusPaid] = await Promise.all([
-      safeTry(()=> contract.getTotalPurchase(addr), ethers.BigNumber.from(0)),
-      safeTry(()=> contract.kycVerified(addr), false),
-      safeTry(()=> contract.vestingInfo(addr), null),
-      safeTry(()=> contract.referralBonusPaid(addr), false)
-    ]);
-    let initialClaimed = false;
-    if (vInfo) {
-      if (typeof vInfo.initialClaimed !== 'undefined') initialClaimed = vInfo.initialClaimed;
-      else if (typeof vInfo[3] !== 'undefined') initialClaimed = vInfo[3];
-    }
-    const eligible = (kyc && totalPurchase.gte(ethers.utils.parseUnits("50000",18)));
-    adminReferralInfo.innerHTML = `
-      <div style="margin-top:6px">
-        <div class="muted small">Total purchase: <strong>${fmtUnits(totalPurchase,18)} NUUR</strong></div>
-        <div class="muted small">KYC verified: <strong>${kyc ? 'Yes' : 'No'}</strong></div>
-        <div class="muted small">Initial 20% claimed: <strong>${initialClaimed ? 'Yes' : 'No'}</strong></div>
-        <div class="muted small">Referral bonus paid: <strong>${bonusPaid ? 'Yes' : 'No'}</strong></div>
-        <div style="margin-top:8px" class="muted small">Eligible to pay referrer on first claim? <strong>${eligible ? '✅ Yes' : '❌ No'}</strong></div>
-      </div>
-    `;
-
-    // If the address is a referrer, list their referred users (via referralContract)
-    let referred = [];
-    if (referralContract && typeof referralContract.getReferredUsers === 'function') {
-      referred = await safeTry(()=> referralContract.getReferredUsers(addr), []);
-    }
-    if (referred && referred.length) {
-      // build list with verification tags
-      const lines = [];
-      for (const r of referred) {
-        const k = await safeTry(()=> contract.kycVerified(r), false);
-        const purch = await safeTry(()=> contract.getTotalPurchase(r), ethers.BigNumber.from(0));
-        lines.push(`<div>${short(r)} — ${k ? 'KYC' : 'No KYC'} — ${fmtUnits(purch,18)} NUUR</div>`);
-      }
-      adminReferralList.innerHTML = `<div class="muted small">Referred (${referred.length}):</div>` + lines.join('');
-    } else {
-      adminReferralList.innerHTML = '<div class="muted small">No referred users found (or referral contract not configured)</div>';
-    }
-
-  } catch(e) {
-    console.error('loadAdminReferralInfo', e); adminReferralInfo.innerHTML = '<div class="muted small">Error loading info</div>'; adminReferralList.innerHTML='';
   }
-}
 
-// Admin input changes: update referral info live
-if (adminReferralAddr) adminReferralAddr.addEventListener('input', ()=> loadAdminReferralInfo(adminReferralAddr.value.trim()));
+  /* ---------------- Wallet & Contract logic ---------------- */
+  async function connectWallet(){
+    if(!window.ethereum){ toastShow('Please install MetaMask or compatible wallet','error'); return; }
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+    try {
+      await provider.send('eth_requestAccounts',[]);
+      signer = provider.getSigner();
+      account = await signer.getAddress();
+      contract = new ethers.Contract(CONTRACT_ADDR, VESTING_ABI, signer);
+      tokenContract = new ethers.Contract(NUUR_TOKEN, [
+        "function balanceOf(address) view returns (uint256)",
+        "function decimals() view returns (uint8)",
+        "function transferFrom(address, address, uint256) returns (bool)"
+      ], signer);
 
-/* ---------------- Polling ---------------- */
-function startPoll(){ if(pollHandle) clearInterval(pollHandle); pollHandle = setInterval(pollTick, POLL_INTERVAL); }
-async function pollTick(){
-  try {
-    if(!contract || !account) return;
-    const claimable = await safeTry(()=> contract.getClaimableAmount(account), ethers.BigNumber.from(0));
-    if (claimable && claimable.gt && claimable.gt(lastClaimable)) {
-      showToast('New tokens unlocked — claim available', 'success');
-      lastClaimable = claimable;
+      // UI updates
+      if (connectBtn) connectBtn.style.display = 'none';
+      if (ctaAccountBox) ctaAccountBox.style.display = 'block';
+      if (openAdmin) openAdmin.style.display = 'none';
+      if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
+      if (addrShort) addrShort.textContent = short(account);
+      try{ decimals = await tokenContract.decimals(); } catch(e){ decimals = 18; }
+      if (contractLink) contractLink.href = EXPLORER ? `${EXPLORER}/address/${CONTRACT_ADDR}` : '#';
+
+      showThemeToggle();
       await loadAll();
+      startPoll();
+    } catch (e){
+      console.error(e);
+      toastShow('Wallet connection failed', 'error');
     }
-    // also refresh if countdown nextVestingTimeMs reached (loadAll handles countdown)
-    if (nextVestingTimeMs && Date.now() >= nextVestingTimeMs) { await loadAll(); }
-  } catch(e){ console.error('pollTick', e); }
-}
+  }
 
-/* ----------------- Wiring UI events ------------------ */
-if (connectBtn) connectBtn.addEventListener('click', connectWallet);
-if (disconnectBtn) disconnectBtn.addEventListener('click', disconnectWallet);
-if (claimBtn) claimBtn.addEventListener('click', claimTokens);
-if (refreshBtnSmall) refreshBtnSmall.addEventListener('click', loadAll);
-if (refreshBtnLarge) refreshBtnLarge.addEventListener('click', loadAll);
+  async function disconnectWallet(){
+    account = null; signer = null; provider = null; contract = null; tokenContract = null;
+    if (connectBtn) connectBtn.style.display = 'inline-block';
+    if (ctaAccountBox) ctaAccountBox.style.display = 'none';
+    if (openAdmin) openAdmin.style.display = 'none';
+    if (disconnectBtn) disconnectBtn.style.display = 'none';
+    if (themeToggle) themeToggle.style.display = 'none';
+    toastShow('Disconnected');
+  }
 
-if (adminBtnSmall) adminBtnSmall.addEventListener('click', openAdminModal);
-if (openAdmin) openAdmin.addEventListener('click', openAdminModal);
-if (closeAdmin) closeAdmin.addEventListener('click', closeAdminModal);
-if (adminAddPresale) adminAddPresale.addEventListener('click', adminAddSingle);
-if (adminBatchAdd) adminBatchAdd.addEventListener('click', adminAddBatch);
-if (adminSetKyc) adminSetKyc.addEventListener('click', adminSetKycSingle);
-if (adminSetKycBatchBtn) adminSetKycBatchBtn.addEventListener('click', adminSetKycBatchHandler);
-if (adminStart) adminStart.addEventListener('click', adminStartVesting);
-if (adminPause) adminPause.addEventListener('click', adminPauseHandler);
-if (adminUnpause) adminUnpause.addEventListener('click', adminUnpauseHandler);
+  async function loadAll(){
+    if(!contract || !account) return;
+    try {
+      const [bNu, bSda] = await Promise.all([ 
+        tokenContract.balanceOf(account), 
+        provider.getBalance(account) 
+      ]);
+      if (nuurBal) nuurBal.textContent = ethers.utils.formatUnits(bNu, decimals);
+      if (sdaBal) sdaBal.textContent = formatSdaBalance(bSda);
 
-if (contractLink) {
-  contractLink.addEventListener('click', (e)=> {
-    if(!EXPLORER){ e.preventDefault(); navigator.clipboard && navigator.clipboard.writeText(CONTRACT_ADDR).then(()=> showToast('Contract address copied','success')); }
-  });
-}
+      const k = await contract.kycVerified(account);
+      if (kycText) kycText.textContent = k ? 'Verified' : 'Not verified';
+      if (kycDot) kycDot.style.background = k ? 'var(--color-success)' : 'var(--color-warn)';
 
-/* initialize theme */
-(function initTheme(){ applyStoredTheme(); })();
+      const [vStarted, paused, vestStartBN] = await Promise.all([ 
+        contract.vestingStarted(), 
+        contract.paused(), 
+        contract.vestingStartTime() 
+      ]);
+      vestingStartTimeSec = vestStartBN.toNumber();
+      if (vestingStatus) vestingStatus.textContent = vStarted ? 'Active' : 'Not started';
+      if (pausedStatus) pausedStatus.textContent = paused ? 'Yes' : 'No';
 
-/* start reasonable UI timers */
-(function initStartup(){
-  // countdown will be started when loadAll() fetches vesting info
-  // attach a tiny fallback poll if user doesn't connect
-  setInterval(()=> {
-    if (!account) return;
-    // this is just a safety: ensure UI is not stale
-  }, 60_000);
+      // Get user claim info
+      const claimInfo = await contract.getUserClaimInfo(account);
+      const [totalAmount, claimedAmount, snapshotBal, snapshotTaken, isWhale, monthlyPercent] = claimInfo;
+      
+      if (snapshotBalance) snapshotBalance.textContent = `${ethers.utils.formatUnits(snapshotBal, decimals)} NUUR`;
+      if (claimedEl) claimedEl.textContent = `${ethers.utils.formatUnits(claimedAmount, decimals)} NUUR`;
+      
+      const claimable = await contract.getClaimableAmount(account);
+      if (claimableDisplay) claimableDisplay.textContent = `${ethers.utils.formatUnits(claimable, decimals)} NUUR`;
+      lastClaimable = claimable;
+
+      // Update user type and monthly rate
+      if (userType) {
+        if (isWhale) {
+          userType.innerHTML = '<span class="user-type-badge whale-badge">🐋 Whale (10%/month)</span>';
+        } else {
+          userType.innerHTML = '<span class="user-type-badge small-badge">👤 Small Holder (20%/month)</span>';
+        }
+      }
+      
+      if (monthlyRate) monthlyRate.textContent = `${monthlyPercent.toNumber()}%`;
+
+      // Update snapshot status
+      if (snapshotStatus) {
+        snapshotStatus.textContent = snapshotTaken ? 'Taken' : 'Not taken';
+        snapshotStatus.style.color = snapshotTaken ? 'var(--color-success)' : 'var(--color-warn)';
+      }
+
+      // Enable/disable snapshot button
+      if (takeSnapshotBtn) {
+        takeSnapshotBtn.disabled = !k || snapshotTaken;
+      }
+
+      // months passed & progress
+      if(vStarted && vestingStartTimeSec > 0){
+        const now = Math.floor(Date.now()/1000);
+        let months = Math.floor((now - vestingStartTimeSec) / (30*24*60*60));
+        if(months < 0) months = 0; 
+        if(months > 12) months = 12;
+        if (monthsPassedEl) monthsPassedEl.textContent = `${months} / 12`;
+        if (progressBar) progressBar.style.width = `${(months/12)*100}%`;
+        const nextSec = vestingStartTimeSec + (months+1)*30*24*60*60;
+        nextVestingTimeMs = nextSec * 1000;
+      } else {
+        if (monthsPassedEl) monthsPassedEl.textContent = `0 / 12`;
+        if (progressBar) progressBar.style.width = `0%`;
+        nextVestingTimeMs = null;
+      }
+
+      // claim button enable
+      if (claimBtn) {
+        if(k && snapshotTaken && claimable.gt(0) && !paused && vStarted) { 
+          claimBtn.disabled = false; 
+        } else { 
+          claimBtn.disabled = true; 
+        }
+      }
+
+      // owner checks
+      const owner = await contract.owner().catch(()=>null);
+      isOwner = owner && owner.toLowerCase() === account.toLowerCase();
+      if (adminBtnSmall) adminBtnSmall.style.display = isOwner ? 'inline-block' : 'none';
+      if (openAdmin) openAdmin.style.display = isOwner ? 'inline-block' : 'none';
+      if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
+
+      // Load contract balance for admin
+      if (isOwner) {
+        const contractBal = await tokenContract.balanceOf(CONTRACT_ADDR);
+        if (contractBalance) contractBalance.textContent = `${ethers.utils.formatUnits(contractBal, decimals)} NUUR`;
+      }
+
+    } catch (e){
+      console.error('loadAll', e);
+      toastShow('Failed to load on-chain data', 'error');
+    }
+  }
+
+  async function takeSnapshot(){
+    if(!contract || !account) return;
+    try {
+      toastShow('Taking snapshot...');
+      if (takeSnapshotBtn) {
+        takeSnapshotBtn.disabled = true;
+        takeSnapshotBtn.textContent = 'Processing...';
+      }
+      const tx = await contract.takeSnapshot();
+      const receipt = await tx.wait();
+      toastShow('Snapshot taken successfully', 'success', EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
+      await loadAll();
+      if (takeSnapshotBtn) takeSnapshotBtn.textContent = 'Take Snapshot';
+    } catch (e){
+      console.error('takeSnapshot', e);
+      toastShow('Snapshot failed', 'error');
+      if (takeSnapshotBtn) {
+        takeSnapshotBtn.disabled = false;
+        takeSnapshotBtn.textContent = 'Take Snapshot';
+      }
+    }
+  }
+
+  async function claimTokens(){
+    if(!contract || !account) return;
+    try {
+      toastShow('Submitting claim tx...');
+      if (claimBtn) {
+        claimBtn.disabled = true;
+        claimBtn.textContent = 'Processing...';
+      }
+      const tx = await contract.claim();
+      const receipt = await tx.wait();
+      toastShow('Claim successful', 'success', EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
+      await loadAll();
+      if (claimBtn) claimBtn.textContent = 'Claim';
+    } catch (e){
+      console.error('claim', e);
+      toastShow('Claim failed', 'error');
+      if (claimBtn) {
+        claimBtn.disabled = false;
+        claimBtn.textContent = 'Claim';
+      }
+    }
+  }
+
+  /* ---------- Admin handlers ---------- */
+  async function openAdminModal(){
+    if(!isOwner){ toastShow('Owner required', 'error'); return; }
+    adminModal.classList.add('show'); adminModal.setAttribute('aria-hidden','false');
+    await loadAll(); // Refresh contract balance
+  }
+  
+  function closeAdminModal(){ adminModal.classList.remove('show'); adminModal.setAttribute('aria-hidden','true'); }
+
+  async function adminSetKycSingle(){
+    const a = adminKycAddr.value.trim(); 
+    const s = adminKycStatus.value === 'true';
+    if(!a){ toastShow('Enter address','error'); return; }
+    try {
+      const tx = await contract.setKYC(a, s);
+      const r = await tx.wait();
+      toastShow('KYC updated', 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      adminKycAddr.value = '';
+      if(a.toLowerCase() === account.toLowerCase()) await loadAll();
+    } catch(e){ console.error(e); toastShow('Failed to set KYC', 'error'); }
+  }
+
+  async function adminSetKycBatchHandler(){
+    const rawAddrs = adminKycBatchAddrs.value.trim();
+    const status = adminKycBatchStatus.value === 'true';
+    if(!rawAddrs){ toastShow('Provide addresses','error'); return; }
+    const addrs = rawAddrs.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
+    if(addrs.length === 0){ toastShow('No valid addresses','error'); return; }
+    if(!confirm(`Set KYC status to ${status ? 'Verified' : 'Not Verified'} for ${addrs.length} addresses?`)) return;
+    try {
+      const tx = await contract.setKYCForBatch(addrs, status);
+      const r = await tx.wait();
+      toastShow(`Batch KYC ${status ? 'verified' : 'unverified'}`, 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      adminKycBatchAddrs.value='';
+      await loadAll();
+    } catch(e){ console.error(e); toastShow('Failed batch KYC', 'error'); }
+  }
+
+  async function adminDepositFunds(){
+    const amount = depositAmount.value.trim();
+    if(!amount){ toastShow('Enter amount','error'); return; }
+    try {
+      const amountWei = ethers.utils.parseUnits(amount, decimals);
+      toastShow('Depositing funds...');
+      const tx = await contract.depositFunds(amountWei);
+      const r = await tx.wait();
+      toastShow('Funds deposited', 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      depositAmount.value = '';
+      await loadAll();
+    } catch(e){ console.error(e); toastShow('Deposit failed', 'error'); }
+  }
+
+  async function adminStartVesting(){ 
+    if(!confirm('Start vesting? This is irreversible.')) return; 
+    try{ 
+      const tx = await contract.startVesting(); 
+      const r = await tx.wait(); 
+      toastShow('Vesting started','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      await loadAll(); 
+    } catch(e){ console.error(e); toastShow('Failed to start','error'); } 
+  }
+  
+  async function adminPauseHandler(){ 
+    if(!confirm('Pause contract?')) return; 
+    try{ 
+      const tx = await contract.pause(); 
+      const r = await tx.wait(); 
+      toastShow('Paused','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      await loadAll(); 
+    } catch(e){ console.error(e); toastShow('Failed to pause','error'); } 
+  }
+  
+  async function adminUnpauseHandler(){ 
+    if(!confirm('Unpause contract?')) return; 
+    try{ 
+      const tx = await contract.unpause(); 
+      const r = await tx.wait(); 
+      toastShow('Unpaused','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      await loadAll(); 
+    } catch(e){ console.error(e); toastShow('Failed to unpause','error'); } 
+  }
+
+  /* ---------------- Polling & countdown ---------------- */
+  let pollHandle = null;
+  function startPoll(){ if(pollHandle) clearInterval(pollHandle); pollHandle = setInterval(pollTick, POLL_INTERVAL); }
+  async function pollTick(){
+    try {
+      if(!contract || !account) return;
+      const claimable = await contract.getClaimableAmount(account);
+      if(claimable.gt(lastClaimable)){
+        toastShow('New tokens unlocked — claim available', 'success');
+        lastClaimable = claimable;
+        await loadAll();
+      }
+      if(nextVestingTimeMs && Date.now() >= nextVestingTimeMs){ await loadAll(); }
+    } catch(e){ console.error('pollTick', e); }
+  }
+
+  function startCountdown(){
+    setInterval(()=>{
+      if(!nextVestingTimeMs){ 
+        if(cdDays) cdDays.textContent='--'; 
+        if(cdHours) cdHours.textContent='--'; 
+        if(cdMins) cdMins.textContent='--'; 
+        if(cdSecs) cdSecs.textContent='--'; 
+        return; 
+      }
+      const diff = Math.max(0, nextVestingTimeMs - Date.now());
+      if(diff <= 0){ 
+        if(cdDays) cdDays.textContent='00'; 
+        if(cdHours) cdHours.textContent='00'; 
+        if(cdMins) cdMins.textContent='00'; 
+        if(cdSecs) cdSecs.textContent='00'; 
+        return; 
+      }
+      const days = Math.floor(diff/(1000*60*60*24));
+      const hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+      const mins = Math.floor((diff%(1000*60*60))/(1000*60));
+      const secs = Math.floor((diff%(1000*60))/1000);
+      if(cdDays) cdDays.textContent = String(days).padStart(2,'0');
+      if(cdHours) cdHours.textContent = String(hours).padStart(2,'0');
+      if(cdMins) cdMins.textContent = String(mins).padStart(2,'0');
+      if(cdSecs) cdSecs.textContent = String(secs).padStart(2,'0');
+    }, 1000);
+  }
+
+  /* -------------- UI wiring -------------- */
+  if (connectBtn) connectBtn.addEventListener('click', connectWallet);
+  if (disconnectBtn) disconnectBtn.addEventListener('click', disconnectWallet);
+  if (takeSnapshotBtn) takeSnapshotBtn.addEventListener('click', takeSnapshot);
+  if (claimBtn) claimBtn.addEventListener('click', claimTokens);
+  if (refreshBtnSmall) refreshBtnSmall.addEventListener('click', loadAll);
+  if (refreshBtnLarge) refreshBtnLarge.addEventListener('click', loadAll);
+
+  if (adminBtnSmall) adminBtnSmall.addEventListener('click', openAdminModal);
+  if (openAdmin) openAdmin.addEventListener('click', openAdminModal);
+  if (closeAdmin) closeAdmin.addEventListener('click', closeAdminModal);
+  if (adminSetKyc) adminSetKyc.addEventListener('click', adminSetKycSingle);
+  if (adminSetKycBatchBtn) adminSetKycBatchBtn.addEventListener('click', adminSetKycBatchHandler);
+  if (adminDeposit) adminDeposit.addEventListener('click', adminDepositFunds);
+  if (adminStart) adminStart.addEventListener('click', adminStartVesting);
+  if (adminPause) adminPause.addEventListener('click', adminPauseHandler);
+  if (adminUnpause) adminUnpause.addEventListener('click', adminUnpauseHandler);
+
+  if (contractLink) {
+    contractLink.addEventListener('click', (e)=> {
+      if(!EXPLORER){ e.preventDefault(); navigator.clipboard && navigator.clipboard.writeText(CONTRACT_ADDR).then(()=> toastShow('Contract address copied','success')); }
+    });
+  }
+
+  // Initialize
+  applyStoredTheme();
+  startCountdown();
+
+  // Expose for debugging
+  window.__nuur = { loadAll };
+
 })();
-
-/* expose debug helpers */
-window.__nuur = { loadAll, loadAdminReferralInfo, connectWallet, disconnectWallet };
-
-/* kick off: nothing automatic — user must click Connect Wallet */
 </script>
 </body>
 </html>
