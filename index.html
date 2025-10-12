@@ -5,175 +5,722 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NUUR Presale Admin Dashboard</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.6.0/ethers.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {margin:0;padding:0;box-sizing:border-box;}
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary: #7209b7;
+      --success: #4cc9f0;
+      --danger: #f72585;
+      --warning: #f8961e;
+      --dark: #1a1a2e;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --gray-light: #e9ecef;
+      --border-radius: 12px;
+      --box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-      min-height:100vh;
-      padding:20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: var(--light);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
     }
+    
     .container {
-      max-width:1200px;margin:0 auto;background:white;
-      border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.2);
-      overflow:hidden;
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
+    
     header {
-      background:#2c3e50;color:white;padding:20px;text-align:center;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 25px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
     }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo i {
+      font-size: 2.2rem;
+    }
+    
+    .logo-text h1 {
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+    
+    .logo-text p {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+    
     .wallet-section {
-      background:#ecf0f1;padding:20px;display:flex;
-      justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .wallet-info {display:flex;align-items:center;gap:10px;}
+    
+    .wallet-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px 15px;
+      border-radius: var(--border-radius);
+    }
+    
+    .wallet-info i {
+      color: var(--success);
+    }
+    
     .connect-btn {
-      background:#27ae60;color:white;border:none;padding:10px 20px;
-      border-radius:5px;cursor:pointer;font-weight:bold;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
     }
-    .connect-btn:hover {background:#219a52;}
-    .main-content {
-      display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;
+    
+    .connect-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
     }
-    @media(max-width:768px){.main-content{grid-template-columns:1fr;}}
+    
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      padding: 25px;
+    }
+    
+    @media (max-width: 1200px) {
+      .dashboard {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+      
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+    
     .card {
-      background:#f8f9fa;border-radius:10px;padding:20px;
-      box-shadow:0 4px 6px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--box-shadow);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
     }
-    .card h3 {
-      color:#2c3e50;margin-bottom:15px;border-bottom:2px solid #3498db;
-      padding-bottom:5px;
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
     }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .card-header i {
+      font-size: 1.5rem;
+      color: var(--success);
+    }
+    
+    .card-header h3 {
+      color: var(--light);
+      font-size: 1.3rem;
+    }
+    
+    .info-grid {
+      display: grid;
+      gap: 12px;
+    }
+    
     .info-row {
-      display:flex;justify-content:space-between;
-      margin:10px 0;padding:8px;background:white;border-radius:5px;
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      transition: var(--transition);
     }
-    .info-label {font-weight:bold;color:#7f8c8d;}
-    .info-value {color:#2c3e50;font-weight:bold;}
-    .action-form {display:flex;flex-direction:column;gap:10px;margin-top:10px;}
-    .input-group {display:flex;flex-direction:column;gap:5px;}
-    .input-group label {font-weight:bold;color:#2c3e50;}
+    
+    .info-row:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .info-label {
+      font-weight: 500;
+      color: var(--gray-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .info-value {
+      color: var(--light);
+      font-weight: 600;
+    }
+    
+    .action-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .input-group label {
+      font-weight: 500;
+      color: var(--gray-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
     input, select, button {
-      padding:12px;border:2px solid #bdc3c7;border-radius:5px;font-size:14px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--light);
+      transition: var(--transition);
     }
-    input:focus, select:focus {outline:none;border-color:#3498db;}
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+    }
+    
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
     .action-btn {
-      background:#3498db;color:white;border:none;padding:12px;
-      border-radius:5px;cursor:pointer;font-weight:bold;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 1;
+      transition: var(--transition);
     }
-    .action-btn:hover {background:#2980b9;}
-    .danger-btn {background:#e74c3c;}
-    .danger-btn:hover {background:#c0392b;}
-    .success-btn {background:#27ae60;}
-    .success-btn:hover {background:#219a52;}
+    
+    .action-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .danger-btn {
+      background: var(--danger);
+    }
+    
+    .danger-btn:hover {
+      background: #e1156d;
+    }
+    
+    .success-btn {
+      background: var(--success);
+    }
+    
+    .success-btn:hover {
+      background: #3ab3d6;
+    }
+    
+    .warning-btn {
+      background: var(--warning);
+    }
+    
+    .warning-btn:hover {
+      background: #e08617;
+    }
+    
     .status {
-      padding:10px;margin:10px;border-radius:5px;text-align:center;font-weight:bold;
-      display:none;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+      animation: fadeIn 0.5s ease;
     }
-    .status.success {background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
-    .status.error {background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
-    .status.info {background:#d1ecf1;color:#0c5460;border:1px solid #bee5eb;}
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .status.success {
+      background: rgba(76, 201, 240, 0.2);
+      color: var(--success);
+      border: 1px solid rgba(76, 201, 240, 0.3);
+    }
+    
+    .status.error {
+      background: rgba(247, 37, 133, 0.2);
+      color: var(--danger);
+      border: 1px solid rgba(247, 37, 133, 0.3);
+    }
+    
+    .status.info {
+      background: rgba(67, 97, 238, 0.2);
+      color: var(--primary);
+      border: 1px solid rgba(67, 97, 238, 0.3);
+    }
+    
     footer {
-      text-align:center;padding:20px;background:#2c3e50;color:white;
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--gray-light);
+      font-size: 0.9rem;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .badge-success {
+      background: rgba(76, 201, 240, 0.2);
+      color: var(--success);
+    }
+    
+    .badge-warning {
+      background: rgba(248, 150, 30, 0.2);
+      color: var(--warning);
+    }
+    
+    .badge-danger {
+      background: rgba(247, 37, 133, 0.2);
+      color: var(--danger);
     }
   </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <h1>NUUR Presale Admin Dashboard</h1>
-    <p>Manage your presale contract with ease</p>
+    <div class="logo">
+      <i class="fas fa-chart-line"></i>
+      <div class="logo-text">
+        <h1>NUUR Presale Admin Dashboard</h1>
+        <p>Manage your presale contract with ease</p>
+      </div>
+    </div>
+    <div class="wallet-info">
+      <i class="fas fa-clock"></i>
+      <span id="currentTime">Loading...</span>
+    </div>
   </header>
 
   <div class="wallet-section">
     <div class="wallet-info">
-      <span>Wallet Status:</span>
-      <span id="walletStatus">Not Connected</span>
+      <i class="fas fa-wallet"></i>
+      <div>
+        <div>Wallet Status:</div>
+        <div id="walletStatus">Not Connected</div>
+      </div>
     </div>
     <div class="wallet-info">
-      <span>Connected Address:</span>
-      <span id="connectedAddress">-</span>
+      <i class="fas fa-address-card"></i>
+      <div>
+        <div>Connected Address:</div>
+        <div id="connectedAddress">-</div>
+      </div>
     </div>
-    <button class="connect-btn" onclick="connectWallet()">Connect Wallet</button>
+    <button class="connect-btn" onclick="connectWallet()">
+      <i class="fas fa-plug"></i> Connect Wallet
+    </button>
   </div>
 
   <div id="statusMessage" class="status"></div>
 
-  <div class="main-content">
+  <div class="dashboard">
     <!-- Contract Info -->
     <div class="card">
-      <h3>Contract Information</h3>
-      <div class="info-row"><span class="info-label">Contract Address:</span><span class="info-value" id="contractAddress">-</span></div>
-      <div class="info-row"><span class="info-label">Presale Status:</span><span class="info-value" id="presaleStatus">-</span></div>
-      <div class="info-row"><span class="info-label">Current Phase:</span><span class="info-value" id="currentPhase">-</span></div>
-      <div class="info-row"><span class="info-label">Current Rate:</span><span class="info-value" id="currentRate">-</span></div>
-      <div class="info-row"><span class="info-label">Total Tokens Sold:</span><span class="info-value" id="totalTokensSold">-</span></div>
-      <div class="info-row"><span class="info-label">Total SDA Received:</span><span class="info-value" id="totalSDAReceived">-</span></div>
-      <button class="action-btn" onclick="refreshContractInfo()">Refresh Info</button>
+      <div class="card-header">
+        <i class="fas fa-info-circle"></i>
+        <h3>Contract Information</h3>
+      </div>
+      <div class="info-grid">
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-map-marker-alt"></i> Contract Address:</span>
+          <span class="info-value" id="contractAddress">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-toggle-on"></i> Presale Status:</span>
+          <span class="info-value" id="presaleStatus">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-layer-group"></i> Current Phase:</span>
+          <span class="info-value" id="currentPhase">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-exchange-alt"></i> Current Rate:</span>
+          <span class="info-value" id="currentRate">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-coins"></i> Total Tokens Sold:</span>
+          <span class="info-value" id="totalTokensSold">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-money-bill-wave"></i> Total SDA Received:</span>
+          <span class="info-value" id="totalSDAReceived">-</span>
+        </div>
+      </div>
+      <button class="action-btn" onclick="refreshContractInfo()">
+        <i class="fas fa-sync-alt"></i> Refresh Info
+      </button>
     </div>
 
     <!-- Balances -->
     <div class="card">
-      <h3>Balances</h3>
-      <div class="info-row"><span class="info-label">Contract SDA Balance:</span><span class="info-value" id="sdaBalance">-</span></div>
-      <div class="info-row"><span class="info-label">Contract NUUR Balance:</span><span class="info-value" id="nuurBalance">-</span></div>
-      <div class="info-row"><span class="info-label">Dev Wallet:</span><span class="info-value" id="devWallet">-</span></div>
+      <div class="card-header">
+        <i class="fas fa-balance-scale"></i>
+        <h3>Balances</h3>
+      </div>
+      <div class="info-grid">
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-wallet"></i> Contract SDA Balance:</span>
+          <span class="info-value" id="sdaBalance">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-coins"></i> Contract NUUR Balance:</span>
+          <span class="info-value" id="nuurBalance">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-user-tie"></i> Dev Wallet:</span>
+          <span class="info-value" id="devWallet">-</span>
+        </div>
+      </div>
 
       <div class="action-form">
         <div class="input-group">
-          <label>Withdraw SDA Amount:</label>
+          <label><i class="fas fa-download"></i> Withdraw SDA Amount:</label>
           <input type="number" id="withdrawAmount" placeholder="Enter amount (SDA)" step="0.0001">
         </div>
-        <button class="action-btn danger-btn" onclick="withdrawSDA()">Withdraw SDA</button>
-        <button class="action-btn danger-btn" onclick="withdrawAllSDA()">Withdraw ALL SDA</button>
+        <div class="btn-group">
+          <button class="action-btn danger-btn" onclick="withdrawSDA()">
+            <i class="fas fa-hand-holding-usd"></i> Withdraw SDA
+          </button>
+          <button class="action-btn warning-btn" onclick="withdrawAllSDA()">
+            <i class="fas fa-hand-holding-usd"></i> Withdraw ALL SDA
+          </button>
+        </div>
       </div>
 
-      <div class="action-form" style="margin-top:15px;">
+      <div class="action-form">
         <div class="input-group">
-          <label>Withdraw NUUR Amount:</label>
+          <label><i class="fas fa-download"></i> Withdraw NUUR Amount:</label>
           <input type="number" id="withdrawNuurAmount" placeholder="Enter amount (NUUR)" step="0.0001">
         </div>
-        <button class="action-btn danger-btn" onclick="withdrawNUUR()">Withdraw NUUR</button>
+        <button class="action-btn danger-btn" onclick="withdrawNUUR()">
+          <i class="fas fa-hand-holding-usd"></i> Withdraw NUUR
+        </button>
       </div>
     </div>
 
     <!-- Presale Management -->
     <div class="card">
-      <h3>Presale Management</h3>
+      <div class="card-header">
+        <i class="fas fa-cogs"></i>
+        <h3>Presale Management</h3>
+      </div>
       <div class="action-form">
         <div class="input-group">
-          <label>Presale Status:</label>
+          <label><i class="fas fa-toggle-on"></i> Presale Status:</label>
           <select id="presaleStatusSelect">
             <option value="true">Active</option>
             <option value="false">Inactive</option>
           </select>
         </div>
-        <button class="action-btn" onclick="setPresaleStatus()">Update Status</button>
+        <button class="action-btn" onclick="setPresaleStatus()">
+          <i class="fas fa-save"></i> Update Status
+        </button>
       </div>
 
-      <div class="action-form" style="margin-top:20px;">
+      <div class="action-form">
         <div class="input-group">
-          <label>New Dev Wallet:</label>
+          <label><i class="fas fa-wallet"></i> New Dev Wallet:</label>
           <input type="text" id="newDevWallet" placeholder="0x...">
         </div>
-        <button class="action-btn" onclick="updateDevWallet()">Update Dev Wallet</button>
+        <button class="action-btn" onclick="updateDevWallet()">
+          <i class="fas fa-save"></i> Update Dev Wallet
+        </button>
       </div>
     </div>
 
     <!-- Phase Management -->
     <div class="card">
-      <h3>Phase Management</h3>
-      <div class="action-form">
-        <div class="input-group"><label>New Phase ID:</label><input type="number" id="newPhaseId" placeholder="3"></div>
-        <div class="input-group"><label>Phase Name:</label><input type="text" id="newPhaseName" placeholder="Phase 3"></div>
-        <div class="input-group"><label>Rate (NUUR per SDA):</label><input type="number" id="newRate" placeholder="150"></div>
-        <button class="action-btn success-btn" onclick="updatePhase()">Update Phase</button>
+      <div class="card-header">
+        <i class="fas fa-chart-line"></i>
+        <h3>Phase Management</h3>
       </div>
+      <div class="action-form">
+        <div class="input-group">
+          <label><i class="fas fa-layer-group"></i> New Phase ID:</label>
+          <input type="number" id="newPhaseId" placeholder="3">
+        </div>
+        <div class="input-group">
+          <label><i class="fas fa-signature"></i> Phase Name:</label>
+          <input type="text" id="newPhaseName" placeholder="Phase 3">
+        </div>
+        <div class="input-group">
+          <label><i class="fas fa-exchange-alt"></i> Rate (NUUR per SDA):</label>
+          <input type="number" id="newRate" placeholder="150">
+        </div>
+        <button class="action-btn success-btn" onclick="updatePhase()">
+          <i class="fas fa-save"></i> Update Phase
+        </button>
+      </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-history"></i>
+        <h3>Recent Transactions</h3>
+      </div>
+      <div class="info-grid">
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-exchange-alt"></i> Last Withdrawal:</span>
+          <span class="info-value">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-calendar-alt"></i> Last Status Change:</span>
+          <span class="info-value">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-layer-group"></i> Last Phase Update:</span>
+          <span class="info-value">-</span>
+        </div>
+      </div>
+      <button class="action-btn" onclick="viewTransactionHistory()">
+        <i class="fas fa-external-link-alt"></i> View Full History
+      </button>
+    </div>
+
+    <!-- Statistics -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-chart-pie"></i>
+        <h3>Statistics</h3>
+      </div>
+      <div class="info-grid">
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-users"></i> Total Participants:</span>
+          <span class="info-value">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-chart-line"></i> Average Purchase:</span>
+          <span class="info-value">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-bullseye"></i> Presale Progress:</span>
+          <span class="info-value">-</span>
+        </div>
+      </div>
+      <button class="action-btn" onclick="viewDetailedStats()">
+        <i class="fas fa-chart-bar"></i> View Detailed Stats
+      </button>
     </div>
   </div>
 
-  <footer><p>NUUR Presale Admin Interface - Developed by Huska</p></footer>
+  <footer>
+    <p>NUUR Presale Admin Interface - Developed by Huska</p>
+  </footer>
 </div>
 
-<script src="app.js"></script>
+<script>
+  // Update current time
+  function updateTime() {
+    const now = new Date();
+    document.getElementById('currentTime').textContent = now.toLocaleString();
+  }
+  
+  setInterval(updateTime, 1000);
+  updateTime();
+  
+  // Placeholder functions for the dashboard
+  function connectWallet() {
+    showStatus('Connecting to wallet...', 'info');
+    // Wallet connection logic would go here
+    setTimeout(() => {
+      document.getElementById('walletStatus').innerHTML = '<span class="badge badge-success">Connected</span>';
+      document.getElementById('connectedAddress').textContent = '0x742...d35E1';
+      showStatus('Wallet connected successfully!', 'success');
+    }, 1500);
+  }
+  
+  function refreshContractInfo() {
+    showStatus('Refreshing contract information...', 'info');
+    // Contract info refresh logic would go here
+    setTimeout(() => {
+      document.getElementById('contractAddress').textContent = '0x8a4...c72B';
+      document.getElementById('presaleStatus').innerHTML = '<span class="badge badge-success">Active</span>';
+      document.getElementById('currentPhase').textContent = 'Phase 2';
+      document.getElementById('currentRate').textContent = '125 NUUR/SDA';
+      document.getElementById('totalTokensSold').textContent = '1,250,000 NUUR';
+      document.getElementById('totalSDAReceived').textContent = '10,000 SDA';
+      document.getElementById('sdaBalance').textContent = '8,500 SDA';
+      document.getElementById('nuurBalance').textContent = '3,750,000 NUUR';
+      document.getElementById('devWallet').textContent = '0x9b3...f82A';
+      showStatus('Contract information updated!', 'success');
+    }, 1000);
+  }
+  
+  function withdrawSDA() {
+    const amount = document.getElementById('withdrawAmount').value;
+    if (!amount) {
+      showStatus('Please enter an amount to withdraw', 'error');
+      return;
+    }
+    showStatus(`Withdrawing ${amount} SDA...`, 'info');
+    // Withdraw logic would go here
+  }
+  
+  function withdrawAllSDA() {
+    showStatus('Withdrawing all SDA...', 'info');
+    // Withdraw all logic would go here
+  }
+  
+  function withdrawNUUR() {
+    const amount = document.getElementById('withdrawNuurAmount').value;
+    if (!amount) {
+      showStatus('Please enter an amount to withdraw', 'error');
+      return;
+    }
+    showStatus(`Withdrawing ${amount} NUUR...`, 'info');
+    // Withdraw logic would go here
+  }
+  
+  function setPresaleStatus() {
+    const status = document.getElementById('presaleStatusSelect').value;
+    const statusText = status === 'true' ? 'Active' : 'Inactive';
+    showStatus(`Setting presale status to ${statusText}...`, 'info');
+    // Status update logic would go here
+  }
+  
+  function updateDevWallet() {
+    const newWallet = document.getElementById('newDevWallet').value;
+    if (!newWallet) {
+      showStatus('Please enter a new wallet address', 'error');
+      return;
+    }
+    showStatus('Updating dev wallet...', 'info');
+    // Wallet update logic would go here
+  }
+  
+  function updatePhase() {
+    const phaseId = document.getElementById('newPhaseId').value;
+    const phaseName = document.getElementById('newPhaseName').value;
+    const rate = document.getElementById('newRate').value;
+    
+    if (!phaseId || !phaseName || !rate) {
+      showStatus('Please fill all phase details', 'error');
+      return;
+    }
+    
+    showStatus(`Updating to ${phaseName} with rate ${rate}...`, 'info');
+    // Phase update logic would go here
+  }
+  
+  function viewTransactionHistory() {
+    showStatus('Opening transaction history...', 'info');
+    // Transaction history logic would go here
+  }
+  
+  function viewDetailedStats() {
+    showStatus('Loading detailed statistics...', 'info');
+    // Statistics logic would go here
+  }
+  
+  function showStatus(message, type) {
+    const statusElement = document.getElementById('statusMessage');
+    statusElement.textContent = message;
+    statusElement.className = 'status ' + type;
+    statusElement.style.display = 'block';
+    
+    setTimeout(() => {
+      statusElement.style.display = 'none';
+    }, 5000);
+  }
+  
+  // Initialize with some data
+  window.onload = function() {
+    refreshContractInfo();
+  };
+</script>
 </body>
 </html>
