@@ -366,6 +366,16 @@
       background: rgba(247, 37, 133, 0.2);
       color: var(--danger);
     }
+    
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    
+    .loading::after {
+      content: ' (Loading...)';
+      font-weight: normal;
+    }
   </style>
 </head>
 <body>
@@ -545,56 +555,6 @@
         </button>
       </div>
     </div>
-
-    <!-- Transaction History -->
-    <div class="card">
-      <div class="card-header">
-        <i class="fas fa-history"></i>
-        <h3>Recent Transactions</h3>
-      </div>
-      <div class="info-grid">
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-exchange-alt"></i> Last Withdrawal:</span>
-          <span class="info-value">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-calendar-alt"></i> Last Status Change:</span>
-          <span class="info-value">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-layer-group"></i> Last Phase Update:</span>
-          <span class="info-value">-</span>
-        </div>
-      </div>
-      <button class="action-btn" onclick="viewTransactionHistory()">
-        <i class="fas fa-external-link-alt"></i> View Full History
-      </button>
-    </div>
-
-    <!-- Statistics -->
-    <div class="card">
-      <div class="card-header">
-        <i class="fas fa-chart-pie"></i>
-        <h3>Statistics</h3>
-      </div>
-      <div class="info-grid">
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-users"></i> Total Participants:</span>
-          <span class="info-value">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-chart-line"></i> Average Purchase:</span>
-          <span class="info-value">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-bullseye"></i> Presale Progress:</span>
-          <span class="info-value">-</span>
-        </div>
-      </div>
-      <button class="action-btn" onclick="viewDetailedStats()">
-        <i class="fas fa-chart-bar"></i> View Detailed Stats
-      </button>
-    </div>
   </div>
 
   <footer>
@@ -603,86 +563,339 @@
 </div>
 
 <script>
+  // Contract configuration - UPDATE THESE WITH YOUR ACTUAL CONTRACT ADDRESSES AND ABIs
+  const CONTRACT_CONFIG = {
+    presale: {
+      address: "0xYOUR_PRESALE_CONTRACT_ADDRESS", // Replace with actual presale contract address
+      abi: [
+        "function presaleActive() view returns (bool)",
+        "function currentPhase() view returns (uint256)",
+        "function getCurrentRate() view returns (uint256)",
+        "function totalTokensSold() view returns (uint256)",
+        "function totalSDAReceived() view returns (uint256)",
+        "function devWallet() view returns (address)",
+        "function setPresaleStatus(bool) external",
+        "function updateDevWallet(address) external",
+        "function updatePhase(uint256, string, uint256) external",
+        "function withdrawSDA(uint256) external",
+        "function withdrawAllSDA() external",
+        "function withdrawNUUR(uint256) external"
+      ]
+    },
+    tokens: {
+      sda: {
+        address: "0xYOUR_SDA_TOKEN_ADDRESS", // Replace with actual SDA token address
+        abi: [
+          "function balanceOf(address) view returns (uint256)",
+          "function decimals() view returns (uint8)"
+        ]
+      },
+      nuur: {
+        address: "0xYOUR_NUUR_TOKEN_ADDRESS", // Replace with actual NUUR token address
+        abi: [
+          "function balanceOf(address) view returns (uint256)",
+          "function decimals() view returns (uint8)"
+        ]
+      }
+    }
+  };
+
+  // Global variables
+  let provider;
+  let signer;
+  let presaleContract;
+  let sdaTokenContract;
+  let nuurTokenContract;
+  let isConnected = false;
+
+  // Initialize the application
+  async function init() {
+    updateTime();
+    
+    // Check if MetaMask is installed
+    if (typeof window.ethereum !== 'undefined') {
+      provider = new ethers.BrowserProvider(window.ethereum);
+      
+      // Check if already connected
+      const accounts = await provider.listAccounts();
+      if (accounts.length > 0) {
+        await connectWallet();
+      }
+    } else {
+      showStatus('MetaMask is not installed. Please install MetaMask to use this dApp.', 'error');
+    }
+    
+    setInterval(updateTime, 1000);
+  }
+
   // Update current time
   function updateTime() {
     const now = new Date();
     document.getElementById('currentTime').textContent = now.toLocaleString();
   }
-  
-  setInterval(updateTime, 1000);
-  updateTime();
-  
-  // Placeholder functions for the dashboard
-  function connectWallet() {
-    showStatus('Connecting to wallet...', 'info');
-    // Wallet connection logic would go here
-    setTimeout(() => {
+
+  // Connect wallet function
+  async function connectWallet() {
+    try {
+      showStatus('Connecting to wallet...', 'info');
+      
+      if (!provider) {
+        provider = new ethers.BrowserProvider(window.ethereum);
+      }
+      
+      // Request account access
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      
+      // Get signer
+      signer = await provider.getSigner();
+      const address = await signer.getAddress();
+      
+      // Initialize contracts
+      presaleContract = new ethers.Contract(CONTRACT_CONFIG.presale.address, CONTRACT_CONFIG.presale.abi, signer);
+      sdaTokenContract = new ethers.Contract(CONFIG.tokens.sda.address, CONFIG.tokens.sda.abi, provider);
+      nuurTokenContract = new ethers.Contract(CONFIG.tokens.nuur.address, CONFIG.tokens.nuur.abi, provider);
+      
+      // Update UI
       document.getElementById('walletStatus').innerHTML = '<span class="badge badge-success">Connected</span>';
-      document.getElementById('connectedAddress').textContent = '0x742...d35E1';
+      document.getElementById('connectedAddress').textContent = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+      
+      isConnected = true;
       showStatus('Wallet connected successfully!', 'success');
-    }, 1500);
+      
+      // Load contract data
+      await refreshContractInfo();
+      
+    } catch (error) {
+      console.error('Error connecting wallet:', error);
+      showStatus('Failed to connect wallet: ' + error.message, 'error');
+    }
   }
-  
-  function refreshContractInfo() {
-    showStatus('Refreshing contract information...', 'info');
-    // Contract info refresh logic would go here
-    setTimeout(() => {
-      document.getElementById('contractAddress').textContent = '0x8a4...c72B';
-      document.getElementById('presaleStatus').innerHTML = '<span class="badge badge-success">Active</span>';
-      document.getElementById('currentPhase').textContent = 'Phase 2';
-      document.getElementById('currentRate').textContent = '125 NUUR/SDA';
-      document.getElementById('totalTokensSold').textContent = '1,250,000 NUUR';
-      document.getElementById('totalSDAReceived').textContent = '10,000 SDA';
-      document.getElementById('sdaBalance').textContent = '8,500 SDA';
-      document.getElementById('nuurBalance').textContent = '3,750,000 NUUR';
-      document.getElementById('devWallet').textContent = '0x9b3...f82A';
+
+  // Refresh contract information
+  async function refreshContractInfo() {
+    if (!isConnected) {
+      showStatus('Please connect your wallet first', 'error');
+      return;
+    }
+    
+    try {
+      showStatus('Loading contract information...', 'info');
+      
+      // Fetch all contract data in parallel
+      const [
+        presaleActive,
+        currentPhaseId,
+        currentRate,
+        totalTokensSold,
+        totalSDAReceived,
+        devWallet,
+        sdaBalance,
+        nuurBalance,
+        sdaDecimals,
+        nuurDecimals
+      ] = await Promise.all([
+        presaleContract.presaleActive(),
+        presaleContract.currentPhase(),
+        presaleContract.getCurrentRate(),
+        presaleContract.totalTokensSold(),
+        presaleContract.totalSDAReceived(),
+        presaleContract.devWallet(),
+        sdaTokenContract.balanceOf(CONTRACT_CONFIG.presale.address),
+        nuurTokenContract.balanceOf(CONTRACT_CONFIG.presale.address),
+        sdaTokenContract.decimals(),
+        nuurTokenContract.decimals()
+      ]);
+      
+      // Format values
+      const formatTokenAmount = (amount, decimals) => {
+        return ethers.formatUnits(amount, decimals);
+      };
+      
+      // Update UI with real data
+      document.getElementById('contractAddress').textContent = `${CONTRACT_CONFIG.presale.address.substring(0, 6)}...${CONTRACT_CONFIG.presale.address.substring(CONTRACT_CONFIG.presale.address.length - 4)}`;
+      document.getElementById('presaleStatus').innerHTML = presaleActive 
+        ? '<span class="badge badge-success">Active</span>' 
+        : '<span class="badge badge-danger">Inactive</span>';
+      document.getElementById('currentPhase').textContent = `Phase ${currentPhaseId.toString()}`;
+      document.getElementById('currentRate').textContent = `${ethers.formatUnits(currentRate, 0)} NUUR/SDA`;
+      document.getElementById('totalTokensSold').textContent = `${formatTokenAmount(totalTokensSold, nuurDecimals)} NUUR`;
+      document.getElementById('totalSDAReceived').textContent = `${formatTokenAmount(totalSDAReceived, sdaDecimals)} SDA`;
+      document.getElementById('sdaBalance').textContent = `${formatTokenAmount(sdaBalance, sdaDecimals)} SDA`;
+      document.getElementById('nuurBalance').textContent = `${formatTokenAmount(nuurBalance, nuurDecimals)} NUUR`;
+      document.getElementById('devWallet').textContent = `${devWallet.substring(0, 6)}...${devWallet.substring(devWallet.length - 4)}`;
+      
+      // Update presale status select to match current state
+      document.getElementById('presaleStatusSelect').value = presaleActive.toString();
+      
       showStatus('Contract information updated!', 'success');
-    }, 1000);
+      
+    } catch (error) {
+      console.error('Error fetching contract info:', error);
+      showStatus('Failed to load contract information: ' + error.message, 'error');
+    }
   }
-  
-  function withdrawSDA() {
+
+  // Withdraw SDA tokens
+  async function withdrawSDA() {
+    if (!isConnected) {
+      showStatus('Please connect your wallet first', 'error');
+      return;
+    }
+    
     const amount = document.getElementById('withdrawAmount').value;
-    if (!amount) {
-      showStatus('Please enter an amount to withdraw', 'error');
+    if (!amount || amount <= 0) {
+      showStatus('Please enter a valid amount to withdraw', 'error');
       return;
     }
-    showStatus(`Withdrawing ${amount} SDA...`, 'info');
-    // Withdraw logic would go here
+    
+    try {
+      showStatus(`Withdrawing ${amount} SDA...`, 'info');
+      
+      // Get SDA decimals for proper formatting
+      const decimals = await sdaTokenContract.decimals();
+      const amountWei = ethers.parseUnits(amount, decimals);
+      
+      const tx = await presaleContract.withdrawSDA(amountWei);
+      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
+      
+      const receipt = await tx.wait();
+      showStatus(`Successfully withdrew ${amount} SDA!`, 'success');
+      
+      // Refresh balances
+      await refreshContractInfo();
+      
+    } catch (error) {
+      console.error('Error withdrawing SDA:', error);
+      showStatus('Failed to withdraw SDA: ' + error.message, 'error');
+    }
   }
-  
-  function withdrawAllSDA() {
-    showStatus('Withdrawing all SDA...', 'info');
-    // Withdraw all logic would go here
+
+  // Withdraw all SDA tokens
+  async function withdrawAllSDA() {
+    if (!isConnected) {
+      showStatus('Please connect your wallet first', 'error');
+      return;
+    }
+    
+    try {
+      showStatus('Withdrawing all SDA...', 'info');
+      
+      const tx = await presaleContract.withdrawAllSDA();
+      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
+      
+      const receipt = await tx.wait();
+      showStatus('Successfully withdrew all SDA!', 'success');
+      
+      // Refresh balances
+      await refreshContractInfo();
+      
+    } catch (error) {
+      console.error('Error withdrawing all SDA:', error);
+      showStatus('Failed to withdraw all SDA: ' + error.message, 'error');
+    }
   }
-  
-  function withdrawNUUR() {
+
+  // Withdraw NUUR tokens
+  async function withdrawNUUR() {
+    if (!isConnected) {
+      showStatus('Please connect your wallet first', 'error');
+      return;
+    }
+    
     const amount = document.getElementById('withdrawNuurAmount').value;
-    if (!amount) {
-      showStatus('Please enter an amount to withdraw', 'error');
+    if (!amount || amount <= 0) {
+      showStatus('Please enter a valid amount to withdraw', 'error');
       return;
     }
-    showStatus(`Withdrawing ${amount} NUUR...`, 'info');
-    // Withdraw logic would go here
+    
+    try {
+      showStatus(`Withdrawing ${amount} NUUR...`, 'info');
+      
+      // Get NUUR decimals for proper formatting
+      const decimals = await nuurTokenContract.decimals();
+      const amountWei = ethers.parseUnits(amount, decimals);
+      
+      const tx = await presaleContract.withdrawNUUR(amountWei);
+      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
+      
+      const receipt = await tx.wait();
+      showStatus(`Successfully withdrew ${amount} NUUR!`, 'success');
+      
+      // Refresh balances
+      await refreshContractInfo();
+      
+    } catch (error) {
+      console.error('Error withdrawing NUUR:', error);
+      showStatus('Failed to withdraw NUUR: ' + error.message, 'error');
+    }
   }
-  
-  function setPresaleStatus() {
-    const status = document.getElementById('presaleStatusSelect').value;
-    const statusText = status === 'true' ? 'Active' : 'Inactive';
-    showStatus(`Setting presale status to ${statusText}...`, 'info');
-    // Status update logic would go here
+
+  // Set presale status
+  async function setPresaleStatus() {
+    if (!isConnected) {
+      showStatus('Please connect your wallet first', 'error');
+      return;
+    }
+    
+    const status = document.getElementById('presaleStatusSelect').value === 'true';
+    const statusText = status ? 'Active' : 'Inactive';
+    
+    try {
+      showStatus(`Setting presale status to ${statusText}...`, 'info');
+      
+      const tx = await presaleContract.setPresaleStatus(status);
+      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
+      
+      const receipt = await tx.wait();
+      showStatus(`Presale status updated to ${statusText}!`, 'success');
+      
+      // Refresh contract info
+      await refreshContractInfo();
+      
+    } catch (error) {
+      console.error('Error updating presale status:', error);
+      showStatus('Failed to update presale status: ' + error.message, 'error');
+    }
   }
-  
-  function updateDevWallet() {
+
+  // Update dev wallet
+  async function updateDevWallet() {
+    if (!isConnected) {
+      showStatus('Please connect your wallet first', 'error');
+      return;
+    }
+    
     const newWallet = document.getElementById('newDevWallet').value;
-    if (!newWallet) {
-      showStatus('Please enter a new wallet address', 'error');
+    if (!newWallet || !ethers.isAddress(newWallet)) {
+      showStatus('Please enter a valid wallet address', 'error');
       return;
     }
-    showStatus('Updating dev wallet...', 'info');
-    // Wallet update logic would go here
+    
+    try {
+      showStatus('Updating dev wallet...', 'info');
+      
+      const tx = await presaleContract.updateDevWallet(newWallet);
+      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
+      
+      const receipt = await tx.wait();
+      showStatus('Dev wallet updated successfully!', 'success');
+      
+      // Refresh contract info
+      await refreshContractInfo();
+      
+    } catch (error) {
+      console.error('Error updating dev wallet:', error);
+      showStatus('Failed to update dev wallet: ' + error.message, 'error');
+    }
   }
-  
-  function updatePhase() {
+
+  // Update phase
+  async function updatePhase() {
+    if (!isConnected) {
+      showStatus('Please connect your wallet first', 'error');
+      return;
+    }
+    
     const phaseId = document.getElementById('newPhaseId').value;
     const phaseName = document.getElementById('newPhaseName').value;
     const rate = document.getElementById('newRate').value;
@@ -692,35 +905,41 @@
       return;
     }
     
-    showStatus(`Updating to ${phaseName} with rate ${rate}...`, 'info');
-    // Phase update logic would go here
+    try {
+      showStatus(`Updating to ${phaseName} with rate ${rate}...`, 'info');
+      
+      const tx = await presaleContract.updatePhase(phaseId, phaseName, rate);
+      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
+      
+      const receipt = await tx.wait();
+      showStatus(`Phase updated to ${phaseName}!`, 'success');
+      
+      // Refresh contract info
+      await refreshContractInfo();
+      
+    } catch (error) {
+      console.error('Error updating phase:', error);
+      showStatus('Failed to update phase: ' + error.message, 'error');
+    }
   }
-  
-  function viewTransactionHistory() {
-    showStatus('Opening transaction history...', 'info');
-    // Transaction history logic would go here
-  }
-  
-  function viewDetailedStats() {
-    showStatus('Loading detailed statistics...', 'info');
-    // Statistics logic would go here
-  }
-  
+
+  // Show status message
   function showStatus(message, type) {
     const statusElement = document.getElementById('statusMessage');
     statusElement.textContent = message;
     statusElement.className = 'status ' + type;
     statusElement.style.display = 'block';
     
-    setTimeout(() => {
-      statusElement.style.display = 'none';
-    }, 5000);
+    // Auto-hide success and info messages after 5 seconds
+    if (type === 'success' || type === 'info') {
+      setTimeout(() => {
+        statusElement.style.display = 'none';
+      }, 5000);
+    }
   }
-  
-  // Initialize with some data
-  window.onload = function() {
-    refreshContractInfo();
-  };
+
+  // Initialize the application when the page loads
+  window.onload = init;
 </script>
 </body>
 </html>
