@@ -14,11 +14,11 @@
       --muted: #9aa5b1;
       --text-muted: #e6eef8;
 
-      --color-primary: #d4af37;    /* gold */
-      --color-accent: #14b8a6;     /* teal */
-      --color-warn: #fb6f6f;       /* coral */
-      --color-strong: #5b21b6;     /* indigo */
-      --color-success: #10b981;    /* emerald */
+      --color-primary: #d4af37;
+      --color-accent: #14b8a6;
+      --color-warn: #fb6f6f;
+      --color-strong: #5b21b6;
+      --color-success: #10b981;
 
       --glass: rgba(255,255,255,0.03);
       --card-radius:14px;
@@ -67,7 +67,6 @@
       transition: width 600ms ease, background 360ms ease;
     }
 
-    /* layout */
     .app { width: 100%; max-width: var(--maxw); margin: 18px auto; display: grid; grid-template-columns: 280px 1fr; gap: 18px; align-items: start; padding: 12px; }
 
     .sidebar { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: var(--card-radius); padding: 16px; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.06); min-height:520px; display:flex; flex-direction:column; gap:12px; }
@@ -132,6 +131,30 @@
       color: white;
     }
 
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: var(--panel);
+      color: var(--text-muted);
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .status-value {
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
     /* responsive */
     @media (max-width: 900px) {
       .app { grid-template-columns: 1fr; padding:8px; gap:10px; }
@@ -164,17 +187,6 @@
       .claim-amount { font-size: 16px; }
     }
 
-    @media (max-width:420px){
-      .brand p { display:none; }
-      .big-value { font-size:16px; }
-      .btn { padding:8px; font-size:12px; min-width: 100px; }
-      .controls { gap:4px; }
-      .countdown { gap: 4px; }
-      .unit { min-width: 36px; padding: 4px; }
-      .num { font-size: 12px; }
-      .lbl { font-size: 9px; }
-    }
-
     #themeToggle { display: none; }
   </style>
 </head>
@@ -184,7 +196,7 @@
     <aside class="sidebar" aria-label="sidebar">
       <div class="brand" aria-hidden="false">
         <div class="logo" title="Nuur Logo">
-          <img id="logoImg" src="logo.png" alt="Nuur Logo" />
+          <img id="logoImg" src="logo.jpg" alt="Nuur Logo" />
         </div>
         <div style="flex:1">
           <h1>Nuur Claim</h1>
@@ -235,7 +247,7 @@
 
       <div class="small" style="margin-top:auto">
         <div><strong>Notes</strong></div>
-        <div style="margin-top:6px" class="muted small">Please make sure you have completed the KYC verification and taken a snapshot before claiming.</div>
+        <div style="margin-top:6px" class="muted small">Please complete KYC verification and take a snapshot before claiming.</div>
       </div>
     </aside>
 
@@ -293,6 +305,11 @@
             </div>
           </div>
 
+          <div style="margin-top:12px">
+            <div class="muted small">Minimum claim amount</div>
+            <input type="number" id="minAmountInput" class="form-input" placeholder="0.0" step="0.1" style="margin-top:6px" />
+          </div>
+
           <div class="countdown" id="countdown">
             <div class="unit"><div class="num" id="cdDays">--</div><div class="lbl">Days</div></div>
             <div class="unit"><div class="num" id="cdHours">--</div><div class="lbl">Hours</div></div>
@@ -319,12 +336,21 @@
           </div>
 
           <div style="margin-top:12px">
-            <div class="muted small">Status</div>
-            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
-              <div class="muted small">Vesting:</div><div id="vestingStatus">Not started</div>
+            <div class="status-item">
+              <div class="muted small">Vesting:</div>
+              <div id="vestingStatus" class="status-value">Not started</div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
-              <div class="muted small">Paused:</div><div id="pausedStatus">No</div>
+            <div class="status-item">
+              <div class="muted small">Paused:</div>
+              <div id="pausedStatus" class="status-value">No</div>
+            </div>
+            <div class="status-item">
+              <div class="muted small">Claim Cooldown:</div>
+              <div id="cooldownStatus" class="status-value">Ready</div>
+            </div>
+            <div class="status-item">
+              <div class="muted small">Contract Balance:</div>
+              <div id="contractBalanceDisplay" class="status-value">0 NUUR</div>
             </div>
           </div>
         </div>
@@ -347,8 +373,8 @@
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
         <div>
           <label class="muted small">Set single KYC</label>
-          <input id="adminKycAddr" class="form-input" placeholder="0x..." style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
-          <select id="adminKycStatus" class="form-input" style="margin-top:8px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent">
+          <input id="adminKycAddr" class="form-input" placeholder="0x..." />
+          <select id="adminKycStatus" class="form-input" style="margin-top:8px;">
             <option value="true">Verified</option>
             <option value="false">Not verified</option>
           </select>
@@ -357,26 +383,45 @@
           <div style="height:8px"></div>
 
           <label class="muted small">Batch KYC (addresses comma/newline separated)</label>
-          <textarea id="adminKycBatchAddrs" class="form-input" style="min-height:80px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent"></textarea>
-          <select id="adminKycBatchStatus" class="form-input" style="margin-top:8px; width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent">
+          <textarea id="adminKycBatchAddrs" class="form-input" style="min-height:80px;"></textarea>
+          <select id="adminKycBatchStatus" class="form-input" style="margin-top:8px;">
             <option value="true">All Verified</option>
             <option value="false">All Not Verified</option>
           </select>
-          <div style="margin-top:8px"><button id="adminSetKycBatch" class="btn btn-primary">Set Batch KYC</button></div>
+          <div style="margin-top:8px">
+            <button id="adminScheduleKycBatch" class="btn btn-primary">Schedule Batch KYC</button>
+          </div>
         </div>
 
         <div>
           <label class="muted small">Contract Funds</label>
           <div style="margin-top:8px">
             <div class="muted small">Contract Balance:</div>
-            <div id="contractBalance" style="font-weight:800; margin-top:4px">0 NUUR</div>
+            <div id="adminContractBalance" style="font-weight:800; margin-top:4px">0 NUUR</div>
           </div>
 
           <div style="margin-top:12px">
             <label class="muted small">Deposit Funds</label>
-            <input id="depositAmount" class="form-input" placeholder="Amount in NUUR" style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent" />
+            <input id="depositAmount" class="form-input" placeholder="Amount in NUUR" />
             <div style="margin-top:8px"><button id="adminDeposit" class="btn btn-primary">Deposit</button></div>
           </div>
+
+          <div style="margin-top:12px">
+            <label class="muted small">Whale Threshold</label>
+            <div id="currentWhaleThreshold" style="font-weight:800; margin-top:4px">0 NUUR</div>
+            <input id="newWhaleThreshold" class="form-input" placeholder="New threshold" style="margin-top:8px" />
+            <div style="margin-top:8px"><button id="adminScheduleThreshold" class="btn btn-primary">Schedule Threshold Update</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <!-- Pending Operations -->
+      <div style="margin-top:16px; border-top: 1px solid rgba(0,0,0,0.1); padding-top:16px;">
+        <h4>Pending Operations</h4>
+        <div id="pendingOperations" style="margin-top:8px">
+          <div class="muted small">No pending operations</div>
         </div>
       </div>
 
@@ -401,34 +446,57 @@
   const EXPLORER = (SIDRA_CHAIN.blockExplorerUrls && SIDRA_CHAIN.blockExplorerUrls[0]) ? SIDRA_CHAIN.blockExplorerUrls[0].replace(/\/$/,'') : '';
 
   const VESTING_ABI = [
+    // Core state variables
     "function owner() view returns (address)",
     "function newToken() view returns (address)",
     "function oldToken() view returns (address)",
+    "function whaleThreshold() view returns (uint256)",
     "function vestingStartTime() view returns (uint256)",
+    "function contractCreationTime() view returns (uint256)",
     "function vestingStarted() view returns (bool)",
     "function paused() view returns (bool)",
+    
+    // User functions
     "function kycVerified(address) view returns (bool)",
     "function claimInfo(address) view returns (uint256 totalAmount, uint256 claimedAmount, uint256 snapshotBalance, bool snapshotTaken, bool exists)",
+    "function lastClaimTime(address) view returns (uint256)",
+    "function kycLastUpdate(address) view returns (uint256)",
+    
+    // View functions
     "function getUserTotalPurchase(address) view returns (uint256)",
     "function getClaimableAmount(address) view returns (uint256)",
     "function getUserClaimInfo(address) view returns (uint256 totalAmount, uint256 claimedAmount, uint256 snapshotBalance, bool snapshotTaken, bool isWhaleHolder, uint256 monthlyPercent)",
+    "function getContractBalance() view returns (uint256)",
+    "function canClaim(address) view returns (bool)",
+    "function getCooldownRemaining(address) view returns (uint256)",
+    "function getKYCUpdateCooldownRemaining(address) view returns (uint256)",
+    
+    // User actions
     "function takeSnapshot()",
-    "function claim()",
+    "function claim(uint256 minAmount)",
+    
+    // Admin functions - basic
     "function startVesting()",
     "function pause()",
     "function unpause()",
-    "function setKYC(address, bool)",
-    "function setKYCForBatch(address[], bool)",
-    "function depositFunds(uint256)",
-    "function emergencyWithdraw(address, uint256)",
-    "event TokensClaimed(address indexed beneficiary, uint256 amount)",
-    "event SnapshotTaken(address indexed user, uint256 balance)",
-    "event KYCUpdated(address indexed user, bool verified)",
-    "event KYCBatchUpdated(address[] users, bool status)",
-    "event VestingStarted(uint256 startTime)",
-    "event Paused()",
-    "event Unpaused()",
-    "event FundsDeposited(uint256 amount)"
+    "function setKYC(address user, bool status)",
+    "function depositFunds(uint256 amount)",
+    
+    // Admin functions - timelocked
+    "function scheduleKYCBatchUpdate(address[] users, bool status)",
+    "function executeKYCBatchUpdate()",
+    "function scheduleWhaleThresholdUpdate(uint256 newThreshold)",
+    "function executeWhaleThresholdUpdate()",
+    
+    // Admin functions - view pending
+    "function getPendingKYCBatch() view returns (address[] memory users, bool status, uint256 scheduledTime, bool executed, bool canExecute)",
+    "function getPendingWhaleThresholdUpdate() view returns (uint256 newThreshold, uint256 scheduledTime, bool executed, bool canExecute)",
+    
+    // Emergency functions
+    "function addRecoverableToken(address token)",
+    "function removeRecoverableToken(address token)",
+    "function emergencyWithdraw(address tokenAddress, uint256 amount)",
+    "function emergencyWithdrawAll(address tokenAddress)"
   ];
 
   /* ------------------- DOM -------------------- */
@@ -457,12 +525,15 @@
   const userType = document.getElementById('userType');
   const snapshotStatus = document.getElementById('snapshotStatus');
   const monthlyRate = document.getElementById('monthlyRate');
+  const minAmountInput = document.getElementById('minAmountInput');
   const cdDays = document.getElementById('cdDays');
   const cdHours = document.getElementById('cdHours');
   const cdMins = document.getElementById('cdMins');
   const cdSecs = document.getElementById('cdSecs');
   const vestingStatus = document.getElementById('vestingStatus');
   const pausedStatus = document.getElementById('pausedStatus');
+  const cooldownStatus = document.getElementById('cooldownStatus');
+  const contractBalanceDisplay = document.getElementById('contractBalanceDisplay');
   const claimBtn = document.getElementById('claimBtn');
   const contractLink = document.getElementById('contractLink');
 
@@ -474,10 +545,14 @@
   const adminSetKyc = document.getElementById('adminSetKyc');
   const adminKycBatchAddrs = document.getElementById('adminKycBatchAddrs');
   const adminKycBatchStatus = document.getElementById('adminKycBatchStatus');
-  const adminSetKycBatchBtn = document.getElementById('adminSetKycBatch');
-  const contractBalance = document.getElementById('contractBalance');
+  const adminScheduleKycBatch = document.getElementById('adminScheduleKycBatch');
+  const adminContractBalance = document.getElementById('adminContractBalance');
   const depositAmount = document.getElementById('depositAmount');
   const adminDeposit = document.getElementById('adminDeposit');
+  const currentWhaleThreshold = document.getElementById('currentWhaleThreshold');
+  const newWhaleThreshold = document.getElementById('newWhaleThreshold');
+  const adminScheduleThreshold = document.getElementById('adminScheduleThreshold');
+  const pendingOperations = document.getElementById('pendingOperations');
   const adminStart = document.getElementById('adminStart');
   const adminPause = document.getElementById('adminPause');
   const adminUnpause = document.getElementById('adminUnpause');
@@ -515,6 +590,10 @@
   function formatSdaBalance(balance) {
     const num = parseFloat(ethers.utils.formatEther(balance));
     return num.toFixed(2);
+  }
+
+  function formatTokenAmount(amount, decimals = 18) {
+    return parseFloat(ethers.utils.formatUnits(amount, decimals)).toFixed(4);
   }
 
   /* ----------------- Theme handling ------------------ */
@@ -602,31 +681,35 @@
         tokenContract.balanceOf(account), 
         provider.getBalance(account) 
       ]);
-      if (nuurBal) nuurBal.textContent = ethers.utils.formatUnits(bNu, decimals);
+      if (nuurBal) nuurBal.textContent = formatTokenAmount(bNu, decimals);
       if (sdaBal) sdaBal.textContent = formatSdaBalance(bSda);
 
       const k = await contract.kycVerified(account);
       if (kycText) kycText.textContent = k ? 'Verified' : 'Not verified';
       if (kycDot) kycDot.style.background = k ? 'var(--color-success)' : 'var(--color-warn)';
 
-      const [vStarted, paused, vestStartBN] = await Promise.all([ 
+      const [vStarted, paused, vestStartBN, contractBal, whaleThresh] = await Promise.all([ 
         contract.vestingStarted(), 
         contract.paused(), 
-        contract.vestingStartTime() 
+        contract.vestingStartTime(),
+        contract.getContractBalance(),
+        contract.whaleThreshold()
       ]);
       vestingStartTimeSec = vestStartBN.toNumber();
       if (vestingStatus) vestingStatus.textContent = vStarted ? 'Active' : 'Not started';
       if (pausedStatus) pausedStatus.textContent = paused ? 'Yes' : 'No';
+      if (contractBalanceDisplay) contractBalanceDisplay.textContent = `${formatTokenAmount(contractBal, decimals)} NUUR`;
+      if (currentWhaleThreshold) currentWhaleThreshold.textContent = `${formatTokenAmount(whaleThresh, decimals)} NUUR`;
 
       // Get user claim info
       const claimInfo = await contract.getUserClaimInfo(account);
       const [totalAmount, claimedAmount, snapshotBal, snapshotTaken, isWhale, monthlyPercent] = claimInfo;
       
-      if (snapshotBalance) snapshotBalance.textContent = `${ethers.utils.formatUnits(snapshotBal, decimals)} NUUR`;
-      if (claimedEl) claimedEl.textContent = `${ethers.utils.formatUnits(claimedAmount, decimals)} NUUR`;
+      if (snapshotBalance) snapshotBalance.textContent = `${formatTokenAmount(snapshotBal, decimals)} NUUR`;
+      if (claimedEl) claimedEl.textContent = `${formatTokenAmount(claimedAmount, decimals)} NUUR`;
       
       const claimable = await contract.getClaimableAmount(account);
-      if (claimableDisplay) claimableDisplay.textContent = `${ethers.utils.formatUnits(claimable, decimals)} NUUR`;
+      if (claimableDisplay) claimableDisplay.textContent = `${formatTokenAmount(claimable, decimals)} NUUR`;
       lastClaimable = claimable;
 
       // Update user type and monthly rate
@@ -638,7 +721,7 @@
         }
       }
       
-      if (monthlyRate) monthlyRate.textContent = `${monthlyPercent.toNumber()}%`;
+      if (monthlyRate) monthlyRate.textContent = `${monthlyPercent.toString()}%`;
 
       // Update snapshot status
       if (snapshotStatus) {
@@ -649,6 +732,20 @@
       // Enable/disable snapshot button
       if (takeSnapshotBtn) {
         takeSnapshotBtn.disabled = !k || snapshotTaken;
+      }
+
+      // Check cooldown status
+      const cooldownRemaining = await contract.getCooldownRemaining(account);
+      if (cooldownStatus) {
+        if (cooldownRemaining.gt(0)) {
+          const hours = Math.floor(cooldownRemaining.toNumber() / 3600);
+          const minutes = Math.floor((cooldownRemaining.toNumber() % 3600) / 60);
+          cooldownStatus.textContent = `${hours}h ${minutes}m`;
+          cooldownStatus.style.color = 'var(--color-warn)';
+        } else {
+          cooldownStatus.textContent = 'Ready';
+          cooldownStatus.style.color = 'var(--color-success)';
+        }
       }
 
       // months passed & progress
@@ -669,7 +766,8 @@
 
       // claim button enable
       if (claimBtn) {
-        if(k && snapshotTaken && claimable.gt(0) && !paused && vStarted) { 
+        const canClaim = await contract.canClaim(account);
+        if(canClaim && claimable.gt(0)) { 
           claimBtn.disabled = false; 
         } else { 
           claimBtn.disabled = true; 
@@ -677,16 +775,16 @@
       }
 
       // owner checks
-      const owner = await contract.owner().catch(()=>null);
-      isOwner = owner && owner.toLowerCase() === account.toLowerCase();
+      const ownerAddr = await contract.owner().catch(()=>null);
+      isOwner = ownerAddr && ownerAddr.toLowerCase() === account.toLowerCase();
       if (adminBtnSmall) adminBtnSmall.style.display = isOwner ? 'inline-block' : 'none';
       if (openAdmin) openAdmin.style.display = isOwner ? 'inline-block' : 'none';
       if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
 
-      // Load contract balance for admin
+      // Load admin data
       if (isOwner) {
-        const contractBal = await tokenContract.balanceOf(CONTRACT_ADDR);
-        if (contractBalance) contractBalance.textContent = `${ethers.utils.formatUnits(contractBal, decimals)} NUUR`;
+        if (adminContractBalance) adminContractBalance.textContent = `${formatTokenAmount(contractBal, decimals)} NUUR`;
+        await loadPendingOperations();
       }
 
     } catch (e){
@@ -721,12 +819,14 @@
   async function claimTokens(){
     if(!contract || !account) return;
     try {
+      const minAmount = minAmountInput.value ? ethers.utils.parseUnits(minAmountInput.value, decimals) : 0;
+      
       toastShow('Submitting claim tx...');
       if (claimBtn) {
         claimBtn.disabled = true;
         claimBtn.textContent = 'Processing...';
       }
-      const tx = await contract.claim();
+      const tx = await contract.claim(minAmount);
       const receipt = await tx.wait();
       toastShow('Claim successful', 'success', EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
       await loadAll();
@@ -745,10 +845,92 @@
   async function openAdminModal(){
     if(!isOwner){ toastShow('Owner required', 'error'); return; }
     adminModal.classList.add('show'); adminModal.setAttribute('aria-hidden','false');
-    await loadAll(); // Refresh contract balance
+    await loadAll();
   }
   
   function closeAdminModal(){ adminModal.classList.remove('show'); adminModal.setAttribute('aria-hidden','true'); }
+
+  async function loadPendingOperations() {
+    if (!isOwner) return;
+    
+    try {
+      const [kycBatch, thresholdUpdate] = await Promise.all([
+        contract.getPendingKYCBatch(),
+        contract.getPendingWhaleThresholdUpdate()
+      ]);
+
+      let pendingHtml = '';
+      
+      if (kycBatch.canExecute) {
+        pendingHtml += `
+          <div style="background: var(--color-success); color: white; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+            <strong>KYC Batch Ready</strong> - ${kycBatch.users.length} addresses
+            <button onclick="executeKYCBatch()" class="btn btn-ghost" style="margin-left: 8px; background: white; color: var(--color-success);">Execute</button>
+          </div>
+        `;
+      } else if (kycBatch.scheduledTime > 0 && !kycBatch.executed) {
+        const timeLeft = kycBatch.scheduledTime - Math.floor(Date.now()/1000);
+        const hours = Math.floor(timeLeft / 3600);
+        pendingHtml += `
+          <div style="background: var(--color-warn); color: white; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+            <strong>KYC Batch Pending</strong> - ${hours}h remaining
+          </div>
+        `;
+      }
+
+      if (thresholdUpdate.canExecute) {
+        pendingHtml += `
+          <div style="background: var(--color-success); color: white; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+            <strong>Threshold Update Ready</strong> - New: ${formatTokenAmount(thresholdUpdate.newThreshold, decimals)} NUUR
+            <button onclick="executeThresholdUpdate()" class="btn btn-ghost" style="margin-left: 8px; background: white; color: var(--color-success);">Execute</button>
+          </div>
+        `;
+      } else if (thresholdUpdate.scheduledTime > 0 && !thresholdUpdate.executed) {
+        const timeLeft = thresholdUpdate.scheduledTime - Math.floor(Date.now()/1000);
+        const hours = Math.floor(timeLeft / 3600);
+        pendingHtml += `
+          <div style="background: var(--color-warn); color: white; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+            <strong>Threshold Update Pending</strong> - ${hours}h remaining
+          </div>
+        `;
+      }
+
+      if (!pendingHtml) {
+        pendingHtml = '<div class="muted small">No pending operations</div>';
+      }
+
+      pendingOperations.innerHTML = pendingHtml;
+
+    } catch (e) {
+      console.error('loadPendingOperations', e);
+    }
+  }
+
+  async function executeKYCBatch() {
+    try {
+      const tx = await contract.executeKYCBatchUpdate();
+      const receipt = await tx.wait();
+      toastShow('KYC batch executed', 'success', EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
+      await loadPendingOperations();
+      await loadAll();
+    } catch (e) {
+      console.error('executeKYCBatch', e);
+      toastShow('Failed to execute KYC batch', 'error');
+    }
+  }
+
+  async function executeThresholdUpdate() {
+    try {
+      const tx = await contract.executeWhaleThresholdUpdate();
+      const receipt = await tx.wait();
+      toastShow('Threshold update executed', 'success', EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
+      await loadPendingOperations();
+      await loadAll();
+    } catch (e) {
+      console.error('executeThresholdUpdate', e);
+      toastShow('Failed to execute threshold update', 'error');
+    }
+  }
 
   async function adminSetKycSingle(){
     const a = adminKycAddr.value.trim(); 
@@ -763,20 +945,33 @@
     } catch(e){ console.error(e); toastShow('Failed to set KYC', 'error'); }
   }
 
-  async function adminSetKycBatchHandler(){
+  async function adminScheduleKycBatchHandler(){
     const rawAddrs = adminKycBatchAddrs.value.trim();
     const status = adminKycBatchStatus.value === 'true';
     if(!rawAddrs){ toastShow('Provide addresses','error'); return; }
     const addrs = rawAddrs.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
     if(addrs.length === 0){ toastShow('No valid addresses','error'); return; }
-    if(!confirm(`Set KYC status to ${status ? 'Verified' : 'Not Verified'} for ${addrs.length} addresses?`)) return;
+    if(!confirm(`Schedule KYC ${status ? 'verification' : 'revocation'} for ${addrs.length} addresses?`)) return;
     try {
-      const tx = await contract.setKYCForBatch(addrs, status);
+      const tx = await contract.scheduleKYCBatchUpdate(addrs, status);
       const r = await tx.wait();
-      toastShow(`Batch KYC ${status ? 'verified' : 'unverified'}`, 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      toastShow('KYC batch scheduled', 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
       adminKycBatchAddrs.value='';
-      await loadAll();
-    } catch(e){ console.error(e); toastShow('Failed batch KYC', 'error'); }
+      await loadPendingOperations();
+    } catch(e){ console.error(e); toastShow('Failed to schedule KYC batch', 'error'); }
+  }
+
+  async function adminScheduleThresholdHandler(){
+    const newThreshold = newWhaleThreshold.value.trim();
+    if(!newThreshold){ toastShow('Enter new threshold','error'); return; }
+    try {
+      const thresholdWei = ethers.utils.parseUnits(newThreshold, decimals);
+      const tx = await contract.scheduleWhaleThresholdUpdate(thresholdWei);
+      const r = await tx.wait();
+      toastShow('Threshold update scheduled', 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      newWhaleThreshold.value = '';
+      await loadPendingOperations();
+    } catch(e){ console.error(e); toastShow('Failed to schedule threshold update', 'error'); }
   }
 
   async function adminDepositFunds(){
@@ -879,7 +1074,8 @@
   if (openAdmin) openAdmin.addEventListener('click', openAdminModal);
   if (closeAdmin) closeAdmin.addEventListener('click', closeAdminModal);
   if (adminSetKyc) adminSetKyc.addEventListener('click', adminSetKycSingle);
-  if (adminSetKycBatchBtn) adminSetKycBatchBtn.addEventListener('click', adminSetKycBatchHandler);
+  if (adminScheduleKycBatch) adminScheduleKycBatch.addEventListener('click', adminScheduleKycBatchHandler);
+  if (adminScheduleThreshold) adminScheduleThreshold.addEventListener('click', adminScheduleThresholdHandler);
   if (adminDeposit) adminDeposit.addEventListener('click', adminDepositFunds);
   if (adminStart) adminStart.addEventListener('click', adminStartVesting);
   if (adminPause) adminPause.addEventListener('click', adminPauseHandler);
@@ -895,7 +1091,9 @@
   applyStoredTheme();
   startCountdown();
 
-  // Expose for debugging
+  // Expose functions for global access
+  window.executeKYCBatch = executeKYCBatch;
+  window.executeThresholdUpdate = executeThresholdUpdate;
   window.__nuur = { loadAll };
 
 })();
