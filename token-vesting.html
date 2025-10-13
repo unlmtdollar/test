@@ -77,11 +77,13 @@
     .brand p { margin:0; font-size:12px; color:var(--muted); }
 
     .controls { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
-    .btn { display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:10px 12px; border-radius:10px; border: none; cursor:pointer; font-weight:700; transition: transform .12s ease; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:10px 12px; border-radius:10px; border: none; cursor:pointer; font-weight:700; transition: transform .12s ease; position: relative; overflow: hidden; }
     .btn:active { transform: translateY(1px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
     .btn-primary { background: linear-gradient(90deg, var(--color-accent), var(--color-success)); color: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12); }
     .btn-ghost { background: transparent; border: 1px solid rgba(0,0,0,0.06); color: var(--muted); padding: 10px; border-radius: 10px; }
     .btn-theme { background: transparent; border: 1px solid rgba(0,0,0,0.06); color: var(--muted); padding: 10px; border-radius: 10px; }
+    .btn-danger { background: linear-gradient(90deg, var(--color-warn), #dc2626); color: #fff; }
 
     .small { font-size:13px; color: var(--muted); }
 
@@ -92,6 +94,7 @@
     .top-row { display:flex; justify-content:space-between; align-items:center; gap:12px; }
     .muted { color:var(--muted); font-size:13px; }
     .grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .grid-3 { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; }
 
     .panel { background: var(--panel); border-radius: 12px; padding:12px; border:1px solid rgba(0,0,0,0.04); }
     .panel h3 { margin: 0 0 8px 0; color: var(--muted); font-size:13px; }
@@ -112,24 +115,7 @@
 
     .modal-backdrop { position: fixed; inset:0; display:none; align-items:center; justify-content:center; background: rgba(2,6,23,0.6); z-index:80; }
     .modal-backdrop.show { display:flex; }
-    .modal { width: min(96%, 880px); background: var(--panel); border-radius: 12px; padding:16px; border:1px solid rgba(0,0,0,0.06); }
-
-    .user-type-badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .whale-badge {
-      background: var(--color-strong);
-      color: white;
-    }
-    .small-badge {
-      background: var(--color-success);
-      color: white;
-    }
+    .modal { width: min(96%, 880px); background: var(--panel); border-radius: 12px; padding:16px; border:1px solid rgba(0,0,0,0.06); max-height: 90vh; overflow-y: auto; }
 
     .form-input {
       width: 100%;
@@ -164,19 +150,113 @@
       text-align: center;
     }
 
-    .snapshot-section h3 {
-      color: white;
-      margin: 0 0 12px 0;
-      font-size: 16px;
-    }
-
-    .vesting-info {
+    .daily-vesting-info {
       background: linear-gradient(135deg, var(--color-primary), var(--color-warn));
       color: white;
       padding: 12px;
       border-radius: 8px;
       margin-top: 8px;
       text-align: center;
+    }
+
+    .day-progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding: 8px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+    }
+
+    .day-item {
+      text-align: center;
+      flex: 1;
+    }
+
+    .day-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .day-value {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--color-accent);
+    }
+
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .network-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .network-connected {
+      background: var(--color-success);
+      color: white;
+    }
+
+    .network-wrong {
+      background: var(--color-warn);
+      color: white;
+    }
+
+    .emergency-section {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .signature-section {
+      background: linear-gradient(135deg, var(--color-strong), #7c3aed);
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .tab-container {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding-bottom: 8px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .tab.active {
+      background: var(--color-primary);
+      color: white;
     }
 
     /* responsive */
@@ -188,11 +268,13 @@
       .controls { flex-direction:row; gap:8px; margin-left:0; justify-content: center; }
       .main { order:1; padding:12px; }
       .grid-2 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
       .card, .panel { padding:12px; }
       .btn { padding:10px; font-size:14px; }
       .claim-area { justify-content: space-between; }
       .unit { min-width:48px; padding:8px; }
       .top-row { flex-direction: column; align-items: flex-start; }
+      .day-progress { flex-direction: column; gap: 8px; }
     }
 
     @media (max-width:600px){
@@ -224,7 +306,7 @@
         </div>
         <div style="flex:1">
           <h1>Nuur Claim</h1>
-          <p class="small">24-Month Token Vesting</p>
+          <p class="small">Daily Vesting - 2 Years</p>
         </div>
       </div>
 
@@ -241,9 +323,9 @@
             <div class="muted small">Connected</div>
             <div id="addrShort" style="font-weight:700">0x--</div>
           </div>
-          <div>
-            <div class="muted small">Network</div>
-            <div id="chainLabel" style="font-weight:700">Sidra Chain</div>
+          <div id="networkIndicator" class="network-indicator network-connected">
+            <i class="fas fa-circle"></i>
+            <span>Sidra Chain</span>
           </div>
         </div>
 
@@ -270,10 +352,11 @@
       </div>
 
       <div class="small" style="margin-top:auto">
-        <div><strong>24-Month Vesting</strong></div>
-        <div style="margin-top:6px" class="muted small">• Whales: 25% monthly</div>
-        <div class="muted small">• Small holders: 30% monthly</div>
-        <div class="muted small">• Complete in 24 months max</div>
+        <div><strong>Daily Vesting</strong></div>
+        <div style="margin-top:6px" class="muted small">• Claim daily for 2 years</div>
+        <div class="muted small">• ~0.137% daily distribution</div>
+        <div class="muted small">• Missed days accumulate</div>
+        <div class="muted small">• Claim anytime, any frequency</div>
       </div>
     </aside>
 
@@ -282,7 +365,7 @@
       <div class="top-row">
         <div>
           <h2 style="margin:0">Dashboard</h2>
-          <div class="muted small" style="margin-top:6px">24-month vesting with accelerated claims</div>
+          <div class="muted small" style="margin-top:6px">Daily claims over 730 days - Flexible claiming</div>
         </div>
 
         <div style="display:flex;gap:8px;align-items:center">
@@ -292,20 +375,20 @@
         </div>
       </div>
 
-      <!-- SNAPSHOT SECTION - MOVED TO TOP -->
+      <!-- SNAPSHOT SECTION -->
       <div class="snapshot-section">
         <h3>📸 First Step: Take Snapshot</h3>
-        <p style="margin: 0 0 12px 0; font-size: 14px; opacity: 0.9;">You need to take a snapshot of your current token balance before you can claim</p>
+        <p style="margin: 0 0 12px 0; font-size: 14px; opacity: 0.9;">Take snapshot anytime - no restrictions</p>
         <button id="takeSnapshotBtn" class="btn" style="background: white; color: var(--color-strong); font-weight: 700;">Take Snapshot</button>
         <div style="margin-top:8px; font-size:12px; opacity:0.8;" id="snapshotStatus">Status: Not taken</div>
       </div>
 
       <div class="grid-2">
         <div class="panel">
-          <h3>Vesting Allocation</h3>
+          <h3>Daily Vesting Progress</h3>
           <div style="display:flex;justify-content:space-between;align-items:center">
             <div>
-              <div class="muted small">Snapshot Balance</div>
+              <div class="muted small">Total Allocation</div>
               <div id="snapshotBalance" class="big-value" style="margin-top:8px">0 NUUR</div>
             </div>
             <div style="text-align:right">
@@ -318,30 +401,31 @@
             <div class="progress-bar" id="progressBar"></div>
           </div>
 
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-            <div class="muted small">Months passed</div>
-            <div id="monthsPassed" style="font-weight:800">0 / 24</div>
+          <div class="day-progress">
+            <div class="day-item">
+              <div class="day-label">Days Passed</div>
+              <div id="daysPassed" class="day-value">0 / 730</div>
+            </div>
+            <div class="day-item">
+              <div class="day-label">Remaining Days</div>
+              <div id="remainingDays" class="day-value">730 days</div>
+            </div>
+            <div class="day-item">
+              <div class="day-label">Last Claim Day</div>
+              <div id="lastClaimDay" class="day-value">Day 0</div>
+            </div>
           </div>
 
-          <div style="margin-top:12px">
-            <div class="muted small">Remaining Months</div>
-            <div id="remainingMonths" style="font-weight:800; color: var(--color-accent);">24 months</div>
-          </div>
-
-          <div style="margin-top:12px">
-            <div class="muted small">User Type</div>
-            <div id="userType" style="margin-top:6px"></div>
-          </div>
-
-          <div class="vesting-info">
-            <div style="font-size:12px; font-weight:700;">🎯 FAST VESTING</div>
-            <div style="font-size:11px; opacity:0.9;" id="vestingRate">Whales: 25% monthly | Small: 30% monthly</div>
+          <div class="daily-vesting-info">
+            <div style="font-size:12px; font-weight:700;">📅 DAILY VESTING</div>
+            <div style="font-size:11px; opacity:0.9;">~0.137% daily • 730 days total • Claims accumulate</div>
           </div>
 
           <div class="claim-area">
             <div>
               <div class="muted small">Claimable now</div>
               <div class="claim-amount" id="claimableDisplay">0 NUUR</div>
+              <div class="muted small" style="margin-top:4px;" id="claimableDays">0 days accumulated</div>
             </div>
 
             <div style="margin-left:auto">
@@ -366,11 +450,12 @@
           <h3>Actions & Status</h3>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button id="refreshBtnLarge" class="btn btn-ghost">Refresh Data</button>
+            <button id="gaslessVerifyBtn" class="btn btn-ghost" style="display:none">Gasless Verify</button>
           </div>
 
           <div style="margin-top:12px">
-            <div class="muted small">Monthly Rate</div>
-            <div style="margin-top:8px; font-size:16px; font-weight:800; color: var(--color-success);" id="monthlyRate">0%</div>
+            <div class="muted small">Daily Rate</div>
+            <div style="margin-top:8px; font-size:16px; font-weight:800; color: var(--color-success);" id="dailyRate">~0.137%</div>
           </div>
 
           <div style="margin-top:12px">
@@ -395,15 +480,26 @@
               <div id="kycStatusDisplay" class="status-value">No</div>
             </div>
             <div class="status-item">
-              <div class="muted small">Whale Threshold:</div>
-              <div id="whaleThresholdDisplay" class="status-value">0 NUUR</div>
+              <div class="muted small">Current Day:</div>
+              <div id="currentDayDisplay" class="status-value">Day 0</div>
             </div>
           </div>
 
-          <div style="margin-top:16px; padding:12px; background: rgba(255,255,255,0.03); border-radius:8px;">
-            <div class="muted small" style="text-align:center">⏰ Fast Operations</div>
-            <div style="font-size:11px; text-align:center; margin-top:4px; opacity:0.8;">
-              Whale cooldown: 5min • KYC timelock: 10min
+          <!-- Gasless Signature Section -->
+          <div class="signature-section" id="gaslessSection" style="display:none">
+            <div style="font-size:12px; font-weight:700;">🔐 GASLESS VERIFICATION</div>
+            <div style="font-size:11px; opacity:0.9; margin-top:4px;">Sign message to verify ownership (no gas fee)</div>
+            <button id="signMessageBtn" class="btn" style="background: white; color: var(--color-strong); margin-top:8px; font-size:12px;">Sign Message</button>
+            <div id="signatureStatus" style="font-size:10px; margin-top:6px;"></div>
+          </div>
+
+          <!-- Emergency Withdrawal Section (Admin Only) -->
+          <div class="emergency-section" id="emergencySection" style="display:none">
+            <div style="font-size:12px; font-weight:700;">🚨 EMERGENCY WITHDRAWAL</div>
+            <div style="font-size:11px; opacity:0.9; margin-top:4px;">Recover accidentally sent tokens</div>
+            <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+              <input id="emergencyToken" class="form-input" placeholder="Token Address" style="flex:1; font-size:12px;" />
+              <button id="emergencyWithdrawBtn" class="btn btn-danger" style="font-size:12px;">Withdraw</button>
             </div>
           </div>
         </div>
@@ -421,69 +517,224 @@
         </div>
       </div>
 
-      <div style="height:12px"></div>
+      <div class="tab-container">
+        <button class="tab active" data-tab="kyc">KYC Management</button>
+        <button class="tab" data-tab="funds">Fund Management</button>
+        <button class="tab" data-tab="emergency">Emergency</button>
+        <button class="tab" data-tab="stats">Statistics</button>
+      </div>
 
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-        <div>
-          <label class="muted small">Set single KYC</label>
-          <input id="adminKycAddr" class="form-input" placeholder="0x..." />
-          <select id="adminKycStatus" class="form-input" style="margin-top:8px;">
-            <option value="true">Verified</option>
-            <option value="false">Not verified</option>
-          </select>
-          <div style="margin-top:8px"><button id="adminSetKyc" class="btn btn-primary">Set KYC</button></div>
+      <!-- KYC Management Tab -->
+      <div class="tab-content" data-tab="kyc">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div>
+            <label class="muted small">Set single KYC</label>
+            <input id="adminKycAddr" class="form-input" placeholder="0x..." />
+            <select id="adminKycStatus" class="form-input" style="margin-top:8px;">
+              <option value="true">Verified</option>
+              <option value="false">Not verified</option>
+            </select>
+            <div style="margin-top:8px"><button id="adminSetKyc" class="btn btn-primary">Set KYC</button></div>
 
-          <div style="height:8px"></div>
+            <div style="height:8px"></div>
 
-          <label class="muted small">Batch KYC (addresses comma/newline separated)</label>
-          <textarea id="adminKycBatchAddrs" class="form-input" style="min-height:80px;"></textarea>
-          <select id="adminKycBatchStatus" class="form-input" style="margin-top:8px;">
-            <option value="true">All Verified</option>
-            <option value="false">All Not Verified</option>
-          </select>
-          <div style="margin-top:8px">
-            <button id="adminScheduleKycBatch" class="btn btn-primary">Schedule Batch KYC</button>
-          </div>
-        </div>
-
-        <div>
-          <label class="muted small">Contract Funds</label>
-          <div style="margin-top:8px">
-            <div class="muted small">Contract Balance:</div>
-            <div id="adminContractBalance" style="font-weight:800; margin-top:4px">0 NUUR</div>
-          </div>
-
-          <div style="margin-top:12px">
-            <label class="muted small">Deposit Funds</label>
-            <input id="depositAmount" class="form-input" placeholder="Amount in NUUR" />
-            <div style="margin-top:8px"><button id="adminDeposit" class="btn btn-primary">Deposit</button></div>
+            <label class="muted small">Batch KYC (addresses comma/newline separated)</label>
+            <textarea id="adminKycBatchAddrs" class="form-input" style="min-height:80px;"></textarea>
+            <select id="adminKycBatchStatus" class="form-input" style="margin-top:8px;">
+              <option value="true">All Verified</option>
+              <option value="false">All Not Verified</option>
+            </select>
+            <div style="margin-top:8px">
+              <button id="adminScheduleKycBatch" class="btn btn-primary">Schedule Batch KYC</button>
+            </div>
           </div>
 
-          <div style="margin-top:12px">
-            <label class="muted small">Whale Threshold</label>
-            <div id="currentWhaleThreshold" style="font-weight:800; margin-top:4px">0 NUUR</div>
-            <input id="newWhaleThreshold" class="form-input" placeholder="New threshold" style="margin-top:8px" />
-            <div style="margin-top:8px"><button id="adminScheduleThreshold" class="btn btn-primary">Schedule Threshold Update</button></div>
+          <div>
+            <label class="muted small">KYC Statistics</label>
+            <div style="margin-top:8px">
+              <div class="status-item">
+                <div class="muted small">Total Verified:</div>
+                <div id="totalVerified" class="status-value">0</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Pending Batch:</div>
+                <div id="pendingBatchCount" class="status-value">0</div>
+              </div>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <!-- Pending Operations -->
+            <div style="margin-top:16px;">
+              <h4>Pending Operations</h4>
+              <div id="pendingOperations" style="margin-top:8px">
+                <div class="muted small">No pending operations</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div style="height:12px"></div>
+      <!-- Fund Management Tab -->
+      <div class="tab-content" data-tab="funds" style="display:none">
+        <div class="grid-2">
+          <div>
+            <label class="muted small">Contract Funds</label>
+            <div style="margin-top:8px">
+              <div class="status-item">
+                <div class="muted small">Contract Balance:</div>
+                <div id="adminContractBalance" style="font-weight:800">0 NUUR</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Required for Claims:</div>
+                <div id="requiredBalance" style="font-weight:800">0 NUUR</div>
+              </div>
+            </div>
 
-      <!-- Pending Operations -->
-      <div style="margin-top:16px; border-top: 1px solid rgba(0,0,0,0.1); padding-top:16px;">
-        <h4>Pending Operations</h4>
-        <div id="pendingOperations" style="margin-top:8px">
-          <div class="muted small">No pending operations</div>
+            <div style="margin-top:12px">
+              <label class="muted small">Deposit Funds</label>
+              <input id="depositAmount" class="form-input" placeholder="Amount in NUUR" />
+              <div style="margin-top:8px">
+                <button id="adminDeposit" class="btn btn-primary">Deposit</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="muted small">Vesting Status</label>
+            <div style="margin-top:8px">
+              <div class="status-item">
+                <div class="muted small">Total Days:</div>
+                <div>730</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Daily Rate:</div>
+                <div>~0.137%</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Days Passed:</div>
+                <div id="adminDaysPassed">0</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Remaining Days:</div>
+                <div id="adminRemainingDays">730</div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <label class="muted small">Contract Controls</label>
+              <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+                <button id="adminStart" class="btn btn-primary">Start Vesting</button>
+                <button id="adminPause" class="btn btn-ghost">Pause</button>
+                <button id="adminUnpause" class="btn btn-ghost">Unpause</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div style="height:12px"></div>
+      <!-- Emergency Tab -->
+      <div class="tab-content" data-tab="emergency" style="display:none">
+        <div class="grid-2">
+          <div>
+            <label class="muted small">Recoverable Tokens</label>
+            <div style="margin-top:8px">
+              <div class="muted small">Manage tokens that can be recovered</div>
+            </div>
 
-      <div style="display:flex;gap:8px;justify-content:flex-end">
-        <button id="adminStart" class="btn btn-primary">Start Vesting</button>
-        <button id="adminPause" class="btn btn-ghost">Pause</button>
-        <button id="adminUnpause" class="btn btn-ghost">Unpause</button>
+            <div style="margin-top:12px">
+              <input id="addRecoverableToken" class="form-input" placeholder="Token Address to Add" />
+              <div style="margin-top:8px">
+                <button id="adminAddRecoverable" class="btn btn-primary">Add Token</button>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <input id="removeRecoverableToken" class="form-input" placeholder="Token Address to Remove" />
+              <div style="margin-top:8px">
+                <button id="adminRemoveRecoverable" class="btn btn-ghost">Remove Token</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="muted small">Emergency Withdrawal</label>
+            <div style="margin-top:8px">
+              <div class="muted small">Withdraw accidentally sent tokens</div>
+            </div>
+
+            <div style="margin-top:12px">
+              <input id="emergencyTokenAdmin" class="form-input" placeholder="Token Address" />
+              <input id="emergencyAmount" class="form-input" placeholder="Amount (leave empty for all)" style="margin-top:8px" />
+              <div style="margin-top:8px">
+                <button id="emergencyWithdrawAdmin" class="btn btn-danger">Emergency Withdraw</button>
+              </div>
+            </div>
+
+            <div style="margin-top:12px; padding:8px; background: rgba(220,38,38,0.1); border-radius:6px;">
+              <div class="muted small" style="color: var(--color-warn);">⚠️ Only for accidentally sent tokens</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Tab -->
+      <div class="tab-content" data-tab="stats" style="display:none">
+        <div class="grid-3">
+          <div>
+            <label class="muted small">Contract Statistics</label>
+            <div style="margin-top:8px">
+              <div class="status-item">
+                <div class="muted small">Total Users:</div>
+                <div id="totalUsers">0</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Active Users:</div>
+                <div id="activeUsers">0</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Total Distributed:</div>
+                <div id="totalDistributed">0 NUUR</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="muted small">Vesting Statistics</label>
+            <div style="margin-top:8px">
+              <div class="status-item">
+                <div class="muted small">Total Allocation:</div>
+                <div id="totalAllocation">0 NUUR</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Remaining Allocation:</div>
+                <div id="remainingAllocation">0 NUUR</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Claim Rate:</div>
+                <div id="claimRate">0%</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="muted small">Performance</label>
+            <div style="margin-top:8px">
+              <div class="status-item">
+                <div class="muted small">Avg Claim Frequency:</div>
+                <div id="avgClaimFreq">0 days</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Success Rate:</div>
+                <div id="successRate">100%</div>
+              </div>
+              <div class="status-item">
+                <div class="muted small">Gas Used:</div>
+                <div id="gasUsed">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -493,16 +744,71 @@
 <script>
 (function(){
   /* ------------------- Config -------------------- */
-  const CONTRACT_ADDR = "0xC48A629CC33c0F43a6083773a1BfE2e6CF43543F";
-  const NUUR_TOKEN = "0xD69CC2ddBdA8e53E8701bb64f6f2E28A27569Fc9";
-  const SIDRA_CHAIN = { chainId: "0x17CAD", blockExplorerUrls:["https://ledger.sidrachain.com"] };
+  const CONTRACT_ADDR = "0x0Dc77F1d9195a75fEBA53Ff2c0e0e8A6a6F08a1C";
+  const NUUR_TOKEN = "0x76C8885Dc877a2143Cd0E6AaA6bdbDcdABcC2Fd4";
+  const SIDRA_CHAIN = { 
+    chainId: "0x17CAD", 
+    chainName: "Sidra Chain",
+    rpcUrls: ["https://rpc.sidrachain.com"],
+    blockExplorerUrls:["https://ledger.sidrachain.com"],
+    nativeCurrency: {
+      name: "Sidra",
+      symbol: "SDA",
+      decimals: 18
+    }
+  };
   const EXPLORER = (SIDRA_CHAIN.blockExplorerUrls && SIDRA_CHAIN.blockExplorerUrls[0]) ? SIDRA_CHAIN.blockExplorerUrls[0].replace(/\/$/,'') : '';
 
-  const VESTING_ABI = [{"inputs":[{"internalType":"address","name":"_newToken","type":"address"},{"internalType":"address","name":"_oldToken","type":"address"},{"internalType":"uint256","name":"_initialWhaleThreshold","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"FundsDeposited","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool","name":"status","type":"bool"},{"indexed":false,"internalType":"uint256","name":"scheduledTime","type":"uint256"}],"name":"KYCBatchScheduled","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool","name":"status","type":"bool"}],"name":"KYCBatchUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"verified","type":"bool"}],"name":"KYCUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"oldToken","type":"address"}],"name":"OldTokenSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"}],"name":"RecoverableTokenAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"}],"name":"RecoverableTokenRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"balance","type":"uint256"}],"name":"SnapshotTaken","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"received","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"VestingStarted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newThreshold","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"scheduledTime","type":"uint256"}],"name":"WhaleThresholdUpdateScheduled","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"oldThreshold","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newThreshold","type":"uint256"}],"name":"WhaleThresholdUpdated","type":"event"},{"inputs":[],"name":"CLAIM_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"KYC_TIMELOCK_DELAY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"KYC_UPDATE_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_BATCH_SIZE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_VESTING_START_DELAY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MONTH_DURATION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"SMALL_HOLDER_MONTHLY_PERCENT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VESTING_MONTHS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WHALE_MONTHLY_PERCENT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"addRecoverableToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"canClaim","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"canTakeSnapshot","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"minAmount","type":"uint256"}],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"claimInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"snapshotBalance","type":"uint256"},{"internalType":"bool","name":"snapshotTaken","type":"bool"},{"internalType":"bool","name":"exists","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contractCreationTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"depositFunds","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"name":"emergencyWithdrawAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"executeKYCBatchUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"executeWhaleThresholdUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getContractBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCooldownRemaining","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getKYCUpdateCooldownRemaining","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getMonthlyPercentage","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPendingKYCBatch","outputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool","name":"status","type":"bool"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"},{"internalType":"bool","name":"canExecute","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPendingWhaleThresholdUpdate","outputs":[{"internalType":"uint256","name":"newThreshold","type":"uint256"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"},{"internalType":"bool","name":"canExecute","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getRemainingVestingMonths","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTotalVestingMonths","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserClaimInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"snapshotBalance","type":"uint256"},{"internalType":"bool","name":"snapshotTaken","type":"bool"},{"internalType":"bool","name":"isWhaleHolder","type":"bool"},{"internalType":"uint256","name":"monthlyPercent","type":"uint256"},{"internalType":"uint256","name":"remainingMonths","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"isWhale","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycLastUpdate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastClaimTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"newToken","outputs":[{"internalType":"contract INuurCoin","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"oldToken","outputs":[{"internalType":"contract IOldToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pendingKYCBatch","outputs":[{"internalType":"bool","name":"status","type":"bool"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pendingWhaleThresholdUpdate","outputs":[{"internalType":"uint256","name":"newThreshold","type":"uint256"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"recoverableTokens","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"removeRecoverableToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool","name":"status","type":"bool"}],"name":"scheduleKYCBatchUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newThreshold","type":"uint256"}],"name":"scheduleWhaleThresholdUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"setKYC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"takeSnapshot","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"vestingStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStarted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"whaleThreshold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}];
+  // PLACEHOLDER - Replace with actual ABI from your compiled contract
+  const VESTING_ABI = [
+    "function owner() view returns (address)",
+    "function newToken() view returns (address)",
+    "function oldToken() view returns (address)",
+    "function vestingStartTime() view returns (uint256)",
+    "function contractCreationTime() view returns (uint256)",
+    "function vestingStarted() view returns (bool)",
+    "function paused() view returns (bool)",
+    "function kycVerified(address) view returns (bool)",
+    "function claimInfo(address) view returns (uint256 totalAmount, uint256 claimedAmount, uint256 snapshotBalance, uint256 lastClaimDay, bool snapshotTaken, bool exists)",
+    "function getUserTotalPurchase(address) view returns (uint256)",
+    "function getClaimableAmount(address) view returns (uint256)",
+    "function getUserClaimInfo(address) view returns (uint256 totalAmount, uint256 claimedAmount, uint256 snapshotBalance, bool snapshotTaken, uint256 lastClaimDay, uint256 currentDay, uint256 remainingDays)",
+    "function getContractBalance() view returns (uint256)",
+    "function canClaim(address) view returns (bool)",
+    "function canTakeSnapshot(address) view returns (bool)",
+    "function getCooldownRemaining(address) view returns (uint256)",
+    "function getKYCUpdateCooldownRemaining(address) view returns (uint256)",
+    "function getRemainingVestingDays(address) view returns (uint256)",
+    "function getDaysPassed() view returns (uint256)",
+    "function getCurrentDay() view returns (uint256)",
+    "function takeSnapshot()",
+    "function claim(uint256 minAmount)",
+    "function startVesting()",
+    "function pause()",
+    "function unpause()",
+    "function setKYC(address user, bool status)",
+    "function depositFunds(uint256 amount)",
+    "function scheduleKYCBatchUpdate(address[] users, bool status)",
+    "function executeKYCBatchUpdate()",
+    "function getPendingKYCBatch() view returns (address[] memory users, bool status, uint256 scheduledTime, bool executed, bool canExecute)",
+    "function addRecoverableToken(address token)",
+    "function removeRecoverableToken(address token)",
+    "function emergencyWithdraw(address tokenAddress, uint256 amount)",
+    "function emergencyWithdrawAll(address tokenAddress)",
+    "function recoverableTokens(address) view returns (bool)",
+    "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+    "event VestingStarted(uint256 startTime)",
+    "event TokensClaimed(address indexed beneficiary, uint256 amount, uint256 received)",
+    "event KYCUpdated(address indexed user, bool verified)",
+    "event SnapshotTaken(address indexed user, uint256 balance)",
+    "event FundsDeposited(uint256 amount)",
+    "event EmergencyWithdraw(address token, uint256 amount)"
+  ];
 
   /* ------------------- DOM -------------------- */
   const connectBtn = document.getElementById('connectBtn');
   const themeToggle = document.getElementById('themeToggle');
+  const networkIndicator = document.getElementById('networkIndicator');
 
   const ctaAccountBox = document.getElementById('accountBox');
   const addrShort = document.getElementById('addrShort');
@@ -517,17 +823,24 @@
   const adminBtnSmall = document.getElementById('adminBtnSmall');
   const openAdmin = document.getElementById('openAdmin');
   const disconnectBtn = document.getElementById('disconnectBtn');
+  const gaslessVerifyBtn = document.getElementById('gaslessVerifyBtn');
+  const signMessageBtn = document.getElementById('signMessageBtn');
+  const signatureStatus = document.getElementById('signatureStatus');
+  const gaslessSection = document.getElementById('gaslessSection');
+  const emergencySection = document.getElementById('emergencySection');
+  const emergencyToken = document.getElementById('emergencyToken');
+  const emergencyWithdrawBtn = document.getElementById('emergencyWithdrawBtn');
 
   const snapshotBalance = document.getElementById('snapshotBalance');
   const claimedEl = document.getElementById('claimed');
   const claimableDisplay = document.getElementById('claimableDisplay');
+  const claimableDays = document.getElementById('claimableDays');
   const progressBar = document.getElementById('progressBar');
-  const monthsPassedEl = document.getElementById('monthsPassed');
-  const remainingMonths = document.getElementById('remainingMonths');
-  const userType = document.getElementById('userType');
-  const vestingRate = document.getElementById('vestingRate');
+  const daysPassed = document.getElementById('daysPassed');
+  const remainingDays = document.getElementById('remainingDays');
+  const lastClaimDay = document.getElementById('lastClaimDay');
+  const dailyRate = document.getElementById('dailyRate');
   const snapshotStatus = document.getElementById('snapshotStatus');
-  const monthlyRate = document.getElementById('monthlyRate');
   const minAmountInput = document.getElementById('minAmountInput');
   const cdDays = document.getElementById('cdDays');
   const cdHours = document.getElementById('cdHours');
@@ -538,30 +851,58 @@
   const cooldownStatus = document.getElementById('cooldownStatus');
   const contractBalanceDisplay = document.getElementById('contractBalanceDisplay');
   const kycStatusDisplay = document.getElementById('kycStatusDisplay');
-  const whaleThresholdDisplay = document.getElementById('whaleThresholdDisplay');
+  const currentDayDisplay = document.getElementById('currentDayDisplay');
   const claimBtn = document.getElementById('claimBtn');
   const contractLink = document.getElementById('contractLink');
 
   // admin modal elements
   const adminModal = document.getElementById('adminModal');
   const closeAdmin = document.getElementById('closeAdmin');
+  const tabs = document.querySelectorAll('.tab');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  // KYC Tab
   const adminKycAddr = document.getElementById('adminKycAddr');
   const adminKycStatus = document.getElementById('adminKycStatus');
   const adminSetKyc = document.getElementById('adminSetKyc');
   const adminKycBatchAddrs = document.getElementById('adminKycBatchAddrs');
   const adminKycBatchStatus = document.getElementById('adminKycBatchStatus');
   const adminScheduleKycBatch = document.getElementById('adminScheduleKycBatch');
+  const totalVerified = document.getElementById('totalVerified');
+  const pendingBatchCount = document.getElementById('pendingBatchCount');
+  
+  // Funds Tab
   const adminContractBalance = document.getElementById('adminContractBalance');
+  const requiredBalance = document.getElementById('requiredBalance');
   const depositAmount = document.getElementById('depositAmount');
   const adminDeposit = document.getElementById('adminDeposit');
-  const currentWhaleThreshold = document.getElementById('currentWhaleThreshold');
-  const newWhaleThreshold = document.getElementById('newWhaleThreshold');
-  const adminScheduleThreshold = document.getElementById('adminScheduleThreshold');
-  const pendingOperations = document.getElementById('pendingOperations');
+  const adminDaysPassed = document.getElementById('adminDaysPassed');
+  const adminRemainingDays = document.getElementById('adminRemainingDays');
   const adminStart = document.getElementById('adminStart');
   const adminPause = document.getElementById('adminPause');
   const adminUnpause = document.getElementById('adminUnpause');
+  
+  // Emergency Tab
+  const addRecoverableToken = document.getElementById('addRecoverableToken');
+  const removeRecoverableToken = document.getElementById('removeRecoverableToken');
+  const adminAddRecoverable = document.getElementById('adminAddRecoverable');
+  const adminRemoveRecoverable = document.getElementById('adminRemoveRecoverable');
+  const emergencyTokenAdmin = document.getElementById('emergencyTokenAdmin');
+  const emergencyAmount = document.getElementById('emergencyAmount');
+  const emergencyWithdrawAdmin = document.getElementById('emergencyWithdrawAdmin');
+  
+  // Stats Tab
+  const totalUsers = document.getElementById('totalUsers');
+  const activeUsers = document.getElementById('activeUsers');
+  const totalDistributed = document.getElementById('totalDistributed');
+  const totalAllocation = document.getElementById('totalAllocation');
+  const remainingAllocation = document.getElementById('remainingAllocation');
+  const claimRate = document.getElementById('claimRate');
+  const avgClaimFreq = document.getElementById('avgClaimFreq');
+  const successRate = document.getElementById('successRate');
+  const gasUsed = document.getElementById('gasUsed');
 
+  const pendingOperations = document.getElementById('pendingOperations');
   const toastEl = document.getElementById('toast');
 
   /* ------------------- State -------------------- */
@@ -572,22 +913,33 @@
   let tokenContract = null;
   let decimals = 18;
   let vestingStartTimeSec = 0;
-  let nextVestingTimeMs = null;
+  let nextClaimTimeMs = null;
   let lastClaimable = ethers.BigNumber.from(0);
   let isOwner = false;
+  let isCorrectNetwork = false;
   const POLL_INTERVAL = 15000;
 
   /* ------------------- Utilities -------------------- */
   function toastShow(msg, kind = 'info', link=null){
     toastEl.style.display = 'block';
     toastEl.textContent = msg;
+    toastEl.style.background = kind === 'error' ? 'var(--color-warn)' : 
+                              kind === 'success' ? 'var(--color-success)' : 'var(--panel)';
+    toastEl.style.color = kind === 'error' || kind === 'success' ? 'white' : 'var(--muted)';
+    
     if(link){
       const a = document.createElement('a');
       a.href = link; a.target = '_blank'; a.textContent = ' View';
       a.style.marginLeft = '8px'; a.style.color = 'var(--color-primary)';
       toastEl.appendChild(a);
     }
-    clearTimeout(toastShow._t); toastShow._t = setTimeout(()=>{ toastEl.style.display = 'none'; toastEl.textContent = ''; }, 3800);
+    clearTimeout(toastShow._t); 
+    toastShow._t = setTimeout(()=>{ 
+      toastEl.style.display = 'none'; 
+      toastEl.textContent = ''; 
+      toastEl.style.background = ''; 
+      toastEl.style.color = ''; 
+    }, 3800);
   }
   
   function short(addr){ return addr ? `${addr.slice(0,6)}…${addr.slice(-4)}` : '0x--'; }
@@ -598,7 +950,107 @@
   }
 
   function formatTokenAmount(amount, decimals = 18) {
+    if (!amount || amount.eq(0)) return '0';
     return parseFloat(ethers.utils.formatUnits(amount, decimals)).toFixed(4);
+  }
+
+  function formatDaysToTime(days) {
+    if (days === 0) return 'Ready';
+    if (days < 1) {
+      const hours = Math.ceil(days * 24);
+      return `${hours}h`;
+    }
+    return `${Math.ceil(days)}d`;
+  }
+
+  function setLoadingState(btn, loading, text = 'Processing...') {
+    if (!btn) return;
+    
+    if (loading) {
+      btn.disabled = true;
+      if (!btn.dataset.originalText) {
+        btn.dataset.originalText = btn.textContent;
+      }
+      btn.innerHTML = `<span class="loading"></span> ${text}`;
+    } else {
+      btn.disabled = false;
+      if (btn.dataset.originalText) {
+        btn.textContent = btn.dataset.originalText;
+        delete btn.dataset.originalText;
+      }
+    }
+  }
+
+  async function withLoading(operation, btn, successMsg = 'Operation completed', errorMsg = 'Operation failed') {
+    setLoadingState(btn, true);
+    try {
+      const result = await operation();
+      if (successMsg) toastShow(successMsg, 'success');
+      return result;
+    } catch (e) {
+      console.error(errorMsg, e);
+      toastShow(`${errorMsg}: ${e.message}`, 'error');
+      throw e;
+    } finally {
+      setLoadingState(btn, false);
+    }
+  }
+
+  /* ----------------- Network Handling ------------------ */
+  async function validateNetwork() {
+    if (!provider) return false;
+    
+    try {
+      const network = await provider.getNetwork();
+      const expectedChainId = parseInt(SIDRA_CHAIN.chainId, 16);
+      isCorrectNetwork = network.chainId === expectedChainId;
+      
+      if (networkIndicator) {
+        if (isCorrectNetwork) {
+          networkIndicator.className = 'network-indicator network-connected';
+          networkIndicator.innerHTML = '<i class="fas fa-circle"></i><span>Sidra Chain</span>';
+        } else {
+          networkIndicator.className = 'network-indicator network-wrong';
+          networkIndicator.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Wrong Network</span>';
+        }
+      }
+      
+      return isCorrectNetwork;
+    } catch (e) {
+      console.error('validateNetwork', e);
+      return false;
+    }
+  }
+
+  async function switchToSidraChain() {
+    if (!window.ethereum) {
+      toastShow('Please install MetaMask', 'error');
+      return false;
+    }
+    
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: SIDRA_CHAIN.chainId }],
+      });
+      return true;
+    } catch (switchError) {
+      // This error code indicates that the chain has not been added to MetaMask
+      if (switchError.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [SIDRA_CHAIN],
+          });
+          return true;
+        } catch (addError) {
+          toastShow('Failed to add Sidra Chain to MetaMask', 'error');
+          return false;
+        }
+      }
+      toastShow('Failed to switch to Sidra Chain', 'error');
+      return false;
+    }
   }
 
   /* ----------------- Theme handling ------------------ */
@@ -638,7 +1090,11 @@
 
   /* ---------------- Wallet & Contract logic ---------------- */
   async function connectWallet(){
-    if(!window.ethereum){ toastShow('Please install MetaMask or compatible wallet','error'); return; }
+    if(!window.ethereum){ 
+      toastShow('Please install MetaMask or compatible wallet','error'); 
+      return; 
+    }
+    
     provider = new ethers.providers.Web3Provider(window.ethereum);
     try {
       await provider.send('eth_requestAccounts',[]);
@@ -650,6 +1106,16 @@
         "function decimals() view returns (uint8)",
         "function transferFrom(address, address, uint256) returns (bool)"
       ], signer);
+
+      // Validate network
+      const isCorrectNetwork = await validateNetwork();
+      if (!isCorrectNetwork) {
+        toastShow('Please switch to Sidra Chain', 'error');
+        if (confirm('Switch to Sidra Chain now?')) {
+          await switchToSidraChain();
+          await validateNetwork();
+        }
+      }
 
       // UI updates
       if (connectBtn) connectBtn.style.display = 'none';
@@ -676,12 +1142,125 @@
     if (openAdmin) openAdmin.style.display = 'none';
     if (disconnectBtn) disconnectBtn.style.display = 'none';
     if (themeToggle) themeToggle.style.display = 'none';
+    if (gaslessSection) gaslessSection.style.display = 'none';
+    if (emergencySection) emergencySection.style.display = 'none';
     toastShow('Disconnected');
+  }
+
+  /* ----------------- Mathematical Precision Fix ----------------- */
+  function calculateDailyAmount(snapshotBalance) {
+    if (!snapshotBalance || snapshotBalance.eq(0)) return ethers.BigNumber.from(0);
+    // Calculate daily amount as (snapshotBalance * 10000) / (730 * 10000) for better precision
+    return snapshotBalance.mul(10000).div(7300000); // Equivalent to snapshotBalance / 730
+  }
+
+  function calculateClaimableWithPrecision(snapshotBalance, claimedAmount, currentDay, lastClaimDay) {
+    if (!snapshotBalance || snapshotBalance.eq(0)) return ethers.BigNumber.from(0);
+    
+    const daysClaimable = Math.min(currentDay, 730) - lastClaimDay;
+    if (daysClaimable <= 0) return ethers.BigNumber.from(0);
+    
+    const dailyAmount = calculateDailyAmount(snapshotBalance);
+    const totalClaimable = dailyAmount.mul(daysClaimable);
+    const remainingAllocation = snapshotBalance.sub(claimedAmount);
+    
+    return totalClaimable.gt(remainingAllocation) ? remainingAllocation : totalClaimable;
+  }
+
+  /* ----------------- Gasless Signature ----------------- */
+  async function signMessageForVerification() {
+    if (!signer || !account) return;
+    
+    try {
+      setLoadingState(signMessageBtn, true, 'Signing...');
+      
+      const message = `Nuur Claim Verification\n\nAddress: ${account}\nTimestamp: ${Date.now()}\n\nThis signature verifies your ownership and does not cost gas.`;
+      
+      const signature = await signer.signMessage(message);
+      
+      // Verify the signature
+      const recoveredAddress = ethers.utils.verifyMessage(message, signature);
+      const isValid = recoveredAddress.toLowerCase() === account.toLowerCase();
+      
+      if (isValid) {
+        signatureStatus.textContent = '✅ Signature verified successfully';
+        signatureStatus.style.color = 'var(--color-success)';
+        toastShow('Gasless verification successful', 'success');
+        
+        // Store verification in localStorage
+        localStorage.setItem(`nuur_verified_${account}`, 'true');
+      } else {
+        signatureStatus.textContent = '❌ Signature verification failed';
+        signatureStatus.style.color = 'var(--color-warn)';
+        toastShow('Signature verification failed', 'error');
+      }
+    } catch (e) {
+      console.error('signMessageForVerification', e);
+      signatureStatus.textContent = '❌ User denied signature';
+      signatureStatus.style.color = 'var(--color-warn)';
+      if (e.code !== 4001) { // Not user rejected
+        toastShow('Signature failed: ' + e.message, 'error');
+      }
+    } finally {
+      setLoadingState(signMessageBtn, false);
+    }
+  }
+
+  /* ----------------- Emergency Withdrawal ----------------- */
+  async function emergencyWithdrawTokens() {
+    if (!contract || !account || !isOwner) return;
+    
+    const tokenAddress = emergencyToken.value.trim();
+    if (!tokenAddress || !ethers.utils.isAddress(tokenAddress)) {
+      toastShow('Please enter a valid token address', 'error');
+      return;
+    }
+    
+    try {
+      setLoadingState(emergencyWithdrawBtn, true, 'Withdrawing...');
+      
+      // Check if token is recoverable
+      const isRecoverable = await contract.recoverableTokens(tokenAddress);
+      if (!isRecoverable) {
+        toastShow('Token is not in recoverable list', 'error');
+        return;
+      }
+      
+      const tokenContract = new ethers.Contract(tokenAddress, [
+        "function balanceOf(address) view returns (uint256)"
+      ], signer);
+      
+      const balance = await tokenContract.balanceOf(CONTRACT_ADDR);
+      if (balance.eq(0)) {
+        toastShow('No balance to withdraw', 'error');
+        return;
+      }
+      
+      const tx = await contract.emergencyWithdraw(tokenAddress, balance);
+      const receipt = await tx.wait();
+      
+      toastShow('Emergency withdrawal successful', 'success', 
+                EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
+      
+      emergencyToken.value = '';
+    } catch (e) {
+      console.error('emergencyWithdrawTokens', e);
+      toastShow('Emergency withdrawal failed: ' + e.message, 'error');
+    } finally {
+      setLoadingState(emergencyWithdrawBtn, false);
+    }
   }
 
   async function loadAll(){
     if(!contract || !account) return;
     try {
+      // Check network first
+      await validateNetwork();
+      if (!isCorrectNetwork) {
+        toastShow('Please switch to Sidra Chain to continue', 'error');
+        return;
+      }
+
       const [bNu, bSda] = await Promise.all([ 
         tokenContract.balanceOf(account), 
         provider.getBalance(account) 
@@ -694,32 +1273,37 @@
       if (kycDot) kycDot.style.background = k ? 'var(--color-success)' : 'var(--color-warn)';
       if (kycStatusDisplay) kycStatusDisplay.textContent = k ? 'Yes' : 'No';
 
-      const [vStarted, paused, vestStartBN, contractBal, whaleThresh] = await Promise.all([ 
+      const [vStarted, paused, vestStartBN, contractBal] = await Promise.all([ 
         contract.vestingStarted(), 
         contract.paused(), 
         contract.vestingStartTime(),
-        contract.getContractBalance(),
-        contract.whaleThreshold()
+        contract.getContractBalance()
       ]);
       vestingStartTimeSec = vestStartBN.toNumber();
       if (vestingStatus) vestingStatus.textContent = vStarted ? 'Active' : 'Not started';
       if (pausedStatus) pausedStatus.textContent = paused ? 'Yes' : 'No';
       if (contractBalanceDisplay) contractBalanceDisplay.textContent = `${formatTokenAmount(contractBal, decimals)} NUUR`;
-      if (currentWhaleThreshold) currentWhaleThreshold.textContent = `${formatTokenAmount(whaleThresh, decimals)} NUUR`;
-      if (whaleThresholdDisplay) whaleThresholdDisplay.textContent = `${formatTokenAmount(whaleThresh, decimals)} NUUR`;
+      if (adminContractBalance) adminContractBalance.textContent = `${formatTokenAmount(contractBal, decimals)} NUUR`;
 
-      // Get user claim info with new parameters
+      // Get user claim info with daily vesting data
       const claimInfo = await contract.getUserClaimInfo(account);
-      const [totalAmount, claimedAmount, snapshotBal, snapshotTaken, isWhale, monthlyPercent, remainingMonthsValue] = claimInfo;
+      const [totalAmount, claimedAmount, snapshotBal, snapshotTaken, lastClaimDayValue, currentDay, remainingDaysValue] = claimInfo;
       
       if (snapshotBalance) snapshotBalance.textContent = `${formatTokenAmount(snapshotBal, decimals)} NUUR`;
       if (claimedEl) claimedEl.textContent = `${formatTokenAmount(claimedAmount, decimals)} NUUR`;
       
-      const claimable = await contract.getClaimableAmount(account);
+      // Use precise calculation
+      const claimable = calculateClaimableWithPrecision(snapshotBal, claimedAmount, currentDay, lastClaimDayValue);
       if (claimableDisplay) claimableDisplay.textContent = `${formatTokenAmount(claimable, decimals)} NUUR`;
       lastClaimable = claimable;
 
-      // Update snapshot status in the prominent section
+      // Calculate accumulated days
+      const accumulatedDays = currentDay - lastClaimDayValue;
+      if (claimableDays) {
+        claimableDays.textContent = `${accumulatedDays} day${accumulatedDays !== 1 ? 's' : ''} accumulated`;
+      }
+
+      // Update snapshot status
       if (snapshotStatus) {
         if (snapshotTaken) {
           snapshotStatus.textContent = 'Status: ✅ Snapshot taken';
@@ -731,20 +1315,7 @@
         }
       }
 
-      // Update user type and monthly rate with new percentages
-      if (userType) {
-        if (isWhale) {
-          userType.innerHTML = '<span class="user-type-badge whale-badge">🐋 Whale (25%/month)</span>';
-          if (vestingRate) vestingRate.textContent = 'Whales: 25% monthly | Small: 30% monthly';
-        } else {
-          userType.innerHTML = '<span class="user-type-badge small-badge">👤 Small Holder (30%/month)</span>';
-          if (vestingRate) vestingRate.textContent = 'Whales: 25% monthly | Small: 30% monthly';
-        }
-      }
-      
-      if (monthlyRate) monthlyRate.textContent = `${monthlyPercent.toString()}%`;
-
-      // Enable/disable snapshot button - no KYC requirement
+      // Enable/disable snapshot button - no restrictions
       if (takeSnapshotBtn) {
         const canTakeSnapshot = await contract.canTakeSnapshot(account);
         takeSnapshotBtn.disabled = !canTakeSnapshot;
@@ -759,12 +1330,33 @@
         }
       }
 
+      // Update daily progress with precise calculation
+      if (daysPassed) daysPassed.textContent = `${currentDay} / 730`;
+      if (remainingDays) {
+        remainingDays.textContent = `${remainingDaysValue} days`;
+        remainingDays.style.color = remainingDaysValue <= 30 ? 'var(--color-warn)' : 'var(--color-accent)';
+      }
+      if (lastClaimDay) lastClaimDay.textContent = `Day ${lastClaimDayValue}`;
+      if (currentDayDisplay) currentDayDisplay.textContent = `Day ${currentDay}`;
+
+      // Update progress bar
+      if (progressBar) {
+        const progressPercent = (currentDay / 730) * 100;
+        progressBar.style.width = `${Math.min(progressPercent, 100)}%`;
+      }
+
+      // Update daily rate with precise calculation
+      if (dailyRate) {
+        const dailyAmount = calculateDailyAmount(snapshotBal);
+        dailyRate.textContent = `${formatTokenAmount(dailyAmount, decimals)} NUUR/day`;
+      }
+
       // Check cooldown status
       const cooldownRemaining = await contract.getCooldownRemaining(account);
       if (cooldownStatus) {
         if (cooldownRemaining.gt(0)) {
-          const minutes = Math.ceil(cooldownRemaining.toNumber() / 60);
-          cooldownStatus.textContent = `${minutes}m`;
+          const daysRemaining = cooldownRemaining.toNumber() / (24 * 60 * 60);
+          cooldownStatus.textContent = formatDaysToTime(daysRemaining);
           cooldownStatus.style.color = 'var(--color-warn)';
         } else {
           cooldownStatus.textContent = 'Ready';
@@ -772,28 +1364,11 @@
         }
       }
 
-      // months passed & progress - updated for 24 months
-      if(vStarted && vestingStartTimeSec > 0){
-        const now = Math.floor(Date.now()/1000);
-        let months = Math.floor((now - vestingStartTimeSec) / (30*24*60*60));
-        if(months < 0) months = 0; 
-        if(months > 24) months = 24;
-        if (monthsPassedEl) monthsPassedEl.textContent = `${months} / 24`;
-        if (progressBar) progressBar.style.width = `${(months/24)*100}%`;
-        const nextSec = vestingStartTimeSec + (months+1)*30*24*60*60;
-        nextVestingTimeMs = nextSec * 1000;
-        
-        // Update remaining months
-        if (remainingMonths) {
-          const remaining = 24 - months;
-          remainingMonths.textContent = `${remaining} months`;
-          remainingMonths.style.color = remaining <= 6 ? 'var(--color-warn)' : 'var(--color-accent)';
-        }
+      // Set next claim time for countdown
+      if (cooldownRemaining.gt(0)) {
+        nextClaimTimeMs = Date.now() + (cooldownRemaining.toNumber() * 1000);
       } else {
-        if (monthsPassedEl) monthsPassedEl.textContent = `0 / 24`;
-        if (progressBar) progressBar.style.width = `0%`;
-        if (remainingMonths) remainingMonths.textContent = '24 months';
-        nextVestingTimeMs = null;
+        nextClaimTimeMs = null;
       }
 
       // claim button enable
@@ -812,83 +1387,116 @@
       if (adminBtnSmall) adminBtnSmall.style.display = isOwner ? 'inline-block' : 'none';
       if (openAdmin) openAdmin.style.display = isOwner ? 'inline-block' : 'none';
       if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
+      
+      // Show gasless verification section
+      if (gaslessSection) {
+        gaslessSection.style.display = 'block';
+        const isVerified = localStorage.getItem(`nuur_verified_${account}`) === 'true';
+        if (isVerified) {
+          signatureStatus.textContent = '✅ Previously verified';
+          signatureStatus.style.color = 'var(--color-success)';
+        }
+      }
+      
+      // Show emergency section for admin
+      if (emergencySection) {
+        emergencySection.style.display = isOwner ? 'block' : 'none';
+      }
 
       // Load admin data
       if (isOwner) {
-        if (adminContractBalance) adminContractBalance.textContent = `${formatTokenAmount(contractBal, decimals)} NUUR`;
-        await loadPendingOperations();
+        await loadAdminData();
       }
 
     } catch (e){
       console.error('loadAll', e);
-      toastShow('Failed to load on-chain data', 'error');
+      if (e.code === 'NETWORK_ERROR') {
+        toastShow('Network connection failed. Check your internet.', 'error');
+      } else if (e.code === 'CALL_EXCEPTION') {
+        toastShow('Contract call failed. Wrong network?', 'error');
+      } else {
+        toastShow('Failed to load data: ' + e.message, 'error');
+      }
     }
   }
 
   async function takeSnapshot(){
     if(!contract || !account) return;
-    try {
-      toastShow('Taking snapshot...');
-      if (takeSnapshotBtn) {
-        takeSnapshotBtn.disabled = true;
-        takeSnapshotBtn.textContent = 'Processing...';
-      }
+    await withLoading(async () => {
       const tx = await contract.takeSnapshot();
       const receipt = await tx.wait();
-      toastShow('Snapshot taken successfully', 'success', EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
+      toastShow('Snapshot taken successfully', 'success', 
+                EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
       await loadAll();
-    } catch (e){
-      console.error('takeSnapshot', e);
-      toastShow('Snapshot failed', 'error');
-      if (takeSnapshotBtn) {
-        takeSnapshotBtn.disabled = false;
-        takeSnapshotBtn.textContent = 'Take Snapshot';
-      }
-    }
+    }, takeSnapshotBtn, 'Snapshot taken successfully', 'Snapshot failed');
   }
 
   async function claimTokens(){
     if(!contract || !account) return;
-    try {
-      const minAmount = minAmountInput.value ? ethers.utils.parseUnits(minAmountInput.value, decimals) : 0;
-      
-      toastShow('Submitting claim tx...');
-      if (claimBtn) {
-        claimBtn.disabled = true;
-        claimBtn.textContent = 'Processing...';
-      }
-      const tx = await contract.claim(minAmount);
-      const receipt = await tx.wait();
-      toastShow('Claim successful', 'success', EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
-      await loadAll();
-      if (claimBtn) claimBtn.textContent = 'Claim';
-    } catch (e){
-      console.error('claim', e);
-      toastShow('Claim failed', 'error');
-      if (claimBtn) {
-        claimBtn.disabled = false;
-        claimBtn.textContent = 'Claim';
-      }
+    
+    // Validate minimum amount
+    const minAmount = minAmountInput.value;
+    if (minAmount && parseFloat(minAmount) < 0) {
+      toastShow('Minimum amount cannot be negative', 'error');
+      return;
     }
+    
+    const minAmountWei = minAmount ? ethers.utils.parseUnits(minAmount, decimals) : 0;
+    
+    await withLoading(async () => {
+      const tx = await contract.claim(minAmountWei);
+      const receipt = await tx.wait();
+      toastShow('Claim successful', 'success', 
+                EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
+      await loadAll();
+    }, claimBtn, 'Claim successful', 'Claim failed');
   }
 
   /* ---------- Admin handlers ---------- */
   async function openAdminModal(){
     if(!isOwner){ toastShow('Owner required', 'error'); return; }
-    adminModal.classList.add('show'); adminModal.setAttribute('aria-hidden','false');
-    await loadAll();
+    adminModal.classList.add('show'); 
+    adminModal.setAttribute('aria-hidden','false');
+    await loadAdminData();
   }
   
-  function closeAdminModal(){ adminModal.classList.remove('show'); adminModal.setAttribute('aria-hidden','true'); }
+  function closeAdminModal(){ 
+    adminModal.classList.remove('show'); 
+    adminModal.setAttribute('aria-hidden','true'); 
+  }
+
+  // Tab switching
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.getAttribute('data-tab');
+      
+      // Update active tab
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      // Show corresponding content
+      tabContents.forEach(content => {
+        content.style.display = content.getAttribute('data-tab') === tabName ? 'block' : 'none';
+      });
+    });
+  });
+
+  async function loadAdminData() {
+    if (!isOwner) return;
+    
+    try {
+      await loadPendingOperations();
+      await loadAdminStatistics();
+    } catch (e) {
+      console.error('loadAdminData', e);
+    }
+  }
 
   async function loadPendingOperations() {
     if (!isOwner) return;
     
     try {
-      const [kycBatch, thresholdUpdate] = await Promise.all([
-        contract.getPendingKYCBatch(),
-        contract.getPendingWhaleThresholdUpdate()
-      ]);
+      const kycBatch = await contract.getPendingKYCBatch();
 
       let pendingHtml = '';
       
@@ -909,23 +1517,6 @@
         `;
       }
 
-      if (thresholdUpdate.canExecute) {
-        pendingHtml += `
-          <div style="background: var(--color-success); color: white; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
-            <strong>Threshold Update Ready</strong> - New: ${formatTokenAmount(thresholdUpdate.newThreshold, decimals)} NUUR
-            <button onclick="executeThresholdUpdate()" class="btn btn-ghost" style="margin-left: 8px; background: white; color: var(--color-success);">Execute</button>
-          </div>
-        `;
-      } else if (thresholdUpdate.scheduledTime > 0 && !thresholdUpdate.executed) {
-        const timeLeft = thresholdUpdate.scheduledTime - Math.floor(Date.now()/1000);
-        const minutes = Math.ceil(timeLeft / 60);
-        pendingHtml += `
-          <div style="background: var(--color-warn); color: white; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
-            <strong>Threshold Update Pending</strong> - ${minutes}m remaining
-          </div>
-        `;
-      }
-
       if (!pendingHtml) {
         pendingHtml = '<div class="muted small">No pending operations</div>';
       }
@@ -937,43 +1528,57 @@
     }
   }
 
-  async function executeKYCBatch() {
+  async function loadAdminStatistics() {
+    if (!isOwner) return;
+    
     try {
-      const tx = await contract.executeKYCBatchUpdate();
-      const receipt = await tx.wait();
-      toastShow('KYC batch executed', 'success', EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
-      await loadPendingOperations();
-      await loadAll();
+      // Load basic stats
+      const [currentDay, totalDays] = await Promise.all([
+        contract.getCurrentDay(),
+        Promise.resolve(730) // Hardcoded for now
+      ]);
+      
+      if (adminDaysPassed) adminDaysPassed.textContent = currentDay.toString();
+      if (adminRemainingDays) adminRemainingDays.textContent = (730 - currentDay).toString();
+      
+      // Placeholder for more statistics
+      // These would require additional view functions in the contract
+      if (totalUsers) totalUsers.textContent = 'N/A';
+      if (activeUsers) activeUsers.textContent = 'N/A';
+      if (totalDistributed) totalDistributed.textContent = 'N/A';
+      
     } catch (e) {
-      console.error('executeKYCBatch', e);
-      toastShow('Failed to execute KYC batch', 'error');
+      console.error('loadAdminStatistics', e);
     }
   }
 
-  async function executeThresholdUpdate() {
-    try {
-      const tx = await contract.executeWhaleThresholdUpdate();
+  async function executeKYCBatch() {
+    await withLoading(async () => {
+      const tx = await contract.executeKYCBatchUpdate();
       const receipt = await tx.wait();
-      toastShow('Threshold update executed', 'success', EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
+      toastShow('KYC batch executed', 'success', 
+                EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
       await loadPendingOperations();
       await loadAll();
-    } catch (e) {
-      console.error('executeThresholdUpdate', e);
-      toastShow('Failed to execute threshold update', 'error');
-    }
+    }, null, 'KYC batch executed', 'Failed to execute KYC batch');
   }
 
   async function adminSetKycSingle(){
     const a = adminKycAddr.value.trim(); 
     const s = adminKycStatus.value === 'true';
-    if(!a){ toastShow('Enter address','error'); return; }
-    try {
+    if(!a || !ethers.utils.isAddress(a)){ 
+      toastShow('Enter valid address','error'); 
+      return; 
+    }
+    
+    await withLoading(async () => {
       const tx = await contract.setKYC(a, s);
       const r = await tx.wait();
-      toastShow('KYC updated', 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      toastShow('KYC updated', 'success', 
+                EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
       adminKycAddr.value = '';
       if(a.toLowerCase() === account.toLowerCase()) await loadAll();
-    } catch(e){ console.error(e); toastShow('Failed to set KYC', 'error'); }
+    }, adminSetKyc, 'KYC updated', 'Failed to set KYC');
   }
 
   async function adminScheduleKycBatchHandler(){
@@ -982,104 +1587,172 @@
     if(!rawAddrs){ toastShow('Provide addresses','error'); return; }
     const addrs = rawAddrs.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
     if(addrs.length === 0){ toastShow('No valid addresses','error'); return; }
+    
+    // Validate addresses
+    const invalidAddrs = addrs.filter(addr => !ethers.utils.isAddress(addr));
+    if (invalidAddrs.length > 0) {
+      toastShow(`Invalid addresses: ${invalidAddrs.join(', ')}`, 'error');
+      return;
+    }
+    
     if(!confirm(`Schedule KYC ${status ? 'verification' : 'revocation'} for ${addrs.length} addresses?`)) return;
-    try {
+    
+    await withLoading(async () => {
       const tx = await contract.scheduleKYCBatchUpdate(addrs, status);
       const r = await tx.wait();
-      toastShow('KYC batch scheduled', 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      toastShow('KYC batch scheduled', 'success', 
+                EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
       adminKycBatchAddrs.value='';
       await loadPendingOperations();
-    } catch(e){ console.error(e); toastShow('Failed to schedule KYC batch', 'error'); }
-  }
-
-  async function adminScheduleThresholdHandler(){
-    const newThreshold = newWhaleThreshold.value.trim();
-    if(!newThreshold){ toastShow('Enter new threshold','error'); return; }
-    try {
-      const thresholdWei = ethers.utils.parseUnits(newThreshold, decimals);
-      const tx = await contract.scheduleWhaleThresholdUpdate(thresholdWei);
-      const r = await tx.wait();
-      toastShow('Threshold update scheduled', 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
-      newWhaleThreshold.value = '';
-      await loadPendingOperations();
-    } catch(e){ console.error(e); toastShow('Failed to schedule threshold update', 'error'); }
+    }, adminScheduleKycBatch, 'KYC batch scheduled', 'Failed to schedule KYC batch');
   }
 
   async function adminDepositFunds(){
     const amount = depositAmount.value.trim();
-    if(!amount){ toastShow('Enter amount','error'); return; }
-    try {
+    if(!amount || parseFloat(amount) <= 0){ 
+      toastShow('Enter valid amount','error'); 
+      return; 
+    }
+    
+    await withLoading(async () => {
       const amountWei = ethers.utils.parseUnits(amount, decimals);
-      toastShow('Depositing funds...');
       const tx = await contract.depositFunds(amountWei);
       const r = await tx.wait();
-      toastShow('Funds deposited', 'success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      toastShow('Funds deposited', 'success', 
+                EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
       depositAmount.value = '';
       await loadAll();
-    } catch(e){ console.error(e); toastShow('Deposit failed', 'error'); }
+    }, adminDeposit, 'Funds deposited', 'Deposit failed');
   }
 
   async function adminStartVesting(){ 
     if(!confirm('Start vesting? This is irreversible.')) return; 
-    try{ 
+    await withLoading(async () => {
       const tx = await contract.startVesting(); 
       const r = await tx.wait(); 
-      toastShow('Vesting started','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      toastShow('Vesting started','success', 
+                EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
       await loadAll(); 
-    } catch(e){ console.error(e); toastShow('Failed to start','error'); } 
+    }, adminStart, 'Vesting started', 'Failed to start vesting');
   }
   
   async function adminPauseHandler(){ 
     if(!confirm('Pause contract?')) return; 
-    try{ 
+    await withLoading(async () => {
       const tx = await contract.pause(); 
       const r = await tx.wait(); 
-      toastShow('Paused','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      toastShow('Paused','success', 
+                EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
       await loadAll(); 
-    } catch(e){ console.error(e); toastShow('Failed to pause','error'); } 
+    }, adminPause, 'Contract paused', 'Failed to pause');
   }
   
   async function adminUnpauseHandler(){ 
     if(!confirm('Unpause contract?')) return; 
-    try{ 
+    await withLoading(async () => {
       const tx = await contract.unpause(); 
       const r = await tx.wait(); 
-      toastShow('Unpaused','success', EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
+      toastShow('Unpaused','success', 
+                EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null); 
       await loadAll(); 
-    } catch(e){ console.error(e); toastShow('Failed to unpause','error'); } 
+    }, adminUnpause, 'Contract unpaused', 'Failed to unpause');
+  }
+
+  async function adminAddRecoverableToken() {
+    const tokenAddress = addRecoverableToken.value.trim();
+    if (!tokenAddress || !ethers.utils.isAddress(tokenAddress)) {
+      toastShow('Enter valid token address', 'error');
+      return;
+    }
+    
+    await withLoading(async () => {
+      const tx = await contract.addRecoverableToken(tokenAddress);
+      const r = await tx.wait();
+      toastShow('Token added to recoverable list', 'success',
+                EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      addRecoverableToken.value = '';
+    }, adminAddRecoverable, 'Token added', 'Failed to add token');
+  }
+
+  async function adminRemoveRecoverableToken() {
+    const tokenAddress = removeRecoverableToken.value.trim();
+    if (!tokenAddress || !ethers.utils.isAddress(tokenAddress)) {
+      toastShow('Enter valid token address', 'error');
+      return;
+    }
+    
+    await withLoading(async () => {
+      const tx = await contract.removeRecoverableToken(tokenAddress);
+      const r = await tx.wait();
+      toastShow('Token removed from recoverable list', 'success',
+                EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      removeRecoverableToken.value = '';
+    }, adminRemoveRecoverable, 'Token removed', 'Failed to remove token');
+  }
+
+  async function adminEmergencyWithdraw() {
+    const tokenAddress = emergencyTokenAdmin.value.trim();
+    const amount = emergencyAmount.value.trim();
+    
+    if (!tokenAddress || !ethers.utils.isAddress(tokenAddress)) {
+      toastShow('Enter valid token address', 'error');
+      return;
+    }
+    
+    await withLoading(async () => {
+      let tx;
+      if (amount) {
+        const amountWei = ethers.utils.parseUnits(amount, decimals);
+        tx = await contract.emergencyWithdraw(tokenAddress, amountWei);
+      } else {
+        tx = await contract.emergencyWithdrawAll(tokenAddress);
+      }
+      
+      const r = await tx.wait();
+      toastShow('Emergency withdrawal successful', 'success',
+                EXPLORER ? `${EXPLORER}/tx/${r.transactionHash}` : null);
+      emergencyTokenAdmin.value = '';
+      emergencyAmount.value = '';
+    }, emergencyWithdrawAdmin, 'Emergency withdrawal successful', 'Emergency withdrawal failed');
   }
 
   /* ---------------- Polling & countdown ---------------- */
   let pollHandle = null;
-  function startPoll(){ if(pollHandle) clearInterval(pollHandle); pollHandle = setInterval(pollTick, POLL_INTERVAL); }
+  function startPoll(){ 
+    if(pollHandle) clearInterval(pollHandle); 
+    pollHandle = setInterval(pollTick, POLL_INTERVAL); 
+  }
+  
   async function pollTick(){
     try {
       if(!contract || !account) return;
       const claimable = await contract.getClaimableAmount(account);
       if(claimable.gt(lastClaimable)){
-        toastShow('New tokens unlocked — claim available', 'success');
+        toastShow('New tokens available to claim', 'success');
         lastClaimable = claimable;
         await loadAll();
       }
-      if(nextVestingTimeMs && Date.now() >= nextVestingTimeMs){ await loadAll(); }
-    } catch(e){ console.error('pollTick', e); }
+    } catch(e){ 
+      console.error('pollTick', e); 
+    }
   }
 
   function startCountdown(){
     setInterval(()=>{
-      if(!nextVestingTimeMs){ 
+      if(!nextClaimTimeMs){ 
         if(cdDays) cdDays.textContent='--'; 
         if(cdHours) cdHours.textContent='--'; 
         if(cdMins) cdMins.textContent='--'; 
         if(cdSecs) cdSecs.textContent='--'; 
         return; 
       }
-      const diff = Math.max(0, nextVestingTimeMs - Date.now());
+      const diff = Math.max(0, nextClaimTimeMs - Date.now());
       if(diff <= 0){ 
         if(cdDays) cdDays.textContent='00'; 
         if(cdHours) cdHours.textContent='00'; 
         if(cdMins) cdMins.textContent='00'; 
         if(cdSecs) cdSecs.textContent='00'; 
+        nextClaimTimeMs = null;
         return; 
       }
       const days = Math.floor(diff/(1000*60*60*24));
@@ -1100,21 +1773,45 @@
   if (claimBtn) claimBtn.addEventListener('click', claimTokens);
   if (refreshBtnSmall) refreshBtnSmall.addEventListener('click', loadAll);
   if (refreshBtnLarge) refreshBtnLarge.addEventListener('click', loadAll);
+  if (signMessageBtn) signMessageBtn.addEventListener('click', signMessageForVerification);
+  if (emergencyWithdrawBtn) emergencyWithdrawBtn.addEventListener('click', emergencyWithdrawTokens);
 
   if (adminBtnSmall) adminBtnSmall.addEventListener('click', openAdminModal);
   if (openAdmin) openAdmin.addEventListener('click', openAdminModal);
   if (closeAdmin) closeAdmin.addEventListener('click', closeAdminModal);
   if (adminSetKyc) adminSetKyc.addEventListener('click', adminSetKycSingle);
   if (adminScheduleKycBatch) adminScheduleKycBatch.addEventListener('click', adminScheduleKycBatchHandler);
-  if (adminScheduleThreshold) adminScheduleThreshold.addEventListener('click', adminScheduleThresholdHandler);
   if (adminDeposit) adminDeposit.addEventListener('click', adminDepositFunds);
   if (adminStart) adminStart.addEventListener('click', adminStartVesting);
   if (adminPause) adminPause.addEventListener('click', adminPauseHandler);
   if (adminUnpause) adminUnpause.addEventListener('click', adminUnpauseHandler);
+  if (adminAddRecoverable) adminAddRecoverable.addEventListener('click', adminAddRecoverableToken);
+  if (adminRemoveRecoverable) adminRemoveRecoverable.addEventListener('click', adminRemoveRecoverableToken);
+  if (emergencyWithdrawAdmin) emergencyWithdrawAdmin.addEventListener('click', adminEmergencyWithdraw);
 
   if (contractLink) {
     contractLink.addEventListener('click', (e)=> {
-      if(!EXPLORER){ e.preventDefault(); navigator.clipboard && navigator.clipboard.writeText(CONTRACT_ADDR).then(()=> toastShow('Contract address copied','success')); }
+      if(!EXPLORER){ 
+        e.preventDefault(); 
+        navigator.clipboard && navigator.clipboard.writeText(CONTRACT_ADDR).then(()=> 
+          toastShow('Contract address copied','success')
+        ); 
+      }
+    });
+  }
+
+  // Network change listener
+  if (window.ethereum) {
+    window.ethereum.on('chainChanged', (chainId) => {
+      window.location.reload();
+    });
+    
+    window.ethereum.on('accountsChanged', (accounts) => {
+      if (accounts.length === 0) {
+        disconnectWallet();
+      } else {
+        window.location.reload();
+      }
     });
   }
 
@@ -1124,8 +1821,7 @@
 
   // Expose functions for global access
   window.executeKYCBatch = executeKYCBatch;
-  window.executeThresholdUpdate = executeThresholdUpdate;
-  window.__nuur = { loadAll };
+  window.__nuur = { loadAll, switchToSidraChain };
 
 })();
 </script>
