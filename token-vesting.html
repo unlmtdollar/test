@@ -170,6 +170,15 @@
       font-size: 16px;
     }
 
+    .vesting-info {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-warn));
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+      text-align: center;
+    }
+
     /* responsive */
     @media (max-width: 900px) {
       .app { grid-template-columns: 1fr; padding:8px; gap:10px; }
@@ -215,7 +224,7 @@
         </div>
         <div style="flex:1">
           <h1>Nuur Claim</h1>
-          <p class="small">Token migration & claims</p>
+          <p class="small">24-Month Token Vesting</p>
         </div>
       </div>
 
@@ -261,8 +270,10 @@
       </div>
 
       <div class="small" style="margin-top:auto">
-        <div><strong>Notes</strong></div>
-        <div style="margin-top:6px" class="muted small">Please complete KYC verification and take a snapshot before claiming.</div>
+        <div><strong>24-Month Vesting</strong></div>
+        <div style="margin-top:6px" class="muted small">• Whales: 25% monthly</div>
+        <div class="muted small">• Small holders: 30% monthly</div>
+        <div class="muted small">• Complete in 24 months max</div>
       </div>
     </aside>
 
@@ -271,7 +282,7 @@
       <div class="top-row">
         <div>
           <h2 style="margin:0">Dashboard</h2>
-          <div class="muted small" style="margin-top:6px">Overview of your claim status</div>
+          <div class="muted small" style="margin-top:6px">24-month vesting with accelerated claims</div>
         </div>
 
         <div style="display:flex;gap:8px;align-items:center">
@@ -291,7 +302,7 @@
 
       <div class="grid-2">
         <div class="panel">
-          <h3>Allocation</h3>
+          <h3>Vesting Allocation</h3>
           <div style="display:flex;justify-content:space-between;align-items:center">
             <div>
               <div class="muted small">Snapshot Balance</div>
@@ -309,12 +320,22 @@
 
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
             <div class="muted small">Months passed</div>
-            <div id="monthsPassed" style="font-weight:800">0 / 12</div>
+            <div id="monthsPassed" style="font-weight:800">0 / 24</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <div class="muted small">Remaining Months</div>
+            <div id="remainingMonths" style="font-weight:800; color: var(--color-accent);">24 months</div>
           </div>
 
           <div style="margin-top:12px">
             <div class="muted small">User Type</div>
             <div id="userType" style="margin-top:6px"></div>
+          </div>
+
+          <div class="vesting-info">
+            <div style="font-size:12px; font-weight:700;">🎯 FAST VESTING</div>
+            <div style="font-size:11px; opacity:0.9;" id="vestingRate">Whales: 25% monthly | Small: 30% monthly</div>
           </div>
 
           <div class="claim-area">
@@ -349,7 +370,7 @@
 
           <div style="margin-top:12px">
             <div class="muted small">Monthly Rate</div>
-            <div style="margin-top:8px" id="monthlyRate">0%</div>
+            <div style="margin-top:8px; font-size:16px; font-weight:800; color: var(--color-success);" id="monthlyRate">0%</div>
           </div>
 
           <div style="margin-top:12px">
@@ -372,6 +393,17 @@
             <div class="status-item">
               <div class="muted small">KYC Verified:</div>
               <div id="kycStatusDisplay" class="status-value">No</div>
+            </div>
+            <div class="status-item">
+              <div class="muted small">Whale Threshold:</div>
+              <div id="whaleThresholdDisplay" class="status-value">0 NUUR</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px; padding:12px; background: rgba(255,255,255,0.03); border-radius:8px;">
+            <div class="muted small" style="text-align:center">⏰ Fast Operations</div>
+            <div style="font-size:11px; text-align:center; margin-top:4px; opacity:0.8;">
+              Whale cooldown: 5min • KYC timelock: 10min
             </div>
           </div>
         </div>
@@ -467,6 +499,7 @@
   const EXPLORER = (SIDRA_CHAIN.blockExplorerUrls && SIDRA_CHAIN.blockExplorerUrls[0]) ? SIDRA_CHAIN.blockExplorerUrls[0].replace(/\/$/,'') : '';
 
   const VESTING_ABI = [{"inputs":[{"internalType":"address","name":"_newToken","type":"address"},{"internalType":"address","name":"_oldToken","type":"address"},{"internalType":"uint256","name":"_initialWhaleThreshold","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"FundsDeposited","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool","name":"status","type":"bool"},{"indexed":false,"internalType":"uint256","name":"scheduledTime","type":"uint256"}],"name":"KYCBatchScheduled","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool","name":"status","type":"bool"}],"name":"KYCBatchUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"verified","type":"bool"}],"name":"KYCUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"oldToken","type":"address"}],"name":"OldTokenSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"}],"name":"RecoverableTokenAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"}],"name":"RecoverableTokenRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"balance","type":"uint256"}],"name":"SnapshotTaken","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"received","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"VestingStarted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newThreshold","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"scheduledTime","type":"uint256"}],"name":"WhaleThresholdUpdateScheduled","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"oldThreshold","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newThreshold","type":"uint256"}],"name":"WhaleThresholdUpdated","type":"event"},{"inputs":[],"name":"CLAIM_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"KYC_TIMELOCK_DELAY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"KYC_UPDATE_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_BATCH_SIZE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_VESTING_START_DELAY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MONTH_DURATION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"SMALL_HOLDER_MONTHLY_PERCENT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VESTING_MONTHS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WHALE_MONTHLY_PERCENT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"addRecoverableToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"canClaim","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"canTakeSnapshot","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"minAmount","type":"uint256"}],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"claimInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"snapshotBalance","type":"uint256"},{"internalType":"bool","name":"snapshotTaken","type":"bool"},{"internalType":"bool","name":"exists","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contractCreationTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"depositFunds","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"name":"emergencyWithdrawAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"executeKYCBatchUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"executeWhaleThresholdUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getContractBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCooldownRemaining","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getKYCUpdateCooldownRemaining","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getMonthlyPercentage","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPendingKYCBatch","outputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool","name":"status","type":"bool"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"},{"internalType":"bool","name":"canExecute","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPendingWhaleThresholdUpdate","outputs":[{"internalType":"uint256","name":"newThreshold","type":"uint256"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"},{"internalType":"bool","name":"canExecute","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getRemainingVestingMonths","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTotalVestingMonths","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserClaimInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"snapshotBalance","type":"uint256"},{"internalType":"bool","name":"snapshotTaken","type":"bool"},{"internalType":"bool","name":"isWhaleHolder","type":"bool"},{"internalType":"uint256","name":"monthlyPercent","type":"uint256"},{"internalType":"uint256","name":"remainingMonths","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"isWhale","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycLastUpdate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastClaimTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"newToken","outputs":[{"internalType":"contract INuurCoin","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"oldToken","outputs":[{"internalType":"contract IOldToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pendingKYCBatch","outputs":[{"internalType":"bool","name":"status","type":"bool"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pendingWhaleThresholdUpdate","outputs":[{"internalType":"uint256","name":"newThreshold","type":"uint256"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"recoverableTokens","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"removeRecoverableToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool","name":"status","type":"bool"}],"name":"scheduleKYCBatchUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"newThreshold","type":"uint256"}],"name":"scheduleWhaleThresholdUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"setKYC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"takeSnapshot","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"vestingStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStarted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"whaleThreshold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}];
+
   /* ------------------- DOM -------------------- */
   const connectBtn = document.getElementById('connectBtn');
   const themeToggle = document.getElementById('themeToggle');
@@ -490,7 +523,9 @@
   const claimableDisplay = document.getElementById('claimableDisplay');
   const progressBar = document.getElementById('progressBar');
   const monthsPassedEl = document.getElementById('monthsPassed');
+  const remainingMonths = document.getElementById('remainingMonths');
   const userType = document.getElementById('userType');
+  const vestingRate = document.getElementById('vestingRate');
   const snapshotStatus = document.getElementById('snapshotStatus');
   const monthlyRate = document.getElementById('monthlyRate');
   const minAmountInput = document.getElementById('minAmountInput');
@@ -503,6 +538,7 @@
   const cooldownStatus = document.getElementById('cooldownStatus');
   const contractBalanceDisplay = document.getElementById('contractBalanceDisplay');
   const kycStatusDisplay = document.getElementById('kycStatusDisplay');
+  const whaleThresholdDisplay = document.getElementById('whaleThresholdDisplay');
   const claimBtn = document.getElementById('claimBtn');
   const contractLink = document.getElementById('contractLink');
 
@@ -670,10 +706,11 @@
       if (pausedStatus) pausedStatus.textContent = paused ? 'Yes' : 'No';
       if (contractBalanceDisplay) contractBalanceDisplay.textContent = `${formatTokenAmount(contractBal, decimals)} NUUR`;
       if (currentWhaleThreshold) currentWhaleThreshold.textContent = `${formatTokenAmount(whaleThresh, decimals)} NUUR`;
+      if (whaleThresholdDisplay) whaleThresholdDisplay.textContent = `${formatTokenAmount(whaleThresh, decimals)} NUUR`;
 
-      // Get user claim info
+      // Get user claim info with new parameters
       const claimInfo = await contract.getUserClaimInfo(account);
-      const [totalAmount, claimedAmount, snapshotBal, snapshotTaken, isWhale, monthlyPercent] = claimInfo;
+      const [totalAmount, claimedAmount, snapshotBal, snapshotTaken, isWhale, monthlyPercent, remainingMonthsValue] = claimInfo;
       
       if (snapshotBalance) snapshotBalance.textContent = `${formatTokenAmount(snapshotBal, decimals)} NUUR`;
       if (claimedEl) claimedEl.textContent = `${formatTokenAmount(claimedAmount, decimals)} NUUR`;
@@ -694,20 +731,23 @@
         }
       }
 
-      // Update user type and monthly rate
+      // Update user type and monthly rate with new percentages
       if (userType) {
         if (isWhale) {
-          userType.innerHTML = '<span class="user-type-badge whale-badge">🐋 Whale (10%/month)</span>';
+          userType.innerHTML = '<span class="user-type-badge whale-badge">🐋 Whale (25%/month)</span>';
+          if (vestingRate) vestingRate.textContent = 'Whales: 25% monthly | Small: 30% monthly';
         } else {
-          userType.innerHTML = '<span class="user-type-badge small-badge">👤 Small Holder (20%/month)</span>';
+          userType.innerHTML = '<span class="user-type-badge small-badge">👤 Small Holder (30%/month)</span>';
+          if (vestingRate) vestingRate.textContent = 'Whales: 25% monthly | Small: 30% monthly';
         }
       }
       
       if (monthlyRate) monthlyRate.textContent = `${monthlyPercent.toString()}%`;
 
-      // Enable/disable snapshot button
+      // Enable/disable snapshot button - no KYC requirement
       if (takeSnapshotBtn) {
-        takeSnapshotBtn.disabled = !k || snapshotTaken;
+        const canTakeSnapshot = await contract.canTakeSnapshot(account);
+        takeSnapshotBtn.disabled = !canTakeSnapshot;
         if (snapshotTaken) {
           takeSnapshotBtn.textContent = '✅ Snapshot Taken';
           takeSnapshotBtn.style.background = 'var(--color-success)';
@@ -723,9 +763,8 @@
       const cooldownRemaining = await contract.getCooldownRemaining(account);
       if (cooldownStatus) {
         if (cooldownRemaining.gt(0)) {
-          const hours = Math.floor(cooldownRemaining.toNumber() / 3600);
-          const minutes = Math.floor((cooldownRemaining.toNumber() % 3600) / 60);
-          cooldownStatus.textContent = `${hours}h ${minutes}m`;
+          const minutes = Math.ceil(cooldownRemaining.toNumber() / 60);
+          cooldownStatus.textContent = `${minutes}m`;
           cooldownStatus.style.color = 'var(--color-warn)';
         } else {
           cooldownStatus.textContent = 'Ready';
@@ -733,19 +772,27 @@
         }
       }
 
-      // months passed & progress
+      // months passed & progress - updated for 24 months
       if(vStarted && vestingStartTimeSec > 0){
         const now = Math.floor(Date.now()/1000);
         let months = Math.floor((now - vestingStartTimeSec) / (30*24*60*60));
         if(months < 0) months = 0; 
-        if(months > 12) months = 12;
-        if (monthsPassedEl) monthsPassedEl.textContent = `${months} / 12`;
-        if (progressBar) progressBar.style.width = `${(months/12)*100}%`;
+        if(months > 24) months = 24;
+        if (monthsPassedEl) monthsPassedEl.textContent = `${months} / 24`;
+        if (progressBar) progressBar.style.width = `${(months/24)*100}%`;
         const nextSec = vestingStartTimeSec + (months+1)*30*24*60*60;
         nextVestingTimeMs = nextSec * 1000;
+        
+        // Update remaining months
+        if (remainingMonths) {
+          const remaining = 24 - months;
+          remainingMonths.textContent = `${remaining} months`;
+          remainingMonths.style.color = remaining <= 6 ? 'var(--color-warn)' : 'var(--color-accent)';
+        }
       } else {
-        if (monthsPassedEl) monthsPassedEl.textContent = `0 / 12`;
+        if (monthsPassedEl) monthsPassedEl.textContent = `0 / 24`;
         if (progressBar) progressBar.style.width = `0%`;
+        if (remainingMonths) remainingMonths.textContent = '24 months';
         nextVestingTimeMs = null;
       }
 
@@ -854,10 +901,10 @@
         `;
       } else if (kycBatch.scheduledTime > 0 && !kycBatch.executed) {
         const timeLeft = kycBatch.scheduledTime - Math.floor(Date.now()/1000);
-        const hours = Math.floor(timeLeft / 3600);
+        const minutes = Math.ceil(timeLeft / 60);
         pendingHtml += `
           <div style="background: var(--color-warn); color: white; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
-            <strong>KYC Batch Pending</strong> - ${hours}h remaining
+            <strong>KYC Batch Pending</strong> - ${minutes}m remaining
           </div>
         `;
       }
@@ -871,10 +918,10 @@
         `;
       } else if (thresholdUpdate.scheduledTime > 0 && !thresholdUpdate.executed) {
         const timeLeft = thresholdUpdate.scheduledTime - Math.floor(Date.now()/1000);
-        const hours = Math.floor(timeLeft / 3600);
+        const minutes = Math.ceil(timeLeft / 60);
         pendingHtml += `
           <div style="background: var(--color-warn); color: white; padding: 8px; border-radius: 6px; margin-bottom: 8px;">
-            <strong>Threshold Update Pending</strong> - ${hours}h remaining
+            <strong>Threshold Update Pending</strong> - ${minutes}m remaining
           </div>
         `;
       }
