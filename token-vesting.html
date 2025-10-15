@@ -375,6 +375,14 @@
         </div>
       </div>
 
+      <!-- GASLESS VERIFICATION SECTION - MOVED TO TOP -->
+      <div class="signature-section" id="gaslessSection" style="display:none">
+        <div style="font-size:12px; font-weight:700;">🔐 GASLESS VERIFICATION</div>
+        <div style="font-size:11px; opacity:0.9; margin-top:4px;">Sign message to verify ownership (no gas fee)</div>
+        <button id="signMessageBtn" class="btn" style="background: white; color: var(--color-strong); margin-top:8px; font-size:12px;">Sign Message</button>
+        <div id="signatureStatus" style="font-size:10px; margin-top:6px;"></div>
+      </div>
+
       <!-- SNAPSHOT SECTION -->
       <div class="snapshot-section">
         <h3>📸 First Step: Take Snapshot</h3>
@@ -385,7 +393,7 @@
 
       <div class="grid-2">
         <div class="panel">
-          <h3>Daily Vesting Progress</h3>
+          <h3>Vesting Progress</h3>
           <div style="display:flex;justify-content:space-between;align-items:center">
             <div>
               <div class="muted small">Total Allocation</div>
@@ -403,15 +411,15 @@
 
           <div class="day-progress">
             <div class="day-item">
-              <div class="day-label">Days Passed</div>
+              <div class="day-label">Elapsed Period</div>
               <div id="daysPassed" class="day-value">0 / 730</div>
             </div>
             <div class="day-item">
-              <div class="day-label">Remaining Days</div>
+              <div class="day-label">Remaining Period</div>
               <div id="remainingDays" class="day-value">730 days</div>
             </div>
             <div class="day-item">
-              <div class="day-label">Last Claim Day</div>
+              <div class="day-label">Last Claim</div>
               <div id="lastClaimDay" class="day-value">Day 0</div>
             </div>
           </div>
@@ -423,7 +431,7 @@
 
           <div class="claim-area">
             <div>
-              <div class="muted small">Claimable now</div>
+              <div class="muted small">Claimable Amount</div>
               <div class="claim-amount" id="claimableDisplay">0 NUUR</div>
               <div class="muted small" style="margin-top:4px;" id="claimableDays">0 days accumulated</div>
             </div>
@@ -447,50 +455,37 @@
         </div>
 
         <div class="panel">
-          <h3>Actions & Status</h3>
+          <h3>Status & Actions</h3>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button id="refreshBtnLarge" class="btn btn-ghost">Refresh Data</button>
-            <button id="gaslessVerifyBtn" class="btn btn-ghost" style="display:none">Gasless Verify</button>
           </div>
 
           <div style="margin-top:12px">
-            <div class="muted small">Daily Rate</div>
+            <div class="muted small">Daily Distribution Rate</div>
             <div style="margin-top:8px; font-size:16px; font-weight:800; color: var(--color-success);" id="dailyRate">~0.137%</div>
           </div>
 
           <div style="margin-top:12px">
             <div class="status-item">
-              <div class="muted small">Vesting:</div>
+              <div class="muted small">Vesting Status:</div>
               <div id="vestingStatus" class="status-value">Not started</div>
             </div>
             <div class="status-item">
-              <div class="muted small">Paused:</div>
-              <div id="pausedStatus" class="status-value">No</div>
+              <div class="muted small">Contract Status:</div>
+              <div id="pausedStatus" class="status-value">Active</div>
             </div>
             <div class="status-item">
-              <div class="muted small">Claim Cooldown:</div>
+              <div class="muted small">Claim Availability:</div>
               <div id="cooldownStatus" class="status-value">Ready</div>
             </div>
             <div class="status-item">
-              <div class="muted small">Contract Balance:</div>
-              <div id="contractBalanceDisplay" class="status-value">0 NUUR</div>
+              <div class="muted small">KYC Status:</div>
+              <div id="kycStatusDisplay" class="status-value">Not verified</div>
             </div>
             <div class="status-item">
-              <div class="muted small">KYC Verified:</div>
-              <div id="kycStatusDisplay" class="status-value">No</div>
-            </div>
-            <div class="status-item">
-              <div class="muted small">Current Day:</div>
+              <div class="muted small">Current Vesting Day:</div>
               <div id="currentDayDisplay" class="status-value">Day 0</div>
             </div>
-          </div>
-
-          <!-- Gasless Signature Section -->
-          <div class="signature-section" id="gaslessSection" style="display:none">
-            <div style="font-size:12px; font-weight:700;">🔐 GASLESS VERIFICATION</div>
-            <div style="font-size:11px; opacity:0.9; margin-top:4px;">Sign message to verify ownership (no gas fee)</div>
-            <button id="signMessageBtn" class="btn" style="background: white; color: var(--color-strong); margin-top:8px; font-size:12px;">Sign Message</button>
-            <div id="signatureStatus" style="font-size:10px; margin-top:6px;"></div>
           </div>
 
           <!-- Emergency Withdrawal Section (Admin Only) -->
@@ -500,6 +495,13 @@
             <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
               <input id="emergencyToken" class="form-input" placeholder="Token Address" style="flex:1; font-size:12px;" />
               <button id="emergencyWithdrawBtn" class="btn btn-danger" style="font-size:12px;">Withdraw</button>
+            </div>
+          </div>
+
+          <div style="margin-top:16px; padding:12px; background: rgba(255,255,255,0.03); border-radius:8px;">
+            <div class="muted small" style="text-align:center">🔄 Flexible Claiming</div>
+            <div style="font-size:11px; text-align:center; margin-top:4px; opacity:0.8;">
+              Claim daily or accumulate • Missed periods don't expire
             </div>
           </div>
         </div>
@@ -612,11 +614,11 @@
                 <div>~0.137%</div>
               </div>
               <div class="status-item">
-                <div class="muted small">Days Passed:</div>
+                <div class="muted small">Elapsed Period:</div>
                 <div id="adminDaysPassed">0</div>
               </div>
               <div class="status-item">
-                <div class="muted small">Remaining Days:</div>
+                <div class="muted small">Remaining Period:</div>
                 <div id="adminRemainingDays">730</div>
               </div>
             </div>
@@ -745,7 +747,7 @@
 (function(){
   /* ------------------- Config -------------------- */
   const CONTRACT_ADDR = "0x0Dc77F1d9195a75fEBA53Ff2c0e0e8A6a6F08a1C";
-  const NUUR_TOKEN = "0x76C8885Dc877a2143Cd0E6AaA6bdbDcdABcC2Fd4";
+  const NUUR_TOKEN = "0xD69CC2ddBdA8e53E8701bb64f6f2E28A27569Fc9";
   const SIDRA_CHAIN = { 
     chainId: "0x17CAD", 
     chainName: "Sidra Chain",
@@ -759,17 +761,15 @@
   };
   const EXPLORER = (SIDRA_CHAIN.blockExplorerUrls && SIDRA_CHAIN.blockExplorerUrls[0]) ? SIDRA_CHAIN.blockExplorerUrls[0].replace(/\/$/,'') : '';
 
-  // PLACEHOLDER - Replace with actual ABI from your compiled contract
+  // PLACEHOLDER ABI - Replace with actual ABI from your compiled contract
   const VESTING_ABI = [{"inputs":[{"internalType":"address","name":"_newToken","type":"address"},{"internalType":"address","name":"_oldToken","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ECDSAInvalidSignature","type":"error"},{"inputs":[{"internalType":"uint256","name":"length","type":"uint256"}],"name":"ECDSAInvalidSignatureLength","type":"error"},{"inputs":[{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"ECDSAInvalidSignatureS","type":"error"},{"inputs":[],"name":"InvalidShortString","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"inputs":[{"internalType":"string","name":"str","type":"string"}],"name":"StringTooLong","type":"error"},{"anonymous":false,"inputs":[],"name":"EIP712DomainChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"scheduledTime","type":"uint256"}],"name":"EmergencyWithdrawScheduled","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"FundsDeposited","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"GaslessVerified","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool","name":"status","type":"bool"},{"indexed":false,"internalType":"uint256","name":"scheduledTime","type":"uint256"}],"name":"KYCBatchScheduled","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"bool","name":"status","type":"bool"}],"name":"KYCBatchUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"verified","type":"bool"}],"name":"KYCUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"oldToken","type":"address"}],"name":"OldTokenSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"}],"name":"RecoverableTokenAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"}],"name":"RecoverableTokenRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"balance","type":"uint256"}],"name":"SnapshotTaken","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"beneficiary","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"received","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"allocation","type":"uint256"}],"name":"UserRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startTime","type":"uint256"}],"name":"VestingStarted","type":"event"},{"inputs":[],"name":"CLAIM_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DAY_DURATION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"EMERGENCY_WITHDRAWAL_DELAY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"GASLESS_VERIFICATION_EXPIRY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"KYC_TIMELOCK_DELAY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"KYC_UPDATE_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_BATCH_SIZE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_VESTING_START_DELAY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PRECISION_FACTOR","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TOTAL_VESTING_DAYS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"addRecoverableToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"calculateClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"calculateDailyVesting","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"canClaim","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"canTakeSnapshot","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"minAmount","type":"uint256"}],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"claimInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"snapshotBalance","type":"uint256"},{"internalType":"uint256","name":"lastClaimDay","type":"uint256"},{"internalType":"bool","name":"snapshotTaken","type":"bool"},{"internalType":"bool","name":"exists","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contractCreationTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"depositFunds","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"eip712Domain","outputs":[{"internalType":"bytes1","name":"fields","type":"bytes1"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"version","type":"string"},{"internalType":"uint256","name":"chainId","type":"uint256"},{"internalType":"address","name":"verifyingContract","type":"address"},{"internalType":"bytes32","name":"salt","type":"bytes32"},{"internalType":"uint256[]","name":"extensions","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"name":"emergencyWithdrawAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"emergencyWithdrawalAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"emergencyWithdrawalTimelock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"name":"executeEmergencyWithdrawal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"executeKYCBatchUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"gaslessVerificationTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"gaslessVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getContractBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getContractStats","outputs":[{"internalType":"uint256","name":"totalUsers","type":"uint256"},{"internalType":"uint256","name":"totalDistributed","type":"uint256"},{"internalType":"uint256","name":"totalAllocation","type":"uint256"},{"internalType":"uint256","name":"activeUsers","type":"uint256"},{"internalType":"uint256","name":"contractBalance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getCooldownRemaining","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCurrentDay","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDaysPassed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"name":"getEmergencyWithdrawalTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getKYCUpdateCooldownRemaining","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPendingKYCBatch","outputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool","name":"status","type":"bool"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"},{"internalType":"bool","name":"canExecute","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"name":"getRecoverableTokenInfo","outputs":[{"internalType":"bool","name":"isRecoverable","type":"bool"},{"internalType":"uint256","name":"balance","type":"uint256"},{"internalType":"uint256","name":"scheduledWithdrawalTime","type":"uint256"},{"internalType":"uint256","name":"scheduledWithdrawalAmount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getRemainingVestingDays","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserClaimInfo","outputs":[{"internalType":"uint256","name":"totalAmount","type":"uint256"},{"internalType":"uint256","name":"claimedAmount","type":"uint256"},{"internalType":"uint256","name":"snapshotBalance","type":"uint256"},{"internalType":"bool","name":"snapshotTaken","type":"bool"},{"internalType":"uint256","name":"lastClaimDay","type":"uint256"},{"internalType":"uint256","name":"currentDay","type":"uint256"},{"internalType":"uint256","name":"remainingDays","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserStats","outputs":[{"internalType":"uint256","name":"claimCount","type":"uint256"},{"internalType":"uint256","name":"lastActivity","type":"uint256"},{"internalType":"uint256","name":"totalAllocated","type":"uint256"},{"internalType":"uint256","name":"totalClaimed","type":"uint256"},{"internalType":"bool","name":"isGaslessVerified_","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserTotalPurchase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getVestingProgress","outputs":[{"internalType":"uint256","name":"vestedPercentage","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"isGaslessVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycLastUpdate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"kycVerified","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastClaimTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"newToken","outputs":[{"internalType":"contract INuurCoin","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"oldToken","outputs":[{"internalType":"contract IOldToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pendingKYCBatch","outputs":[{"internalType":"bool","name":"status","type":"bool"},{"internalType":"uint256","name":"scheduledTime","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"recoverableTokens","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"removeRecoverableToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"scheduleEmergencyWithdrawal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"},{"internalType":"bool","name":"status","type":"bool"}],"name":"scheduleKYCBatchUpdate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bool","name":"status","type":"bool"}],"name":"setKYC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"stats","outputs":[{"internalType":"uint256","name":"totalUsers","type":"uint256"},{"internalType":"uint256","name":"totalDistributed","type":"uint256"},{"internalType":"uint256","name":"totalAllocation","type":"uint256"},{"internalType":"uint256","name":"activeUsers","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"takeSnapshot","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userClaimCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userLastActivity","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes","name":"signature","type":"bytes"}],"name":"verifyGasless","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"vestingStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingStarted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}];
 
-  /* ------------------- DOM -------------------- */
+  /* ------------------- DOM Elements -------------------- */
   const connectBtn = document.getElementById('connectBtn');
   const themeToggle = document.getElementById('themeToggle');
   const networkIndicator = document.getElementById('networkIndicator');
-
   const ctaAccountBox = document.getElementById('accountBox');
   const addrShort = document.getElementById('addrShort');
-  const chainLabel = document.getElementById('chainLabel');
   const nuurBal = document.getElementById('nuurBal');
   const sdaBal = document.getElementById('sdaBal');
   const kycDot = document.getElementById('kycDot');
@@ -780,14 +780,12 @@
   const adminBtnSmall = document.getElementById('adminBtnSmall');
   const openAdmin = document.getElementById('openAdmin');
   const disconnectBtn = document.getElementById('disconnectBtn');
-  const gaslessVerifyBtn = document.getElementById('gaslessVerifyBtn');
   const signMessageBtn = document.getElementById('signMessageBtn');
   const signatureStatus = document.getElementById('signatureStatus');
   const gaslessSection = document.getElementById('gaslessSection');
   const emergencySection = document.getElementById('emergencySection');
   const emergencyToken = document.getElementById('emergencyToken');
   const emergencyWithdrawBtn = document.getElementById('emergencyWithdrawBtn');
-
   const snapshotBalance = document.getElementById('snapshotBalance');
   const claimedEl = document.getElementById('claimed');
   const claimableDisplay = document.getElementById('claimableDisplay');
@@ -806,19 +804,14 @@
   const vestingStatus = document.getElementById('vestingStatus');
   const pausedStatus = document.getElementById('pausedStatus');
   const cooldownStatus = document.getElementById('cooldownStatus');
-  const contractBalanceDisplay = document.getElementById('contractBalanceDisplay');
   const kycStatusDisplay = document.getElementById('kycStatusDisplay');
   const currentDayDisplay = document.getElementById('currentDayDisplay');
   const claimBtn = document.getElementById('claimBtn');
   const contractLink = document.getElementById('contractLink');
-
-  // admin modal elements
   const adminModal = document.getElementById('adminModal');
   const closeAdmin = document.getElementById('closeAdmin');
   const tabs = document.querySelectorAll('.tab');
   const tabContents = document.querySelectorAll('.tab-content');
-  
-  // KYC Tab
   const adminKycAddr = document.getElementById('adminKycAddr');
   const adminKycStatus = document.getElementById('adminKycStatus');
   const adminSetKyc = document.getElementById('adminSetKyc');
@@ -827,8 +820,6 @@
   const adminScheduleKycBatch = document.getElementById('adminScheduleKycBatch');
   const totalVerified = document.getElementById('totalVerified');
   const pendingBatchCount = document.getElementById('pendingBatchCount');
-  
-  // Funds Tab
   const adminContractBalance = document.getElementById('adminContractBalance');
   const requiredBalance = document.getElementById('requiredBalance');
   const depositAmount = document.getElementById('depositAmount');
@@ -838,8 +829,6 @@
   const adminStart = document.getElementById('adminStart');
   const adminPause = document.getElementById('adminPause');
   const adminUnpause = document.getElementById('adminUnpause');
-  
-  // Emergency Tab
   const addRecoverableToken = document.getElementById('addRecoverableToken');
   const removeRecoverableToken = document.getElementById('removeRecoverableToken');
   const adminAddRecoverable = document.getElementById('adminAddRecoverable');
@@ -847,8 +836,6 @@
   const emergencyTokenAdmin = document.getElementById('emergencyTokenAdmin');
   const emergencyAmount = document.getElementById('emergencyAmount');
   const emergencyWithdrawAdmin = document.getElementById('emergencyWithdrawAdmin');
-  
-  // Stats Tab
   const totalUsers = document.getElementById('totalUsers');
   const activeUsers = document.getElementById('activeUsers');
   const totalDistributed = document.getElementById('totalDistributed');
@@ -858,7 +845,6 @@
   const avgClaimFreq = document.getElementById('avgClaimFreq');
   const successRate = document.getElementById('successRate');
   const gasUsed = document.getElementById('gasUsed');
-
   const pendingOperations = document.getElementById('pendingOperations');
   const toastEl = document.getElementById('toast');
 
@@ -953,6 +939,98 @@
     }
   }
 
+  /* ----------------- Gasless Signature ----------------- */
+  async function signMessageForVerification() {
+    if (!signer || !account) return;
+    
+    try {
+      setLoadingState(signMessageBtn, true, 'Signing...');
+      
+      const message = `Nuur Claim Verification\n\nAddress: ${account}\nTimestamp: ${Date.now()}\n\nThis signature verifies your ownership and does not cost gas.`;
+      
+      const signature = await signer.signMessage(message);
+      
+      // Verify the signature
+      const recoveredAddress = ethers.utils.verifyMessage(message, signature);
+      const isValid = recoveredAddress.toLowerCase() === account.toLowerCase();
+      
+      if (isValid) {
+        signatureStatus.textContent = '✅ Signature verified successfully';
+        signatureStatus.style.color = 'var(--color-success)';
+        toastShow('Gasless verification successful', 'success');
+        
+        // Store verification in localStorage and hide section
+        localStorage.setItem(`nuur_verified_${account}`, 'true');
+        
+        // Hide the gasless section after successful verification
+        setTimeout(() => {
+          if (gaslessSection) {
+            gaslessSection.style.display = 'none';
+          }
+        }, 2000);
+        
+      } else {
+        signatureStatus.textContent = '❌ Signature verification failed';
+        signatureStatus.style.color = 'var(--color-warn)';
+        toastShow('Signature verification failed', 'error');
+      }
+    } catch (e) {
+      console.error('signMessageForVerification', e);
+      signatureStatus.textContent = '❌ User denied signature';
+      signatureStatus.style.color = 'var(--color-warn)';
+      if (e.code !== 4001) { // Not user rejected
+        toastShow('Signature failed: ' + e.message, 'error');
+      }
+    } finally {
+      setLoadingState(signMessageBtn, false);
+    }
+  }
+
+  /* ----------------- Emergency Withdrawal ----------------- */
+  async function emergencyWithdrawTokens() {
+    if (!contract || !account || !isOwner) return;
+    
+    const tokenAddress = emergencyToken.value.trim();
+    if (!tokenAddress || !ethers.utils.isAddress(tokenAddress)) {
+      toastShow('Please enter a valid token address', 'error');
+      return;
+    }
+    
+    try {
+      setLoadingState(emergencyWithdrawBtn, true, 'Withdrawing...');
+      
+      // Check if token is recoverable
+      const isRecoverable = await contract.recoverableTokens(tokenAddress);
+      if (!isRecoverable) {
+        toastShow('Token is not in recoverable list', 'error');
+        return;
+      }
+      
+      const tokenContract = new ethers.Contract(tokenAddress, [
+        "function balanceOf(address) view returns (uint256)"
+      ], signer);
+      
+      const balance = await tokenContract.balanceOf(CONTRACT_ADDR);
+      if (balance.eq(0)) {
+        toastShow('No balance to withdraw', 'error');
+        return;
+      }
+      
+      const tx = await contract.emergencyWithdrawAll(tokenAddress);
+      const receipt = await tx.wait();
+      
+      toastShow('Emergency withdrawal successful', 'success', 
+                EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
+      
+      emergencyToken.value = '';
+    } catch (e) {
+      console.error('emergencyWithdrawTokens', e);
+      toastShow('Emergency withdrawal failed: ' + e.message, 'error');
+    } finally {
+      setLoadingState(emergencyWithdrawBtn, false);
+    }
+  }
+
   /* ----------------- Network Handling ------------------ */
   async function validateNetwork() {
     if (!provider) return false;
@@ -992,7 +1070,6 @@
       });
       return true;
     } catch (switchError) {
-      // This error code indicates that the chain has not been added to MetaMask
       if (switchError.code === 4902) {
         try {
           await window.ethereum.request({
@@ -1104,110 +1181,6 @@
     toastShow('Disconnected');
   }
 
-  /* ----------------- Mathematical Precision Fix ----------------- */
-  function calculateDailyAmount(snapshotBalance) {
-    if (!snapshotBalance || snapshotBalance.eq(0)) return ethers.BigNumber.from(0);
-    // Calculate daily amount as (snapshotBalance * 10000) / (730 * 10000) for better precision
-    return snapshotBalance.mul(10000).div(7300000); // Equivalent to snapshotBalance / 730
-  }
-
-  function calculateClaimableWithPrecision(snapshotBalance, claimedAmount, currentDay, lastClaimDay) {
-    if (!snapshotBalance || snapshotBalance.eq(0)) return ethers.BigNumber.from(0);
-    
-    const daysClaimable = Math.min(currentDay, 730) - lastClaimDay;
-    if (daysClaimable <= 0) return ethers.BigNumber.from(0);
-    
-    const dailyAmount = calculateDailyAmount(snapshotBalance);
-    const totalClaimable = dailyAmount.mul(daysClaimable);
-    const remainingAllocation = snapshotBalance.sub(claimedAmount);
-    
-    return totalClaimable.gt(remainingAllocation) ? remainingAllocation : totalClaimable;
-  }
-
-  /* ----------------- Gasless Signature ----------------- */
-  async function signMessageForVerification() {
-    if (!signer || !account) return;
-    
-    try {
-      setLoadingState(signMessageBtn, true, 'Signing...');
-      
-      const message = `Nuur Claim Verification\n\nAddress: ${account}\nTimestamp: ${Date.now()}\n\nThis signature verifies your ownership and does not cost gas.`;
-      
-      const signature = await signer.signMessage(message);
-      
-      // Verify the signature
-      const recoveredAddress = ethers.utils.verifyMessage(message, signature);
-      const isValid = recoveredAddress.toLowerCase() === account.toLowerCase();
-      
-      if (isValid) {
-        signatureStatus.textContent = '✅ Signature verified successfully';
-        signatureStatus.style.color = 'var(--color-success)';
-        toastShow('Gasless verification successful', 'success');
-        
-        // Store verification in localStorage
-        localStorage.setItem(`nuur_verified_${account}`, 'true');
-      } else {
-        signatureStatus.textContent = '❌ Signature verification failed';
-        signatureStatus.style.color = 'var(--color-warn)';
-        toastShow('Signature verification failed', 'error');
-      }
-    } catch (e) {
-      console.error('signMessageForVerification', e);
-      signatureStatus.textContent = '❌ User denied signature';
-      signatureStatus.style.color = 'var(--color-warn)';
-      if (e.code !== 4001) { // Not user rejected
-        toastShow('Signature failed: ' + e.message, 'error');
-      }
-    } finally {
-      setLoadingState(signMessageBtn, false);
-    }
-  }
-
-  /* ----------------- Emergency Withdrawal ----------------- */
-  async function emergencyWithdrawTokens() {
-    if (!contract || !account || !isOwner) return;
-    
-    const tokenAddress = emergencyToken.value.trim();
-    if (!tokenAddress || !ethers.utils.isAddress(tokenAddress)) {
-      toastShow('Please enter a valid token address', 'error');
-      return;
-    }
-    
-    try {
-      setLoadingState(emergencyWithdrawBtn, true, 'Withdrawing...');
-      
-      // Check if token is recoverable
-      const isRecoverable = await contract.recoverableTokens(tokenAddress);
-      if (!isRecoverable) {
-        toastShow('Token is not in recoverable list', 'error');
-        return;
-      }
-      
-      const tokenContract = new ethers.Contract(tokenAddress, [
-        "function balanceOf(address) view returns (uint256)"
-      ], signer);
-      
-      const balance = await tokenContract.balanceOf(CONTRACT_ADDR);
-      if (balance.eq(0)) {
-        toastShow('No balance to withdraw', 'error');
-        return;
-      }
-      
-      const tx = await contract.emergencyWithdraw(tokenAddress, balance);
-      const receipt = await tx.wait();
-      
-      toastShow('Emergency withdrawal successful', 'success', 
-                EXPLORER ? `${EXPLORER}/tx/${receipt.transactionHash}` : null);
-      
-      emergencyToken.value = '';
-    } catch (e) {
-      console.error('emergencyWithdrawTokens', e);
-      toastShow('Emergency withdrawal failed: ' + e.message, 'error');
-    } finally {
-      setLoadingState(emergencyWithdrawBtn, false);
-    }
-  }
-
   async function loadAll(){
     if(!contract || !account) return;
     try {
@@ -1228,19 +1201,16 @@
       const k = await contract.kycVerified(account);
       if (kycText) kycText.textContent = k ? 'Verified' : 'Not verified';
       if (kycDot) kycDot.style.background = k ? 'var(--color-success)' : 'var(--color-warn)';
-      if (kycStatusDisplay) kycStatusDisplay.textContent = k ? 'Yes' : 'No';
+      if (kycStatusDisplay) kycStatusDisplay.textContent = k ? 'Verified' : 'Not verified';
 
-      const [vStarted, paused, vestStartBN, contractBal] = await Promise.all([ 
+      const [vStarted, paused, vestStartBN] = await Promise.all([ 
         contract.vestingStarted(), 
         contract.paused(), 
-        contract.vestingStartTime(),
-        contract.getContractBalance()
+        contract.vestingStartTime()
       ]);
       vestingStartTimeSec = vestStartBN.toNumber();
       if (vestingStatus) vestingStatus.textContent = vStarted ? 'Active' : 'Not started';
-      if (pausedStatus) pausedStatus.textContent = paused ? 'Yes' : 'No';
-      if (contractBalanceDisplay) contractBalanceDisplay.textContent = `${formatTokenAmount(contractBal, decimals)} NUUR`;
-      if (adminContractBalance) adminContractBalance.textContent = `${formatTokenAmount(contractBal, decimals)} NUUR`;
+      if (pausedStatus) pausedStatus.textContent = paused ? 'Paused' : 'Active';
 
       // Get user claim info with daily vesting data
       const claimInfo = await contract.getUserClaimInfo(account);
@@ -1249,8 +1219,7 @@
       if (snapshotBalance) snapshotBalance.textContent = `${formatTokenAmount(snapshotBal, decimals)} NUUR`;
       if (claimedEl) claimedEl.textContent = `${formatTokenAmount(claimedAmount, decimals)} NUUR`;
       
-      // Use precise calculation
-      const claimable = calculateClaimableWithPrecision(snapshotBal, claimedAmount, currentDay, lastClaimDayValue);
+      const claimable = await contract.getClaimableAmount(account);
       if (claimableDisplay) claimableDisplay.textContent = `${formatTokenAmount(claimable, decimals)} NUUR`;
       lastClaimable = claimable;
 
@@ -1272,7 +1241,7 @@
         }
       }
 
-      // Enable/disable snapshot button - no restrictions
+      // Enable/disable snapshot button
       if (takeSnapshotBtn) {
         const canTakeSnapshot = await contract.canTakeSnapshot(account);
         takeSnapshotBtn.disabled = !canTakeSnapshot;
@@ -1287,7 +1256,7 @@
         }
       }
 
-      // Update daily progress with precise calculation
+      // Update progress with professional terminology
       if (daysPassed) daysPassed.textContent = `${currentDay} / 730`;
       if (remainingDays) {
         remainingDays.textContent = `${remainingDaysValue} days`;
@@ -1302,10 +1271,9 @@
         progressBar.style.width = `${Math.min(progressPercent, 100)}%`;
       }
 
-      // Update daily rate with precise calculation
+      // Update daily rate
       if (dailyRate) {
-        const dailyAmount = calculateDailyAmount(snapshotBal);
-        dailyRate.textContent = `${formatTokenAmount(dailyAmount, decimals)} NUUR/day`;
+        dailyRate.textContent = '~0.137%';
       }
 
       // Check cooldown status
@@ -1345,10 +1313,15 @@
       if (openAdmin) openAdmin.style.display = isOwner ? 'inline-block' : 'none';
       if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
       
-      // Show gasless verification section
+      // Show gasless verification section only if not already verified
+      const isVerified = localStorage.getItem(`nuur_verified_${account}`) === 'true';
       if (gaslessSection) {
-        gaslessSection.style.display = 'block';
-        const isVerified = localStorage.getItem(`nuur_verified_${account}`) === 'true';
+        if (!isVerified) {
+          gaslessSection.style.display = 'block';
+        } else {
+          gaslessSection.style.display = 'none';
+        }
+        
         if (isVerified) {
           signatureStatus.textContent = '✅ Previously verified';
           signatureStatus.style.color = 'var(--color-success)';
@@ -1490,19 +1463,14 @@
     
     try {
       // Load basic stats
-      const [currentDay, totalDays] = await Promise.all([
+      const [currentDay, contractBal] = await Promise.all([
         contract.getCurrentDay(),
-        Promise.resolve(730) // Hardcoded for now
+        contract.getContractBalance()
       ]);
       
       if (adminDaysPassed) adminDaysPassed.textContent = currentDay.toString();
       if (adminRemainingDays) adminRemainingDays.textContent = (730 - currentDay).toString();
-      
-      // Placeholder for more statistics
-      // These would require additional view functions in the contract
-      if (totalUsers) totalUsers.textContent = 'N/A';
-      if (activeUsers) activeUsers.textContent = 'N/A';
-      if (totalDistributed) totalDistributed.textContent = 'N/A';
+      if (adminContractBalance) adminContractBalance.textContent = `${formatTokenAmount(contractBal, decimals)} NUUR`;
       
     } catch (e) {
       console.error('loadAdminStatistics', e);
@@ -1723,7 +1691,7 @@
     }, 1000);
   }
 
-  /* -------------- UI wiring -------------- */
+  /* -------------- UI Event Listeners -------------- */
   if (connectBtn) connectBtn.addEventListener('click', connectWallet);
   if (disconnectBtn) disconnectBtn.addEventListener('click', disconnectWallet);
   if (takeSnapshotBtn) takeSnapshotBtn.addEventListener('click', takeSnapshot);
