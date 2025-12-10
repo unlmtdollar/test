@@ -5,941 +5,175 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NUUR Presale Admin Dashboard</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.6.0/ethers.umd.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root {
-      --primary: #4361ee;
-      --primary-dark: #3a56d4;
-      --secondary: #7209b7;
-      --success: #4cc9f0;
-      --danger: #f72585;
-      --warning: #f8961e;
-      --dark: #1a1a2e;
-      --light: #f8f9fa;
-      --gray: #6c757d;
-      --gray-light: #e9ecef;
-      --border-radius: 12px;
-      --box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      --transition: all 0.3s ease;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
+    * {margin:0;padding:0;box-sizing:border-box;}
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      color: var(--light);
-      min-height: 100vh;
-      padding: 20px;
-      line-height: 1.6;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height:100vh;
+      padding:20px;
     }
-    
     .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width:1200px;margin:0 auto;background:white;
+      border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.2);
+      overflow:hidden;
     }
-    
     header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: white;
-      padding: 25px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
+      background:#2c3e50;color:white;padding:20px;text-align:center;
     }
-    
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    
-    .logo i {
-      font-size: 2.2rem;
-    }
-    
-    .logo-text h1 {
-      font-size: 1.8rem;
-      margin-bottom: 5px;
-    }
-    
-    .logo-text p {
-      opacity: 0.9;
-      font-size: 0.9rem;
-    }
-    
     .wallet-section {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background:#ecf0f1;padding:20px;display:flex;
+      justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
     }
-    
-    .wallet-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 10px 15px;
-      border-radius: var(--border-radius);
-    }
-    
-    .wallet-info i {
-      color: var(--success);
-    }
-    
+    .wallet-info {display:flex;align-items:center;gap:10px;}
     .connect-btn {
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: var(--transition);
+      background:#27ae60;color:white;border:none;padding:10px 20px;
+      border-radius:5px;cursor:pointer;font-weight:bold;
     }
-    
-    .connect-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+    .connect-btn:hover {background:#219a52;}
+    .main-content {
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;
     }
-    
-    .dashboard {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 20px;
-      padding: 25px;
-    }
-    
-    @media (max-width: 1200px) {
-      .dashboard {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .dashboard {
-        grid-template-columns: 1fr;
-      }
-      
-      header {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-    
+    @media(max-width:768px){.main-content{grid-template-columns:1fr;}}
     .card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: var(--border-radius);
-      padding: 25px;
-      box-shadow: var(--box-shadow);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: var(--transition);
+      background:#f8f9fa;border-radius:10px;padding:20px;
+      box-shadow:0 4px 6px rgba(0,0,0,0.1);
     }
-    
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    .card h3 {
+      color:#2c3e50;margin-bottom:15px;border-bottom:2px solid #3498db;
+      padding-bottom:5px;
     }
-    
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .card-header i {
-      font-size: 1.5rem;
-      color: var(--success);
-    }
-    
-    .card-header h3 {
-      color: var(--light);
-      font-size: 1.3rem;
-    }
-    
-    .info-grid {
-      display: grid;
-      gap: 12px;
-    }
-    
     .info-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 15px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      transition: var(--transition);
+      display:flex;justify-content:space-between;
+      margin:10px 0;padding:8px;background:white;border-radius:5px;
     }
-    
-    .info-row:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-    
-    .info-label {
-      font-weight: 500;
-      color: var(--gray-light);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .info-value {
-      color: var(--light);
-      font-weight: 600;
-    }
-    
-    .action-form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 15px;
-    }
-    
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    
-    .input-group label {
-      font-weight: 500;
-      color: var(--gray-light);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
+    .info-label {font-weight:bold;color:#7f8c8d;}
+    .info-value {color:#2c3e50;font-weight:bold;}
+    .action-form {display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+    .input-group {display:flex;flex-direction:column;gap:5px;}
+    .input-group label {font-weight:bold;color:#2c3e50;}
     input, select, button {
-      padding: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      font-size: 14px;
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--light);
-      transition: var(--transition);
+      padding:12px;border:2px solid #bdc3c7;border-radius:5px;font-size:14px;
     }
-    
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
-    }
-    
-    input::placeholder {
-      color: rgba(255, 255, 255, 0.4);
-    }
-    
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    
+    input:focus, select:focus {outline:none;border-color:#3498db;}
     .action-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      flex: 1;
-      transition: var(--transition);
+      background:#3498db;color:white;border:none;padding:12px;
+      border-radius:5px;cursor:pointer;font-weight:bold;
     }
-    
-    .action-btn:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-    }
-    
-    .danger-btn {
-      background: var(--danger);
-    }
-    
-    .danger-btn:hover {
-      background: #e1156d;
-    }
-    
-    .success-btn {
-      background: var(--success);
-    }
-    
-    .success-btn:hover {
-      background: #3ab3d6;
-    }
-    
-    .warning-btn {
-      background: var(--warning);
-    }
-    
-    .warning-btn:hover {
-      background: #e08617;
-    }
-    
+    .action-btn:hover {background:#2980b9;}
+    .danger-btn {background:#e74c3c;}
+    .danger-btn:hover {background:#c0392b;}
+    .success-btn {background:#27ae60;}
+    .success-btn:hover {background:#219a52;}
     .status {
-      padding: 15px;
-      margin: 15px 0;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: 600;
-      display: none;
-      animation: fadeIn 0.5s ease;
+      padding:10px;margin:10px;border-radius:5px;text-align:center;font-weight:bold;
+      display:none;
     }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .status.success {
-      background: rgba(76, 201, 240, 0.2);
-      color: var(--success);
-      border: 1px solid rgba(76, 201, 240, 0.3);
-    }
-    
-    .status.error {
-      background: rgba(247, 37, 133, 0.2);
-      color: var(--danger);
-      border: 1px solid rgba(247, 37, 133, 0.3);
-    }
-    
-    .status.info {
-      background: rgba(67, 97, 238, 0.2);
-      color: var(--primary);
-      border: 1px solid rgba(67, 97, 238, 0.3);
-    }
-    
+    .status.success {background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
+    .status.error {background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
+    .status.info {background:#d1ecf1;color:#0c5460;border:1px solid #bee5eb;}
     footer {
-      text-align: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.2);
-      color: var(--gray-light);
-      font-size: 0.9rem;
-    }
-    
-    .badge {
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-    
-    .badge-success {
-      background: rgba(76, 201, 240, 0.2);
-      color: var(--success);
-    }
-    
-    .badge-warning {
-      background: rgba(248, 150, 30, 0.2);
-      color: var(--warning);
-    }
-    
-    .badge-danger {
-      background: rgba(247, 37, 133, 0.2);
-      color: var(--danger);
-    }
-    
-    .loading {
-      opacity: 0.7;
-      pointer-events: none;
-    }
-    
-    .loading::after {
-      content: ' (Loading...)';
-      font-weight: normal;
+      text-align:center;padding:20px;background:#2c3e50;color:white;
     }
   </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <div class="logo">
-      <i class="fas fa-chart-line"></i>
-      <div class="logo-text">
-        <h1>NUUR Presale Admin Dashboard</h1>
-        <p>Manage your presale contract with ease</p>
-      </div>
-    </div>
-    <div class="wallet-info">
-      <i class="fas fa-clock"></i>
-      <span id="currentTime">Loading...</span>
-    </div>
+    <h1>NUUR Presale Admin Dashboard</h1>
+    <p>Manage your presale contract with ease</p>
   </header>
 
   <div class="wallet-section">
     <div class="wallet-info">
-      <i class="fas fa-wallet"></i>
-      <div>
-        <div>Wallet Status:</div>
-        <div id="walletStatus">Not Connected</div>
-      </div>
+      <span>Wallet Status:</span>
+      <span id="walletStatus">Not Connected</span>
     </div>
     <div class="wallet-info">
-      <i class="fas fa-address-card"></i>
-      <div>
-        <div>Connected Address:</div>
-        <div id="connectedAddress">-</div>
-      </div>
+      <span>Connected Address:</span>
+      <span id="connectedAddress">-</span>
     </div>
-    <button class="connect-btn" onclick="connectWallet()">
-      <i class="fas fa-plug"></i> Connect Wallet
-    </button>
+    <button class="connect-btn" onclick="connectWallet()">Connect Wallet</button>
   </div>
 
   <div id="statusMessage" class="status"></div>
 
-  <div class="dashboard">
+  <div class="main-content">
     <!-- Contract Info -->
     <div class="card">
-      <div class="card-header">
-        <i class="fas fa-info-circle"></i>
-        <h3>Contract Information</h3>
-      </div>
-      <div class="info-grid">
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-map-marker-alt"></i> Contract Address:</span>
-          <span class="info-value" id="contractAddress">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-toggle-on"></i> Presale Status:</span>
-          <span class="info-value" id="presaleStatus">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-layer-group"></i> Current Phase:</span>
-          <span class="info-value" id="currentPhase">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-exchange-alt"></i> Current Rate:</span>
-          <span class="info-value" id="currentRate">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-coins"></i> Total Tokens Sold:</span>
-          <span class="info-value" id="totalTokensSold">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-money-bill-wave"></i> Total SDA Received:</span>
-          <span class="info-value" id="totalSDAReceived">-</span>
-        </div>
-      </div>
-      <button class="action-btn" onclick="refreshContractInfo()">
-        <i class="fas fa-sync-alt"></i> Refresh Info
-      </button>
+      <h3>Contract Information</h3>
+      <div class="info-row"><span class="info-label">Contract Address:</span><span class="info-value" id="contractAddress">-</span></div>
+      <div class="info-row"><span class="info-label">Presale Status:</span><span class="info-value" id="presaleStatus">-</span></div>
+      <div class="info-row"><span class="info-label">Current Phase:</span><span class="info-value" id="currentPhase">-</span></div>
+      <div class="info-row"><span class="info-label">Current Rate:</span><span class="info-value" id="currentRate">-</span></div>
+      <div class="info-row"><span class="info-label">Total Tokens Sold:</span><span class="info-value" id="totalTokensSold">-</span></div>
+      <div class="info-row"><span class="info-label">Total SDA Received:</span><span class="info-value" id="totalSDAReceived">-</span></div>
+      <button class="action-btn" onclick="refreshContractInfo()">Refresh Info</button>
     </div>
 
     <!-- Balances -->
     <div class="card">
-      <div class="card-header">
-        <i class="fas fa-balance-scale"></i>
-        <h3>Balances</h3>
-      </div>
-      <div class="info-grid">
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-wallet"></i> Contract SDA Balance:</span>
-          <span class="info-value" id="sdaBalance">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-coins"></i> Contract NUUR Balance:</span>
-          <span class="info-value" id="nuurBalance">-</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i class="fas fa-user-tie"></i> Dev Wallet:</span>
-          <span class="info-value" id="devWallet">-</span>
-        </div>
-      </div>
+      <h3>Balances</h3>
+      <div class="info-row"><span class="info-label">Contract SDA Balance:</span><span class="info-value" id="sdaBalance">-</span></div>
+      <div class="info-row"><span class="info-label">Contract NUUR Balance:</span><span class="info-value" id="nuurBalance">-</span></div>
+      <div class="info-row"><span class="info-label">Dev Wallet:</span><span class="info-value" id="devWallet">-</span></div>
 
       <div class="action-form">
         <div class="input-group">
-          <label><i class="fas fa-download"></i> Withdraw SDA Amount:</label>
+          <label>Withdraw SDA Amount:</label>
           <input type="number" id="withdrawAmount" placeholder="Enter amount (SDA)" step="0.0001">
         </div>
-        <div class="btn-group">
-          <button class="action-btn danger-btn" onclick="withdrawSDA()">
-            <i class="fas fa-hand-holding-usd"></i> Withdraw SDA
-          </button>
-          <button class="action-btn warning-btn" onclick="withdrawAllSDA()">
-            <i class="fas fa-hand-holding-usd"></i> Withdraw ALL SDA
-          </button>
-        </div>
+        <button class="action-btn danger-btn" onclick="withdrawSDA()">Withdraw SDA</button>
+        <button class="action-btn danger-btn" onclick="withdrawAllSDA()">Withdraw ALL SDA</button>
       </div>
 
-      <div class="action-form">
+      <div class="action-form" style="margin-top:15px;">
         <div class="input-group">
-          <label><i class="fas fa-download"></i> Withdraw NUUR Amount:</label>
+          <label>Withdraw NUUR Amount:</label>
           <input type="number" id="withdrawNuurAmount" placeholder="Enter amount (NUUR)" step="0.0001">
         </div>
-        <button class="action-btn danger-btn" onclick="withdrawNUUR()">
-          <i class="fas fa-hand-holding-usd"></i> Withdraw NUUR
-        </button>
+        <button class="action-btn danger-btn" onclick="withdrawNUUR()">Withdraw NUUR</button>
       </div>
     </div>
 
     <!-- Presale Management -->
     <div class="card">
-      <div class="card-header">
-        <i class="fas fa-cogs"></i>
-        <h3>Presale Management</h3>
-      </div>
+      <h3>Presale Management</h3>
       <div class="action-form">
         <div class="input-group">
-          <label><i class="fas fa-toggle-on"></i> Presale Status:</label>
+          <label>Presale Status:</label>
           <select id="presaleStatusSelect">
             <option value="true">Active</option>
             <option value="false">Inactive</option>
           </select>
         </div>
-        <button class="action-btn" onclick="setPresaleStatus()">
-          <i class="fas fa-save"></i> Update Status
-        </button>
+        <button class="action-btn" onclick="setPresaleStatus()">Update Status</button>
       </div>
 
-      <div class="action-form">
+      <div class="action-form" style="margin-top:20px;">
         <div class="input-group">
-          <label><i class="fas fa-wallet"></i> New Dev Wallet:</label>
+          <label>New Dev Wallet:</label>
           <input type="text" id="newDevWallet" placeholder="0x...">
         </div>
-        <button class="action-btn" onclick="updateDevWallet()">
-          <i class="fas fa-save"></i> Update Dev Wallet
-        </button>
+        <button class="action-btn" onclick="updateDevWallet()">Update Dev Wallet</button>
       </div>
     </div>
 
     <!-- Phase Management -->
     <div class="card">
-      <div class="card-header">
-        <i class="fas fa-chart-line"></i>
-        <h3>Phase Management</h3>
-      </div>
+      <h3>Phase Management</h3>
       <div class="action-form">
-        <div class="input-group">
-          <label><i class="fas fa-layer-group"></i> New Phase ID:</label>
-          <input type="number" id="newPhaseId" placeholder="3">
-        </div>
-        <div class="input-group">
-          <label><i class="fas fa-signature"></i> Phase Name:</label>
-          <input type="text" id="newPhaseName" placeholder="Phase 3">
-        </div>
-        <div class="input-group">
-          <label><i class="fas fa-exchange-alt"></i> Rate (NUUR per SDA):</label>
-          <input type="number" id="newRate" placeholder="150">
-        </div>
-        <button class="action-btn success-btn" onclick="updatePhase()">
-          <i class="fas fa-save"></i> Update Phase
-        </button>
+        <div class="input-group"><label>New Phase ID:</label><input type="number" id="newPhaseId" placeholder="3"></div>
+        <div class="input-group"><label>Phase Name:</label><input type="text" id="newPhaseName" placeholder="Phase 3"></div>
+        <div class="input-group"><label>Rate (NUUR per SDA):</label><input type="number" id="newRate" placeholder="150"></div>
+        <button class="action-btn success-btn" onclick="updatePhase()">Update Phase</button>
       </div>
     </div>
   </div>
 
-  <footer>
-    <p>NUUR Presale Admin Interface - Developed by Huska</p>
-  </footer>
+  <footer><p>NUUR Presale Admin Interface - Developed by Huska</p></footer>
 </div>
 
-<script>
-  // Contract configuration - UPDATE THESE WITH YOUR ACTUAL CONTRACT ADDRESSES AND ABIs
-  const CONTRACT_CONFIG = {
-    presale: {
-      address: "0xYOUR_PRESALE_CONTRACT_ADDRESS", // Replace with actual presale contract address
-      abi: [
-        "function presaleActive() view returns (bool)",
-        "function currentPhase() view returns (uint256)",
-        "function getCurrentRate() view returns (uint256)",
-        "function totalTokensSold() view returns (uint256)",
-        "function totalSDAReceived() view returns (uint256)",
-        "function devWallet() view returns (address)",
-        "function setPresaleStatus(bool) external",
-        "function updateDevWallet(address) external",
-        "function updatePhase(uint256, string, uint256) external",
-        "function withdrawSDA(uint256) external",
-        "function withdrawAllSDA() external",
-        "function withdrawNUUR(uint256) external"
-      ]
-    },
-    tokens: {
-      sda: {
-        address: "0xYOUR_SDA_TOKEN_ADDRESS", // Replace with actual SDA token address
-        abi: [
-          "function balanceOf(address) view returns (uint256)",
-          "function decimals() view returns (uint8)"
-        ]
-      },
-      nuur: {
-        address: "0xYOUR_NUUR_TOKEN_ADDRESS", // Replace with actual NUUR token address
-        abi: [
-          "function balanceOf(address) view returns (uint256)",
-          "function decimals() view returns (uint8)"
-        ]
-      }
-    }
-  };
-
-  // Global variables
-  let provider;
-  let signer;
-  let presaleContract;
-  let sdaTokenContract;
-  let nuurTokenContract;
-  let isConnected = false;
-
-  // Initialize the application
-  async function init() {
-    updateTime();
-    
-    // Check if MetaMask is installed
-    if (typeof window.ethereum !== 'undefined') {
-      provider = new ethers.BrowserProvider(window.ethereum);
-      
-      // Check if already connected
-      const accounts = await provider.listAccounts();
-      if (accounts.length > 0) {
-        await connectWallet();
-      }
-    } else {
-      showStatus('MetaMask is not installed. Please install MetaMask to use this dApp.', 'error');
-    }
-    
-    setInterval(updateTime, 1000);
-  }
-
-  // Update current time
-  function updateTime() {
-    const now = new Date();
-    document.getElementById('currentTime').textContent = now.toLocaleString();
-  }
-
-  // Connect wallet function
-  async function connectWallet() {
-    try {
-      showStatus('Connecting to wallet...', 'info');
-      
-      if (!provider) {
-        provider = new ethers.BrowserProvider(window.ethereum);
-      }
-      
-      // Request account access
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      
-      // Get signer
-      signer = await provider.getSigner();
-      const address = await signer.getAddress();
-      
-      // Initialize contracts
-      presaleContract = new ethers.Contract(CONTRACT_CONFIG.presale.address, CONTRACT_CONFIG.presale.abi, signer);
-      sdaTokenContract = new ethers.Contract(CONFIG.tokens.sda.address, CONFIG.tokens.sda.abi, provider);
-      nuurTokenContract = new ethers.Contract(CONFIG.tokens.nuur.address, CONFIG.tokens.nuur.abi, provider);
-      
-      // Update UI
-      document.getElementById('walletStatus').innerHTML = '<span class="badge badge-success">Connected</span>';
-      document.getElementById('connectedAddress').textContent = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-      
-      isConnected = true;
-      showStatus('Wallet connected successfully!', 'success');
-      
-      // Load contract data
-      await refreshContractInfo();
-      
-    } catch (error) {
-      console.error('Error connecting wallet:', error);
-      showStatus('Failed to connect wallet: ' + error.message, 'error');
-    }
-  }
-
-  // Refresh contract information
-  async function refreshContractInfo() {
-    if (!isConnected) {
-      showStatus('Please connect your wallet first', 'error');
-      return;
-    }
-    
-    try {
-      showStatus('Loading contract information...', 'info');
-      
-      // Fetch all contract data in parallel
-      const [
-        presaleActive,
-        currentPhaseId,
-        currentRate,
-        totalTokensSold,
-        totalSDAReceived,
-        devWallet,
-        sdaBalance,
-        nuurBalance,
-        sdaDecimals,
-        nuurDecimals
-      ] = await Promise.all([
-        presaleContract.presaleActive(),
-        presaleContract.currentPhase(),
-        presaleContract.getCurrentRate(),
-        presaleContract.totalTokensSold(),
-        presaleContract.totalSDAReceived(),
-        presaleContract.devWallet(),
-        sdaTokenContract.balanceOf(CONTRACT_CONFIG.presale.address),
-        nuurTokenContract.balanceOf(CONTRACT_CONFIG.presale.address),
-        sdaTokenContract.decimals(),
-        nuurTokenContract.decimals()
-      ]);
-      
-      // Format values
-      const formatTokenAmount = (amount, decimals) => {
-        return ethers.formatUnits(amount, decimals);
-      };
-      
-      // Update UI with real data
-      document.getElementById('contractAddress').textContent = `${CONTRACT_CONFIG.presale.address.substring(0, 6)}...${CONTRACT_CONFIG.presale.address.substring(CONTRACT_CONFIG.presale.address.length - 4)}`;
-      document.getElementById('presaleStatus').innerHTML = presaleActive 
-        ? '<span class="badge badge-success">Active</span>' 
-        : '<span class="badge badge-danger">Inactive</span>';
-      document.getElementById('currentPhase').textContent = `Phase ${currentPhaseId.toString()}`;
-      document.getElementById('currentRate').textContent = `${ethers.formatUnits(currentRate, 0)} NUUR/SDA`;
-      document.getElementById('totalTokensSold').textContent = `${formatTokenAmount(totalTokensSold, nuurDecimals)} NUUR`;
-      document.getElementById('totalSDAReceived').textContent = `${formatTokenAmount(totalSDAReceived, sdaDecimals)} SDA`;
-      document.getElementById('sdaBalance').textContent = `${formatTokenAmount(sdaBalance, sdaDecimals)} SDA`;
-      document.getElementById('nuurBalance').textContent = `${formatTokenAmount(nuurBalance, nuurDecimals)} NUUR`;
-      document.getElementById('devWallet').textContent = `${devWallet.substring(0, 6)}...${devWallet.substring(devWallet.length - 4)}`;
-      
-      // Update presale status select to match current state
-      document.getElementById('presaleStatusSelect').value = presaleActive.toString();
-      
-      showStatus('Contract information updated!', 'success');
-      
-    } catch (error) {
-      console.error('Error fetching contract info:', error);
-      showStatus('Failed to load contract information: ' + error.message, 'error');
-    }
-  }
-
-  // Withdraw SDA tokens
-  async function withdrawSDA() {
-    if (!isConnected) {
-      showStatus('Please connect your wallet first', 'error');
-      return;
-    }
-    
-    const amount = document.getElementById('withdrawAmount').value;
-    if (!amount || amount <= 0) {
-      showStatus('Please enter a valid amount to withdraw', 'error');
-      return;
-    }
-    
-    try {
-      showStatus(`Withdrawing ${amount} SDA...`, 'info');
-      
-      // Get SDA decimals for proper formatting
-      const decimals = await sdaTokenContract.decimals();
-      const amountWei = ethers.parseUnits(amount, decimals);
-      
-      const tx = await presaleContract.withdrawSDA(amountWei);
-      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
-      
-      const receipt = await tx.wait();
-      showStatus(`Successfully withdrew ${amount} SDA!`, 'success');
-      
-      // Refresh balances
-      await refreshContractInfo();
-      
-    } catch (error) {
-      console.error('Error withdrawing SDA:', error);
-      showStatus('Failed to withdraw SDA: ' + error.message, 'error');
-    }
-  }
-
-  // Withdraw all SDA tokens
-  async function withdrawAllSDA() {
-    if (!isConnected) {
-      showStatus('Please connect your wallet first', 'error');
-      return;
-    }
-    
-    try {
-      showStatus('Withdrawing all SDA...', 'info');
-      
-      const tx = await presaleContract.withdrawAllSDA();
-      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
-      
-      const receipt = await tx.wait();
-      showStatus('Successfully withdrew all SDA!', 'success');
-      
-      // Refresh balances
-      await refreshContractInfo();
-      
-    } catch (error) {
-      console.error('Error withdrawing all SDA:', error);
-      showStatus('Failed to withdraw all SDA: ' + error.message, 'error');
-    }
-  }
-
-  // Withdraw NUUR tokens
-  async function withdrawNUUR() {
-    if (!isConnected) {
-      showStatus('Please connect your wallet first', 'error');
-      return;
-    }
-    
-    const amount = document.getElementById('withdrawNuurAmount').value;
-    if (!amount || amount <= 0) {
-      showStatus('Please enter a valid amount to withdraw', 'error');
-      return;
-    }
-    
-    try {
-      showStatus(`Withdrawing ${amount} NUUR...`, 'info');
-      
-      // Get NUUR decimals for proper formatting
-      const decimals = await nuurTokenContract.decimals();
-      const amountWei = ethers.parseUnits(amount, decimals);
-      
-      const tx = await presaleContract.withdrawNUUR(amountWei);
-      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
-      
-      const receipt = await tx.wait();
-      showStatus(`Successfully withdrew ${amount} NUUR!`, 'success');
-      
-      // Refresh balances
-      await refreshContractInfo();
-      
-    } catch (error) {
-      console.error('Error withdrawing NUUR:', error);
-      showStatus('Failed to withdraw NUUR: ' + error.message, 'error');
-    }
-  }
-
-  // Set presale status
-  async function setPresaleStatus() {
-    if (!isConnected) {
-      showStatus('Please connect your wallet first', 'error');
-      return;
-    }
-    
-    const status = document.getElementById('presaleStatusSelect').value === 'true';
-    const statusText = status ? 'Active' : 'Inactive';
-    
-    try {
-      showStatus(`Setting presale status to ${statusText}...`, 'info');
-      
-      const tx = await presaleContract.setPresaleStatus(status);
-      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
-      
-      const receipt = await tx.wait();
-      showStatus(`Presale status updated to ${statusText}!`, 'success');
-      
-      // Refresh contract info
-      await refreshContractInfo();
-      
-    } catch (error) {
-      console.error('Error updating presale status:', error);
-      showStatus('Failed to update presale status: ' + error.message, 'error');
-    }
-  }
-
-  // Update dev wallet
-  async function updateDevWallet() {
-    if (!isConnected) {
-      showStatus('Please connect your wallet first', 'error');
-      return;
-    }
-    
-    const newWallet = document.getElementById('newDevWallet').value;
-    if (!newWallet || !ethers.isAddress(newWallet)) {
-      showStatus('Please enter a valid wallet address', 'error');
-      return;
-    }
-    
-    try {
-      showStatus('Updating dev wallet...', 'info');
-      
-      const tx = await presaleContract.updateDevWallet(newWallet);
-      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
-      
-      const receipt = await tx.wait();
-      showStatus('Dev wallet updated successfully!', 'success');
-      
-      // Refresh contract info
-      await refreshContractInfo();
-      
-    } catch (error) {
-      console.error('Error updating dev wallet:', error);
-      showStatus('Failed to update dev wallet: ' + error.message, 'error');
-    }
-  }
-
-  // Update phase
-  async function updatePhase() {
-    if (!isConnected) {
-      showStatus('Please connect your wallet first', 'error');
-      return;
-    }
-    
-    const phaseId = document.getElementById('newPhaseId').value;
-    const phaseName = document.getElementById('newPhaseName').value;
-    const rate = document.getElementById('newRate').value;
-    
-    if (!phaseId || !phaseName || !rate) {
-      showStatus('Please fill all phase details', 'error');
-      return;
-    }
-    
-    try {
-      showStatus(`Updating to ${phaseName} with rate ${rate}...`, 'info');
-      
-      const tx = await presaleContract.updatePhase(phaseId, phaseName, rate);
-      showStatus(`Transaction submitted: ${tx.hash}`, 'info');
-      
-      const receipt = await tx.wait();
-      showStatus(`Phase updated to ${phaseName}!`, 'success');
-      
-      // Refresh contract info
-      await refreshContractInfo();
-      
-    } catch (error) {
-      console.error('Error updating phase:', error);
-      showStatus('Failed to update phase: ' + error.message, 'error');
-    }
-  }
-
-  // Show status message
-  function showStatus(message, type) {
-    const statusElement = document.getElementById('statusMessage');
-    statusElement.textContent = message;
-    statusElement.className = 'status ' + type;
-    statusElement.style.display = 'block';
-    
-    // Auto-hide success and info messages after 5 seconds
-    if (type === 'success' || type === 'info') {
-      setTimeout(() => {
-        statusElement.style.display = 'none';
-      }, 5000);
-    }
-  }
-
-  // Initialize the application when the page loads
-  window.onload = init;
-</script>
+<script src="app.js"></script>
 </body>
 </html>
